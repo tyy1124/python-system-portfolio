@@ -189,7 +189,8 @@ python app.py
 
 - 為避免將大型訓練資料直接放入 GitHub，`mnist_train.csv` 不包含在公開版本。
 - 已訓練模型保留於 `saved_models/`，部分功能可直接進行推論。
-- TDX 即時資料與本機資料庫檔案不納入 Git 版本控制。
+- Repository 保留去識別化的展示用航班資料庫與資料快照，原始私人使用者資料已移除。
+- 即時更新 TDX 資料需要自行設定 API 憑證。
 - 部分功能需要外部 API 或環境變數，未設定時可能無法完整使用。
 
 ## 安全性
@@ -197,7 +198,7 @@ python app.py
 公開版本不包含：
 - API Key / Client Secret
 - Email App Password
-- 本機使用者資料庫
+- 原始私人使用者資料與真實服務憑證
 - `.env` / `linkset.env`
 - 即時抓取產生的本機資料檔
 
