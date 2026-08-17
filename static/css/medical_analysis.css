@@ -1,0 +1,1304 @@
+/* =========================================================
+   TYY 小站：醫療資料互動分析
+   配合一般／深色模式，主色為柔粉、淡紫與柔桃色
+   ========================================================= */
+
+.medical-analysis-page {
+    --medical-bg: #faf7fb;
+    --medical-card: #fffefe;
+    --medical-card-soft: #f8f3fa;
+    --medical-text: #4a4054;
+    --medical-heading: #31283c;
+    --medical-muted: #746a7d;
+    --medical-border: #e7dce8;
+    --medical-grid: rgba(100, 77, 119, 0.13);
+    --medical-tiffany: #a18cd1;
+    --medical-tiffany-dark: #7358a5;
+    --medical-tiffany-soft: #f1ecfb;
+    --medical-orange: #ff9a9e;
+    --medical-orange-soft: #fff0f3;
+    --medical-danger: #b92d45;
+    --medical-danger-soft: rgba(185, 45, 69, 0.12);
+    --medical-success: #13795b;
+    --medical-success-soft: rgba(19, 121, 91, 0.12);
+    --medical-neutral: #697b82;
+    --medical-neutral-soft: rgba(105, 123, 130, 0.12);
+    --medical-shadow: 0 12px 32px rgba(24, 60, 68, 0.08);
+
+    width: 100%;
+    color: var(--medical-text);
+}
+
+body[data-theme="dark"] .medical-analysis-page {
+    --medical-bg: #15121c;
+    --medical-card: #211b2b;
+    --medical-card-soft: #2a2236;
+    --medical-text: #eee6f2;
+    --medical-heading: #fff8ff;
+    --medical-muted: #aa9bb2;
+    --medical-border: #44364e;
+    --medical-grid: rgba(215, 199, 230, 0.13);
+    --medical-tiffany: #c7b5ee;
+    --medical-tiffany-dark: #d9c9f6;
+    --medical-tiffany-soft: rgba(199, 181, 238, 0.16);
+    --medical-orange: #ff9a9e;
+    --medical-orange-soft: rgba(255, 154, 158, 0.16);
+    --medical-danger: #ff8b9b;
+    --medical-danger-soft: rgba(255, 139, 155, 0.17);
+    --medical-success: #79e4bd;
+    --medical-success-soft: rgba(121, 228, 189, 0.16);
+    --medical-neutral: #b6c7ca;
+    --medical-neutral-soft: rgba(182, 199, 202, 0.14);
+    --medical-shadow: 0 16px 34px rgba(0, 0, 0, 0.26);
+}
+
+.medical-analysis-page *,
+.medical-analysis-page *::before,
+.medical-analysis-page *::after {
+    box-sizing: border-box;
+}
+
+.medical-analysis-page h2,
+.medical-analysis-page h4,
+.medical-analysis-page h5,
+.medical-analysis-page strong,
+.medical-analysis-page label {
+    color: var(--medical-heading);
+}
+
+.medical-analysis-page p,
+.medical-analysis-page small,
+.medical-analysis-page span {
+    overflow-wrap: anywhere;
+}
+
+.medical-error-card {
+    border-radius: 16px;
+}
+
+/* === Hero === */
+.medical-hero-card {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 22px;
+    padding: 28px;
+    border: 1px solid var(--medical-border);
+    border-radius: 20px;
+    background:
+        radial-gradient(circle at 8% 12%, rgba(161, 140, 209, 0.20), transparent 34%),
+        radial-gradient(circle at 90% 20%, rgba(251, 194, 235, 0.18), transparent 30%),
+        linear-gradient(135deg, var(--medical-card), var(--medical-card-soft));
+    box-shadow: var(--medical-shadow);
+}
+
+.medical-hero-card::after {
+    content: "";
+    position: absolute;
+    right: -42px;
+    bottom: -70px;
+    width: 220px;
+    height: 220px;
+    border: 30px solid rgba(161, 140, 209, 0.09);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.medical-hero-content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.8fr);
+    gap: 28px;
+    align-items: center;
+}
+
+.medical-eyebrow,
+.medical-section-kicker {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: var(--medical-tiffany-dark) !important;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.medical-hero-card h2 {
+    margin-bottom: 10px;
+    font-size: clamp(1.55rem, 3vw, 2.25rem);
+    line-height: 1.25;
+}
+
+.medical-hero-card p {
+    max-width: 760px;
+    margin: 0;
+    color: var(--medical-muted);
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.medical-source-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 18px;
+    border: 1px solid var(--medical-border);
+    border-radius: 15px;
+    background: color-mix(in srgb, var(--medical-card) 86%, transparent);
+}
+
+.medical-source-panel span {
+    color: var(--medical-muted);
+    font-size: 0.83rem;
+}
+
+.medical-source-panel a {
+    display: inline-flex;
+    gap: 7px;
+    align-items: center;
+    margin-top: 5px;
+    color: var(--medical-tiffany-dark) !important;
+    font-weight: 700;
+}
+
+.medical-source-badge {
+    align-self: flex-start;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: var(--medical-tiffany-soft);
+    color: var(--medical-tiffany-dark) !important;
+    font-weight: 800;
+}
+
+/* === Controls === */
+.medical-control-card,
+.medical-table-card,
+.medical-quality-card,
+.medical-source-footnote {
+    margin-bottom: 24px;
+    border: 1px solid var(--medical-border);
+    border-radius: 16px;
+    background: var(--medical-card);
+    box-shadow: var(--medical-shadow);
+}
+
+.medical-control-card {
+    padding: 22px;
+}
+
+.medical-control-heading,
+.medical-section-heading,
+.medical-chart-header,
+.medical-section-heading-controls,
+.medical-table-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.medical-control-heading {
+    margin-bottom: 18px;
+}
+
+.medical-control-heading h5,
+.medical-section-heading h4,
+.medical-chart-header h5 {
+    margin: 0;
+}
+
+.medical-control-heading p,
+.medical-section-heading p,
+.medical-chart-header p {
+    margin: 5px 0 0;
+    color: var(--medical-muted);
+    font-size: 0.82rem;
+}
+
+.medical-control-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(150px, 1fr));
+    gap: 14px;
+}
+
+.medical-field,
+.medical-inline-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.medical-field > span,
+.medical-inline-field > span,
+.medical-city-picker-wrap > span {
+    color: var(--medical-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.medical-analysis-page .form-control,
+.medical-analysis-page .form-select {
+    border-color: var(--medical-border);
+    background-color: var(--medical-card-soft);
+    color: var(--medical-text);
+}
+
+.medical-analysis-page .form-control:focus,
+.medical-analysis-page .form-select:focus {
+    border-color: var(--medical-tiffany);
+    box-shadow: 0 0 0 3px rgba(10, 186, 181, 0.14);
+}
+
+.medical-button {
+    display: inline-flex;
+    gap: 7px;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 8px 14px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-size: 0.84rem;
+    font-weight: 750;
+    cursor: pointer;
+    transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+}
+
+.medical-button:hover {
+    transform: translateY(-1px);
+}
+
+.medical-button-primary {
+    background: linear-gradient(135deg, var(--medical-tiffany), var(--medical-tiffany-dark));
+    color: #ffffff;
+}
+
+.medical-button-secondary {
+    border-color: var(--medical-border);
+    background: var(--medical-card-soft);
+    color: var(--medical-text);
+}
+
+/* === Sections === */
+.medical-section {
+    margin-top: 30px;
+}
+
+.medical-section-heading {
+    margin-bottom: 15px;
+}
+
+.medical-section-note {
+    color: var(--medical-muted);
+    font-size: 0.78rem;
+}
+
+.medical-inline-field {
+    min-width: 170px;
+}
+
+/* === KPI cards === */
+.medical-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(150px, 1fr));
+    gap: 14px;
+}
+
+.medical-kpi-card {
+    position: relative;
+    display: flex;
+    min-height: 150px;
+    padding: 18px;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    border: 1px solid var(--medical-border);
+    border-radius: 16px;
+    background: linear-gradient(145deg, var(--medical-card), var(--medical-card-soft));
+    box-shadow: var(--medical-shadow);
+    transition: transform 180ms ease, border-color 180ms ease;
+}
+
+.medical-kpi-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--medical-tiffany), var(--medical-orange));
+}
+
+.medical-kpi-card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--medical-tiffany) 55%, var(--medical-border));
+}
+
+.medical-kpi-icon {
+    position: absolute;
+    top: 15px;
+    right: 16px;
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border-radius: 12px;
+    background: var(--medical-tiffany-soft);
+    color: var(--medical-tiffany-dark) !important;
+    font-size: 1rem;
+}
+
+.medical-kpi-orange .medical-kpi-icon {
+    background: var(--medical-orange-soft);
+    color: var(--medical-orange) !important;
+}
+
+.medical-kpi-label {
+    margin-bottom: 8px;
+    color: var(--medical-muted) !important;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.medical-kpi-card strong {
+    font-size: clamp(1.45rem, 2vw, 2rem);
+    line-height: 1.1;
+}
+
+.medical-kpi-card small {
+    margin-top: 6px;
+    color: var(--medical-muted) !important;
+}
+
+/* === Dynamic insights === */
+.medical-insight-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(180px, 1fr));
+    gap: 14px;
+}
+
+.medical-insight-card {
+    padding: 17px;
+    border-left: 4px solid var(--medical-tiffany);
+    border-radius: 13px;
+    background: var(--medical-card);
+    box-shadow: var(--medical-shadow);
+}
+
+.medical-insight-card:nth-child(even) {
+    border-left-color: var(--medical-orange);
+}
+
+.medical-insight-card span {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--medical-muted) !important;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.medical-insight-card strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.24rem;
+}
+
+.medical-insight-card p {
+    margin: 0;
+    color: var(--medical-muted);
+    font-size: 0.78rem;
+}
+
+/* === Charts === */
+.medical-chart-grid {
+    display: grid;
+    gap: 16px;
+    align-items: stretch;
+}
+
+.medical-chart-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.medical-chart-grid-2-1 {
+    grid-template-columns: minmax(0, 1.65fr) minmax(300px, 0.75fr);
+}
+
+.medical-chart-card {
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid var(--medical-border);
+    border-radius: 17px;
+    background: var(--medical-card);
+    box-shadow: var(--medical-shadow);
+    transition: width 180ms ease, box-shadow 180ms ease;
+}
+
+.medical-chart-card-wide,
+.medical-chart-card.is-expanded {
+    grid-column: 1 / -1;
+}
+
+.medical-chart-card.is-expanded {
+    position: relative;
+    z-index: 3;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.16);
+}
+
+.medical-chart-header {
+    min-height: 52px;
+    margin-bottom: 12px;
+    align-items: flex-start;
+}
+
+.medical-chart-header h5 {
+    font-size: 0.98rem;
+}
+
+.medical-chart-tools {
+    display: flex;
+    gap: 5px;
+    flex: 0 0 auto;
+}
+
+.medical-chart-tools button {
+    display: grid;
+    width: 31px;
+    height: 31px;
+    place-items: center;
+    border: 1px solid var(--medical-border);
+    border-radius: 9px;
+    background: var(--medical-card-soft);
+    color: var(--medical-muted);
+    cursor: pointer;
+}
+
+.medical-chart-tools button:hover {
+    border-color: var(--medical-tiffany);
+    color: var(--medical-tiffany-dark);
+}
+
+.medical-chart-canvas-wrap {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    min-height: 240px;
+}
+
+.medical-analysis-page[data-chart-height="compact"] .medical-chart-canvas-wrap {
+    height: 270px;
+}
+
+.medical-analysis-page[data-chart-height="tall"] .medical-chart-canvas-wrap {
+    height: 470px;
+}
+
+.medical-chart-card.is-height-tall .medical-chart-canvas-wrap {
+    height: 540px !important;
+}
+
+.medical-chart-card.is-height-compact .medical-chart-canvas-wrap {
+    height: 250px !important;
+}
+
+.medical-chart-card.is-expanded .medical-chart-canvas-wrap {
+    height: min(66vh, 620px) !important;
+}
+
+/* === City controls === */
+.medical-city-controls {
+    display: grid;
+    grid-template-columns: 180px 180px minmax(320px, 1fr);
+    gap: 14px;
+    margin-bottom: 16px;
+    padding: 18px;
+    border: 1px solid var(--medical-border);
+    border-radius: 15px;
+    background: var(--medical-card);
+    box-shadow: var(--medical-shadow);
+}
+
+.medical-city-picker-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.medical-city-picker {
+    display: flex;
+    max-height: 110px;
+    padding: 9px;
+    gap: 7px;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    border: 1px solid var(--medical-border);
+    border-radius: 10px;
+    background: var(--medical-card-soft);
+}
+
+.medical-city-choice {
+    position: relative;
+}
+
+.medical-city-choice input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.medical-city-choice span {
+    display: inline-flex;
+    padding: 5px 9px;
+    border: 1px solid var(--medical-border);
+    border-radius: 999px;
+    background: var(--medical-card);
+    color: var(--medical-muted) !important;
+    font-size: 0.74rem;
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+
+.medical-city-choice input:checked + span {
+    border-color: var(--medical-tiffany);
+    background: var(--medical-tiffany-soft);
+    color: var(--medical-tiffany-dark) !important;
+    font-weight: 800;
+}
+
+/* === Table === */
+.medical-table-actions {
+    flex-wrap: wrap;
+}
+
+.medical-table-card {
+    overflow: hidden;
+}
+
+.medical-data-table {
+    min-width: 1100px;
+    margin-bottom: 0;
+    color: var(--medical-text);
+}
+
+.medical-data-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    border-color: var(--medical-border);
+    background: var(--medical-card-soft);
+    color: var(--medical-heading);
+    font-size: 0.77rem;
+    white-space: nowrap;
+}
+
+.medical-data-table td {
+    border-color: var(--medical-border);
+    color: var(--medical-text);
+    font-size: 0.79rem;
+    white-space: nowrap;
+}
+
+.medical-data-table tbody tr:hover td {
+    background: var(--medical-tiffany-soft);
+}
+
+.medical-change-badge {
+    display: inline-flex;
+    min-width: 72px;
+    padding: 0.25rem 0.55rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-weight: 800;
+    line-height: 1.15;
+    white-space: nowrap;
+}
+
+.medical-change-positive {
+    border-color: color-mix(in srgb, var(--medical-success) 55%, transparent);
+    background: var(--medical-success-soft);
+    color: var(--medical-success) !important;
+    font-weight: 800;
+}
+
+.medical-change-negative {
+    border-color: color-mix(in srgb, var(--medical-danger) 55%, transparent);
+    background: var(--medical-danger-soft);
+    color: var(--medical-danger) !important;
+    font-weight: 800;
+}
+
+.medical-change-neutral {
+    border-color: color-mix(in srgb, var(--medical-neutral) 45%, transparent);
+    background: var(--medical-neutral-soft);
+    color: var(--medical-neutral) !important;
+    font-weight: 800;
+}
+
+.medical-kpi-yoy strong {
+    display: flex;
+    align-items: center;
+}
+
+.medical-kpi-yoy .medical-change-badge {
+    min-width: 0;
+    padding: 0.3rem 0.7rem;
+    font-size: clamp(1.1rem, 1.6vw, 1.55rem);
+}
+
+.medical-insight-card strong .medical-change-badge {
+    margin-top: 0.2rem;
+    font-size: 1rem;
+}
+
+/* === Notes and quality === */
+.medical-note-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.medical-note-card {
+    display: flex;
+    gap: 14px;
+    padding: 18px;
+    border: 1px solid var(--medical-border);
+    border-radius: 14px;
+    background: var(--medical-card);
+    box-shadow: var(--medical-shadow);
+}
+
+.medical-note-card > i {
+    color: var(--medical-tiffany);
+    font-size: 1.35rem;
+}
+
+.medical-note-warning > i {
+    color: var(--medical-orange);
+}
+
+.medical-note-card h5 {
+    margin: 0 0 7px;
+    font-size: 0.94rem;
+}
+
+.medical-note-card p {
+    margin: 0;
+    color: var(--medical-muted);
+    font-size: 0.82rem;
+    line-height: 1.7;
+}
+
+.medical-quality-card {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(160px, 1fr));
+    gap: 0;
+    margin-top: 14px;
+    overflow: hidden;
+}
+
+.medical-quality-card > div {
+    display: flex;
+    min-height: 88px;
+    padding: 15px;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid var(--medical-border);
+}
+
+.medical-quality-card > div:last-child {
+    border-right: none;
+}
+
+.medical-quality-card span {
+    margin-bottom: 7px;
+    color: var(--medical-muted) !important;
+    font-size: 0.75rem;
+}
+
+.medical-quality-ok {
+    color: var(--medical-success) !important;
+}
+
+.medical-quality-warning {
+    color: var(--medical-orange) !important;
+}
+
+.medical-source-footnote {
+    margin-top: 14px;
+    padding: 18px;
+    color: var(--medical-muted);
+    font-size: 0.79rem;
+    line-height: 1.75;
+}
+
+.medical-source-footnote strong {
+    color: var(--medical-heading);
+}
+
+/* === Responsive === */
+@media (max-width: 1399px) {
+    .medical-kpi-grid {
+        grid-template-columns: repeat(3, minmax(160px, 1fr));
+    }
+
+    .medical-quality-card {
+        grid-template-columns: repeat(2, minmax(160px, 1fr));
+    }
+
+    .medical-quality-card > div:nth-child(2) {
+        border-right: none;
+    }
+
+    .medical-quality-card > div:nth-child(-n+2) {
+        border-bottom: 1px solid var(--medical-border);
+    }
+}
+
+@media (max-width: 991px) {
+    .medical-hero-content,
+    .medical-chart-grid-2,
+    .medical-chart-grid-2-1,
+    .medical-note-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .medical-control-grid {
+        grid-template-columns: repeat(2, minmax(150px, 1fr));
+    }
+
+    .medical-insight-grid {
+        grid-template-columns: repeat(2, minmax(160px, 1fr));
+    }
+
+    .medical-city-controls {
+        grid-template-columns: repeat(2, minmax(150px, 1fr));
+    }
+
+    .medical-city-picker-wrap {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 767px) {
+    .medical-hero-card,
+    .medical-control-card,
+    .medical-chart-card {
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    .medical-control-heading,
+    .medical-section-heading,
+    .medical-section-heading-controls {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .medical-control-grid,
+    .medical-city-controls,
+    .medical-kpi-grid,
+    .medical-insight-grid,
+    .medical-quality-card {
+        grid-template-columns: 1fr;
+    }
+
+    .medical-quality-card > div {
+        border-right: none;
+        border-bottom: 1px solid var(--medical-border);
+    }
+
+    .medical-quality-card > div:last-child {
+        border-bottom: none;
+    }
+
+    .medical-kpi-card {
+        min-height: 125px;
+    }
+
+    .medical-chart-canvas-wrap {
+        height: 310px;
+    }
+
+    .medical-chart-card.is-expanded .medical-chart-canvas-wrap {
+        height: 430px !important;
+    }
+}
+
+
+/* === 分析條件收合與深色資料底色修正 === */
+.medical-control-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.medical-filter-body { display: block; }
+.medical-control-card.is-filter-collapsed .medical-filter-body { display: none; }
+.medical-control-card.is-filter-collapsed .medical-control-heading { margin-bottom: 0; }
+.medical-chart-canvas-wrap { padding: 10px; border: 1px solid var(--medical-border); border-radius: 12px; background: var(--medical-card-soft); }
+.medical-table-card .table-responsive { background: var(--medical-card); }
+.medical-data-table { --bs-table-bg: var(--medical-card); --bs-table-color: var(--medical-text); --bs-table-border-color: var(--medical-border); --bs-table-hover-bg: var(--medical-tiffany-soft); background: var(--medical-card); }
+.medical-data-table tbody, .medical-data-table tbody tr, .medical-data-table tbody td { background-color: var(--medical-card) !important; color: var(--medical-text) !important; }
+.medical-data-table tbody tr:hover td { background-color: var(--medical-tiffany-soft) !important; }
+body[data-theme="dark"] .medical-table-card, body[data-theme="dark"] .medical-table-card .table-responsive, body[data-theme="dark"] .medical-data-table { background: var(--medical-card) !important; }
+@media (max-width: 767px) { .medical-control-actions { width: 100%; justify-content: flex-start; } .medical-control-actions .medical-button { flex: 1 1 auto; } }
+
+
+/* === Chart hover and tooltip readability safeguards === */
+.medical-chart-canvas-wrap {
+    isolation: isolate;
+}
+
+.medical-chart-canvas-wrap canvas {
+    display: block;
+    width: 100% !important;
+    max-width: 100%;
+    touch-action: pan-y;
+}
+
+body[data-theme="dark"] .medical-change-positive {
+    text-shadow: 0 0 12px rgba(121, 228, 189, 0.18);
+}
+
+body[data-theme="dark"] .medical-change-negative {
+    text-shadow: 0 0 12px rgba(255, 139, 155, 0.16);
+}
+
+
+/* === Keep growth badges readable inside cards and tables === */
+.medical-analysis-page .medical-change-badge.medical-change-positive {
+    color: var(--medical-success) !important;
+}
+
+.medical-analysis-page .medical-change-badge.medical-change-negative {
+    color: var(--medical-danger) !important;
+}
+
+.medical-analysis-page .medical-change-badge.medical-change-neutral {
+    color: var(--medical-neutral) !important;
+}
+
+.medical-insight-card span.medical-change-badge {
+    display: inline-flex;
+    margin-bottom: 0;
+    color: inherit;
+    font-size: 1rem;
+    line-height: 1.15;
+}
+
+
+/* =========================================================
+   2026/07/11：醫療分析卡片柔和配色
+   保持資料閱讀清楚，不使用高飽和大面積底色
+   ========================================================= */
+
+/* === 六張 KPI 卡片：依序使用低飽和配色 === */
+.medical-kpi-card:nth-child(1) {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--medical-tiffany) 13%, var(--medical-card)),
+            color-mix(in srgb, var(--medical-tiffany) 5%, var(--medical-card-soft))
+        );
+    border-color: color-mix(
+        in srgb,
+        var(--medical-tiffany) 30%,
+        var(--medical-border)
+    );
+}
+
+.medical-kpi-card:nth-child(2) {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--medical-orange) 14%, var(--medical-card)),
+            color-mix(in srgb, var(--medical-orange) 5%, var(--medical-card-soft))
+        );
+    border-color: color-mix(
+        in srgb,
+        var(--medical-orange) 30%,
+        var(--medical-border)
+    );
+}
+
+.medical-kpi-card:nth-child(3) {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, #5b9bd5 11%, var(--medical-card)),
+            color-mix(in srgb, #5b9bd5 4%, var(--medical-card-soft))
+        );
+    border-color: color-mix(
+        in srgb,
+        #5b9bd5 26%,
+        var(--medical-border)
+    );
+}
+
+.medical-kpi-card:nth-child(4) {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, #55a77a 11%, var(--medical-card)),
+            color-mix(in srgb, #55a77a 4%, var(--medical-card-soft))
+        );
+    border-color: color-mix(
+        in srgb,
+        #55a77a 25%,
+        var(--medical-border)
+    );
+}
+
+.medical-kpi-card:nth-child(5) {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, #8a70b8 10%, var(--medical-card)),
+            color-mix(in srgb, #8a70b8 4%, var(--medical-card-soft))
+        );
+    border-color: color-mix(
+        in srgb,
+        #8a70b8 24%,
+        var(--medical-border)
+    );
+}
+
+.medical-kpi-card:nth-child(6) {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, #607d86 10%, var(--medical-card)),
+            color-mix(in srgb, var(--medical-orange) 3%, var(--medical-card-soft))
+        );
+    border-color: color-mix(
+        in srgb,
+        #607d86 24%,
+        var(--medical-border)
+    );
+}
+
+/* === KPI 圖示隨卡片增加細緻層次 === */
+.medical-kpi-card:nth-child(3) .medical-kpi-icon {
+    background: color-mix(in srgb, #5b9bd5 15%, var(--medical-card));
+    color: #3479ae !important;
+}
+
+.medical-kpi-card:nth-child(4) .medical-kpi-icon {
+    background: color-mix(in srgb, #55a77a 15%, var(--medical-card));
+    color: #337650 !important;
+}
+
+.medical-kpi-card:nth-child(5) .medical-kpi-icon {
+    background: color-mix(in srgb, #8a70b8 15%, var(--medical-card));
+    color: #654b91 !important;
+}
+
+.medical-kpi-card:nth-child(6) .medical-kpi-icon {
+    background: color-mix(in srgb, #607d86 15%, var(--medical-card));
+    color: #46616a !important;
+}
+
+/* === 圖表卡片：只加入很淡的色彩，不干擾圖表本身 === */
+.medical-chart-card {
+    position: relative;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            160deg,
+            color-mix(in srgb, var(--medical-tiffany) 4%, var(--medical-card)),
+            var(--medical-card) 48%,
+            color-mix(in srgb, var(--medical-orange) 3%, var(--medical-card))
+        );
+}
+
+.medical-chart-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: linear-gradient(
+        180deg,
+        var(--medical-tiffany),
+        color-mix(in srgb, var(--medical-tiffany) 30%, transparent)
+    );
+    pointer-events: none;
+}
+
+.medical-chart-card:nth-child(even)::before {
+    background: linear-gradient(
+        180deg,
+        var(--medical-orange),
+        color-mix(in srgb, var(--medical-orange) 30%, transparent)
+    );
+}
+
+/* === 洞察、資料品質及說明卡片保持一致 === */
+.medical-insight-card,
+.medical-note-card,
+.medical-quality-card {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--medical-tiffany) 4%, var(--medical-card)),
+            color-mix(in srgb, var(--medical-orange) 2%, var(--medical-card))
+        );
+}
+
+/* === 深色模式：降低亮度但保留可辨識色彩 === */
+body[data-theme="dark"] .medical-kpi-card:nth-child(1) {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--medical-tiffany) 17%, var(--medical-card)),
+            var(--medical-card-soft)
+        );
+}
+
+body[data-theme="dark"] .medical-kpi-card:nth-child(2) {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--medical-orange) 16%, var(--medical-card)),
+            var(--medical-card-soft)
+        );
+}
+
+body[data-theme="dark"] .medical-kpi-card:nth-child(3) {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, #5b9bd5 15%, var(--medical-card)),
+            var(--medical-card-soft)
+        );
+}
+
+body[data-theme="dark"] .medical-kpi-card:nth-child(4) {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, #55a77a 15%, var(--medical-card)),
+            var(--medical-card-soft)
+        );
+}
+
+body[data-theme="dark"] .medical-kpi-card:nth-child(5) {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, #8a70b8 14%, var(--medical-card)),
+            var(--medical-card-soft)
+        );
+}
+
+body[data-theme="dark"] .medical-kpi-card:nth-child(6) {
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, #607d86 15%, var(--medical-card)),
+            var(--medical-card-soft)
+        );
+}
+
+body[data-theme="dark"] .medical-kpi-card:nth-child(n+3) .medical-kpi-icon {
+    color: var(--medical-heading) !important;
+}
+
+body[data-theme="dark"] .medical-chart-card {
+    background:
+        linear-gradient(
+            160deg,
+            color-mix(in srgb, var(--medical-tiffany) 7%, var(--medical-card)),
+            var(--medical-card) 48%,
+            color-mix(in srgb, var(--medical-orange) 5%, var(--medical-card))
+        );
+}
+
+
+/* =========================================================
+   三組指定配色：Warm Flame / Night Fade / Spring Warmth
+   日光模式降低彩度並提高文字對比
+   ========================================================= */
+.medical-hero-card {
+    background:
+        radial-gradient(circle at 8% 12%, rgba(161, 140, 209, 0.18), transparent 34%),
+        radial-gradient(circle at 90% 20%, rgba(251, 194, 235, 0.18), transparent 30%),
+        linear-gradient(135deg, #fffefe, #f8f3fa);
+}
+
+.medical-kpi-card:nth-child(3n + 1) {
+    background: linear-gradient(145deg, rgba(255, 154, 158, 0.18), rgba(250, 208, 196, 0.12), #fffefe 76%);
+    border-color: rgba(185, 79, 112, 0.25);
+}
+
+.medical-kpi-card:nth-child(3n + 2) {
+    background: linear-gradient(145deg, rgba(161, 140, 209, 0.18), rgba(251, 194, 235, 0.11), #fffefe 76%);
+    border-color: rgba(115, 88, 165, 0.25);
+}
+
+.medical-kpi-card:nth-child(3n) {
+    background: linear-gradient(145deg, rgba(250, 208, 196, 0.20), rgba(255, 209, 255, 0.13), #fffefe 76%);
+    border-color: rgba(181, 106, 161, 0.22);
+}
+
+.medical-kpi-card:nth-child(3n + 1) .medical-kpi-icon {
+    color: #a64765 !important;
+    background: rgba(255, 154, 158, 0.16);
+}
+
+.medical-kpi-card:nth-child(3n + 2) .medical-kpi-icon {
+    color: #674d98 !important;
+    background: rgba(161, 140, 209, 0.17);
+}
+
+.medical-kpi-card:nth-child(3n) .medical-kpi-icon {
+    color: #9a5d84 !important;
+    background: rgba(251, 194, 235, 0.18);
+}
+
+.medical-chart-card {
+    background: linear-gradient(155deg, rgba(161, 140, 209, 0.07), #fffefe 48%, rgba(255, 154, 158, 0.05));
+}
+
+.medical-chart-card::before {
+    background: linear-gradient(180deg, #a18cd1, rgba(251, 194, 235, 0.55));
+}
+
+.medical-chart-card:nth-child(even)::before {
+    background: linear-gradient(180deg, #ff9a9e, rgba(250, 208, 196, 0.55));
+}
+
+body[data-theme="dark"] .medical-hero-card {
+    background:
+        radial-gradient(circle at 8% 12%, rgba(199, 181, 238, 0.16), transparent 34%),
+        radial-gradient(circle at 90% 20%, rgba(243, 188, 228, 0.12), transparent 30%),
+        linear-gradient(135deg, #211b2b, #2a2236);
+}
+
+body[data-theme="dark"] .medical-kpi-card:nth-child(3n + 1) {
+    background: linear-gradient(145deg, rgba(255, 154, 158, 0.17), #211b2b 72%);
+}
+
+body[data-theme="dark"] .medical-kpi-card:nth-child(3n + 2) {
+    background: linear-gradient(145deg, rgba(199, 181, 238, 0.17), #211b2b 72%);
+}
+
+body[data-theme="dark"] .medical-kpi-card:nth-child(3n) {
+    background: linear-gradient(145deg, rgba(243, 188, 228, 0.14), #211b2b 72%);
+}
+
+body[data-theme="dark"] .medical-chart-card {
+    background: linear-gradient(155deg, rgba(199, 181, 238, 0.08), #211b2b 52%, rgba(255, 154, 158, 0.06));
+}
+
+
+/* =========================================================
+   2026/07/12：醫療分析日光模式淡桃 × 霧藍配色
+   ========================================================= */
+
+body[data-theme="light"] .medical-analysis-page {
+    --medical-bg: #f6f8fb;
+    --medical-card: #fffdfb;
+    --medical-card-soft: #f5f8fc;
+    --medical-text: #45566b;
+    --medical-heading: #2f4057;
+    --medical-muted: #718093;
+    --medical-border: #dbe4ee;
+    --medical-grid: rgba(85, 127, 181, 0.13);
+
+    --medical-tiffany: #7ea6d5;
+    --medical-tiffany-dark: #557fb5;
+    --medical-tiffany-soft: #eaf2fb;
+
+    /* 舊 orange 名稱保留，相容既有 JS，實際為柔粉 */
+    --medical-orange: #ff9a9e;
+    --medical-orange-soft: #fff0f3;
+
+    --medical-shadow: 0 12px 32px rgba(60, 84, 112, 0.09);
+}
+
+body[data-theme="light"] .medical-hero-card {
+    background:
+        radial-gradient(circle at 8% 12%, rgba(126, 166, 213, 0.20), transparent 34%),
+        radial-gradient(circle at 90% 20%, rgba(243, 214, 199, 0.25), transparent 31%),
+        linear-gradient(135deg, #fffdfb, #f5f8fc);
+}
+
+body[data-theme="light"] .medical-hero-card::after {
+    border-color: rgba(126, 166, 213, 0.10);
+}
+
+body[data-theme="light"] .medical-control-card,
+body[data-theme="light"] .medical-table-card,
+body[data-theme="light"] .medical-quality-card,
+body[data-theme="light"] .medical-source-footnote {
+    background:
+        linear-gradient(
+            145deg,
+            #fffefd,
+            #fbfdff
+        );
+}
+
+body[data-theme="light"] .medical-kpi-card:nth-child(1),
+body[data-theme="light"] .medical-kpi-card:nth-child(4) {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(126, 166, 213, 0.17),
+            #fffdfb 76%
+        );
+    border-color: rgba(85, 127, 181, 0.24);
+}
+
+body[data-theme="light"] .medical-kpi-card:nth-child(2),
+body[data-theme="light"] .medical-kpi-card:nth-child(5) {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(243, 214, 199, 0.32),
+            #fffdfb 76%
+        );
+    border-color: rgba(217, 159, 136, 0.25);
+}
+
+body[data-theme="light"] .medical-kpi-card:nth-child(3) {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(161, 140, 209, 0.14),
+            #fffdfb 76%
+        );
+}
+
+body[data-theme="light"] .medical-kpi-card:nth-child(6) {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(251, 194, 235, 0.16),
+            #fffdfb 76%
+        );
+}
+
+body[data-theme="light"] .medical-chart-card {
+    background:
+        linear-gradient(
+            155deg,
+            rgba(126, 166, 213, 0.07),
+            #fffdfb 52%,
+            rgba(243, 214, 199, 0.10)
+        );
+}
+
+body[data-theme="light"] .medical-chart-card::before {
+    background:
+        linear-gradient(
+            180deg,
+            #7ea6d5,
+            rgba(126, 166, 213, 0.35)
+        );
+}
+
+body[data-theme="light"] .medical-chart-card:nth-child(even)::before {
+    background:
+        linear-gradient(
+            180deg,
+            #d99f88,
+            rgba(243, 214, 199, 0.55)
+        );
+}

@@ -1,0 +1,155 @@
+<style>
+.legal-page-shell { max-width: 980px; margin: 0 auto; }
+  .legal-hero { padding: 30px; border: 1px solid var(--tyy-border); border-radius: 18px; background: linear-gradient(135deg, var(--tyy-surface) 0%, var(--tyy-surface-alt) 100%); box-shadow: var(--tyy-shadow); }
+  .legal-label { display: inline-flex; padding: 7px 12px; align-items: center; border-radius: 999px; background: var(--tyy-tiffany-soft); color: var(--tyy-tiffany-strong); font-size: 13px; font-weight: 700; }
+  .legal-title { margin: 14px 0 8px; font-size: 30px; font-weight: 800; color: var(--tyy-heading); }
+  .legal-subtitle { margin: 0; color: var(--tyy-text-secondary); line-height: 1.8; }
+  .legal-card { margin-top: 20px; padding: 28px; border: 1px solid var(--tyy-border); border-radius: 16px; background: var(--tyy-surface); box-shadow: var(--tyy-shadow); }
+  .legal-section + .legal-section { margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--tyy-border); }
+  .legal-section h4 { margin-bottom: 12px; color: var(--tyy-heading); font-size: 19px; font-weight: 800; }
+  .legal-section p, .legal-section li { color: var(--tyy-text-secondary); line-height: 1.85; }
+  .legal-section ul { margin-bottom: 0; padding-left: 22px; }
+  .legal-note { padding: 16px 18px; border-radius: 12px; background: linear-gradient(90deg, var(--tyy-tiffany-soft), var(--tyy-orange-soft)); border-left: 4px solid var(--tyy-orange); color: var(--tyy-text-secondary); line-height: 1.75; }
+  .legal-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  @media (max-width: 767px) { .legal-hero, .legal-card { padding: 21px; } .legal-title { font-size: 25px; } }
+</style>
+
+<div class="legal-page-shell">
+  <div class="legal-hero">
+    <span class="legal-label">
+      <i class="icon-doc me-2"></i> TYY 小站
+    </span>
+    <h2 class="legal-title">使用條款</h2>
+    <p class="legal-subtitle">
+      歡迎使用 TYY 小站。使用本網站即表示你願意遵守以下規則。
+      本站主要作為個人學習成果、程式作品與功能展示用途。
+    </p>
+    <p class="text-muted mt-3 mb-0">
+      最後更新：{{ legal_last_updated }}
+    </p>
+  </div>
+
+  <div class="legal-card">
+    <div class="legal-note">
+      本條款為作品網站使用的簡易版本，目的是清楚說明網站規則，
+      並非針對特定商業服務所提供的法律意見。
+    </div>
+
+    <section class="legal-section mt-4">
+      <h4>一、服務內容</h4>
+      <p>
+        TYY 小站提供會員註冊、個人資料管理、圖片上傳、課堂作業展示、
+        機器學習與深度學習示範、航班資訊查詢及互動遊戲等功能。
+        網站管理者可以依實際維護需求新增、調整、暫停或停止部分功能。
+      </p>
+    </section>
+
+    <section class="legal-section">
+      <h4>二、帳號與使用者責任</h4>
+      <ul>
+        <li>註冊時應提供正確且屬於本人的資料。</li>
+        <li>使用者應妥善保管帳號與登入資訊，不應交由他人冒用。</li>
+        <li>發現帳號遭未授權使用時，應盡快通知網站管理者。</li>
+        <li>因使用者自行洩漏登入資訊所造成的風險，應由使用者自行承擔。</li>
+      </ul>
+    </section>
+
+    <section class="legal-section">
+      <h4>三、使用者上傳內容</h4>
+      <p>
+        使用者可以上傳大頭貼及填寫個人簡介。使用者仍保有其內容原有的權利，
+        但同意本站在提供會員功能所必要的範圍內，儲存、處理及顯示該內容。
+      </p>
+      <p class="mb-0">
+        使用者不得上傳侵害他人著作權、隱私權、肖像權，或含有違法、惡意程式、
+        仇恨、騷擾、詐欺及其他不當內容的資料。網站管理者得移除不適當內容或限制帳號使用。
+      </p>
+    </section>
+
+    <section class="legal-section">
+      <h4>四、禁止行為</h4>
+      <ul>
+        <li>嘗試未經授權存取其他會員、資料庫、伺服器或管理功能。</li>
+        <li>利用自動化工具大量請求、干擾服務或造成系統負擔。</li>
+        <li>散布惡意程式、垃圾訊息、詐騙內容或其他違法資訊。</li>
+        <li>冒用他人身分，或利用本站侵害第三人的合法權益。</li>
+        <li>以任何方式破壞、逆向攻擊或規避本站的安全措施。</li>
+      </ul>
+    </section>
+
+    <section class="legal-section">
+      <h4>五、模型、航班與展示資訊</h4>
+      <p>
+        本站的機器學習、深度學習預測結果及其他分析內容，主要用於學習與作品展示，
+        不構成醫療、投資、法律、就業或其他專業建議。
+      </p>
+      <p class="mb-0">
+        航班資料可能受到第三方資料更新時間、網路狀況或系統維護影響，
+        不保證即時、完整或完全正確。實際搭機資訊仍應以航空公司及機場公告為準。
+      </p>
+    </section>
+
+    <section class="legal-section">
+      <h4>六、第三方服務</h4>
+      <p class="mb-0">
+        本站部分功能可能使用雲端主機、資料庫、Email 寄送服務、Cloudinary 圖片服務
+        或外部資料來源。第三方服務的可用性及其個別政策，由各服務提供者負責。
+      </p>
+    </section>
+
+    <section class="legal-section">
+      <h4>七、智慧財產權</h4>
+      <p class="mb-0">
+        除使用者自行上傳內容、第三方模板、套件、圖片及外部資料外，
+        本站自行製作的程式、文字、版面調整與作品內容，其權利由原作者依法享有。
+        第三方素材則依其原始授權條款使用。
+      </p>
+    </section>
+
+    <section class="legal-section">
+      <h4>八、服務中斷與責任限制</h4>
+      <p class="mb-0">
+        本站將盡力維持服務正常，但不保證服務永不中斷、沒有錯誤或完全符合每位使用者的需求。
+        因維護、第三方服務異常、網路問題、不可抗力或使用者操作所造成的資料遺失與損害，
+        將在法律允許範圍內依實際情況處理。
+      </p>
+    </section>
+
+    <section class="legal-section">
+      <h4>九、條款修改</h4>
+      <p class="mb-0">
+        本站可配合功能、技術或法規變化修改本條款，更新後會調整頁面上的最後更新日期。
+        重大變更時，會以網站內適當方式提示使用者。
+      </p>
+    </section>
+
+    <section class="legal-section">
+      <h4>十、準據法與聯絡方式</h4>
+      <p>
+        本條款依中華民國法律解釋與適用；發生爭議時，依法律規定由有管轄權的法院處理。
+      </p>
+      <p class="mb-0">
+        {% if legal_contact_email %}
+          聯絡 Email：
+          <a href="mailto:{{ legal_contact_email }}">{{ legal_contact_email }}</a>
+        {% else %}
+          如有條款相關問題，請透過網站管理者提供的聯絡方式提出。
+        {% endif %}
+      </p>
+    </section>
+
+    <div class="legal-actions">
+      <a href="#"
+         class="btn btn-primary"
+         onclick="loadPage('{{ url_for('privacy_policy') }}'); return false;">
+        查看隱私權政策
+      </a>
+      <a href="{{ url_for('public_terms_of_use') }}"
+         class="btn btn-outline-secondary"
+         target="_blank"
+         rel="noopener noreferrer">
+        在獨立頁面開啟
+      </a>
+    </div>
+  </div>
+</div>

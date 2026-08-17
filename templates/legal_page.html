@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ page_title }}｜TYY 小站</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendors/simple-line-icons/css/simple-line-icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendors/css/vendor.bundle.base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/vertical-light-layout/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme_mode.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/images/favicon.ico') }}">
+
+    <style>
+:root { color-scheme: light; }
+      body { background: var(--tyy-page-bg, #f4f8f9); color: var(--tyy-text, #394751); }
+      .public-legal-header { background: var(--tyy-surface, #ffffff); border-bottom: 1px solid var(--tyy-border, #dfe9eb); }
+      .public-legal-header-inner { max-width: 1080px; margin: 0 auto; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+      .public-legal-brand { color: var(--tyy-heading, #24313b); font-size: 20px; font-weight: 800; text-decoration: none; }
+      .public-legal-main { padding: 36px 18px 60px; }
+      .public-legal-links { display: flex; flex-wrap: wrap; gap: 12px; }
+</style>
+  </head>
+
+  <body data-theme="light">
+    <header class="public-legal-header">
+      <div class="public-legal-header-inner">
+        <a class="public-legal-brand" href="{{ url_for('index') }}">
+          TYY 小站
+        </a>
+
+        <div class="public-legal-links">
+          <a href="{{ url_for('public_terms_of_use') }}" class="btn btn-sm btn-outline-primary">
+            使用條款
+          </a>
+          <a href="{{ url_for('public_privacy_policy') }}" class="btn btn-sm btn-outline-primary">
+            隱私權政策
+          </a>
+
+          {% if session.get('account_login') %}
+            <a href="{{ url_for('home') }}" class="btn btn-sm btn-primary">
+              回到會員主頁
+            </a>
+          {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-sm btn-primary">
+              回到登入頁
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+
+    <main class="public-legal-main">
+      {% include content_template %}
+    </main>
+  </body>
+</html>

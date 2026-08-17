@@ -1,0 +1,678 @@
+<style>
+/* === 航班分析頁面：全站主題變數版 === */
+  .flight-analysis-page { width: 100%; }
+  .flight-analysis-header { margin-bottom: 24px; }
+  .flight-analysis-header h4 { margin-bottom: 8px; font-weight: 700; color: var(--tyy-heading); }
+  .flight-analysis-header p { margin-bottom: 0; color: var(--tyy-text-secondary); }
+
+  .flight-source-card { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 22px; padding: 16px 18px; border: 1px solid var(--tyy-border); border-radius: 13px; background: var(--tyy-surface-alt); color: var(--tyy-text-secondary); line-height: 1.7; }
+  .flight-source-card > i { margin-top: 4px; color: var(--tyy-tiffany-strong); font-size: 1.1rem; }
+  .flight-source-card strong { color: var(--tyy-heading); }
+  .flight-source-card small { display: block; color: var(--tyy-text-muted); }
+  .flight-source-card a { color: var(--tyy-tiffany-strong); font-weight: 750; }
+
+  .flight-filter-card,
+  .flight-stat-card,
+  .flight-empty-card {
+    border: 1px solid var(--tyy-border);
+    border-radius: 12px;
+    background: var(--tyy-surface);
+    box-shadow: var(--tyy-shadow);
+  }
+
+  .flight-filter-card { margin-bottom: 25px; }
+  .flight-filter-card .card-body { padding: 20px; }
+  .flight-filter-title { margin-bottom: 15px; font-size: 16px; font-weight: 700; color: var(--tyy-heading); }
+  .flight-filter-form { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+  .flight-filter-group { width: 250px; min-width: 220px; max-width: 270px; flex: 0 1 250px; }
+  .flight-filter-group label { display: block; margin-bottom: 7px; font-size: 14px; font-weight: 600; color: var(--tyy-text-secondary); }
+  .flight-filter-group input[type="date"] {
+    width: 100%; max-width: 238px; height: 42px; padding: 7px 42px 7px 12px;
+    border: 1px solid var(--tyy-border-strong); border-radius: 7px;
+    background: var(--tyy-input-bg); color: var(--tyy-text); cursor: pointer;
+  }
+  .flight-filter-group input[type="date"]:focus { border-color: var(--tyy-tiffany); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--tyy-tiffany) 18%, transparent); }
+
+  .flight-filter-button,
+  .flight-clear-button { display: inline-flex; min-width: 132px; height: 42px; padding: 8px 18px; align-items: center; justify-content: center; border-radius: 7px; font-weight: 700; text-decoration: none; }
+  .flight-filter-button { border: 1px solid var(--tyy-tiffany); background: linear-gradient(135deg, var(--tyy-tiffany), var(--tyy-tiffany-strong)); color: #062825; cursor: pointer; }
+  .flight-filter-button:hover { border-color: var(--tyy-orange); background: linear-gradient(135deg, var(--tyy-orange), var(--tyy-orange-strong)); color: #ffffff; }
+  .flight-clear-button { border: 1px solid var(--tyy-border-strong); background: var(--tyy-surface-alt); color: var(--tyy-text-secondary); }
+  .flight-clear-button:hover { border-color: var(--tyy-tiffany); background: var(--tyy-tiffany-soft); color: var(--tyy-heading); text-decoration: none; }
+
+  .flight-current-filter { margin-top: 15px; margin-bottom: 0; font-size: 14px; color: var(--tyy-text-secondary); }
+  .flight-current-filter strong { color: var(--tyy-heading); }
+  .flight-date-range { margin-top: 7px; margin-bottom: 0; font-size: 13px; color: var(--tyy-text-muted); }
+  .flight-analysis-section-title { margin-top: 12px; margin-bottom: 16px; font-size: 18px; font-weight: 700; color: var(--tyy-heading); }
+
+  .flight-stat-card { height: 100%; min-height: 145px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .flight-stat-card:hover { transform: translateY(-3px); box-shadow: var(--tyy-shadow-hover); }
+  .flight-stat-card .card-body { display: flex; flex-direction: column; justify-content: center; padding: 22px; }
+  .flight-stat-title { margin-bottom: 10px; font-size: 15px; font-weight: 700; color: var(--tyy-text-secondary); }
+  .flight-stat-value { margin-bottom: 4px; font-size: 32px; font-weight: 800; color: var(--tyy-heading); line-height: 1.2; }
+  .flight-stat-description { margin-bottom: 0; font-size: 13px; color: var(--tyy-text-muted); }
+
+  .flight-highlight-card { height: 100%; min-height: 145px; border: 0; border-radius: 12px; color: #ffffff; box-shadow: var(--tyy-shadow-hover); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .flight-highlight-card:hover { transform: translateY(-3px); box-shadow: 0 15px 32px rgba(0, 0, 0, 0.2); }
+  .flight-highlight-card .card-body { display: flex; flex-direction: column; justify-content: center; padding: 22px; }
+  .flight-highlight-card .flight-stat-title,
+  .flight-highlight-card .flight-stat-value,
+  .flight-highlight-card .flight-stat-description { color: #ffffff; }
+  .flight-highlight-card .flight-stat-description { opacity: 0.9; }
+  .flight-card-cyan { background: linear-gradient(135deg, #0faaa5, #16717a); }
+  .flight-card-green { background: linear-gradient(135deg, #2ba56c, #20734f); }
+  .flight-card-purple { background: linear-gradient(135deg, #7550a1, #533874); }
+  .flight-card-dark { background: linear-gradient(135deg, #3d5962, #66503e); }
+
+  .flight-status-delayed { border-top: 4px solid var(--tyy-danger); }
+  .flight-status-ontime { border-top: 4px solid var(--tyy-success); }
+  .flight-status-early { border-top: 4px solid var(--tyy-info); }
+  .flight-status-cancelled { border-top: 4px solid var(--tyy-orange); }
+  .flight-status-unfinished { border-top: 4px solid #9b72cf; }
+  .flight-status-average { border-top: 4px solid var(--tyy-tiffany); }
+
+  .flight-rate-card { min-height: 175px; }
+  .flight-rate-value { margin-bottom: 14px; font-size: 38px; font-weight: 800; color: var(--tyy-heading); }
+  .flight-progress { height: 8px; margin-bottom: 12px; overflow: hidden; border-radius: 10px; background: var(--tyy-surface-soft); }
+  .flight-progress-bar { height: 100%; border-radius: 10px; }
+  .flight-delay-bar { background: linear-gradient(90deg, var(--tyy-danger), var(--tyy-orange)); }
+  .flight-cancel-bar { background: linear-gradient(90deg, var(--tyy-orange), var(--tyy-tiffany)); }
+
+  .flight-empty-card { padding: 40px 25px; text-align: center; color: var(--tyy-text-secondary); }
+  .flight-empty-card h5 { color: var(--tyy-heading); }
+
+  @media (max-width: 767px) {
+    .flight-filter-form { display: block; }
+    .flight-filter-group { width: 100%; max-width: none; margin-bottom: 12px; }
+    .flight-filter-group input[type="date"] { max-width: none; }
+    .flight-filter-button, .flight-clear-button { width: 100%; margin-bottom: 10px; }
+  }
+
+
+  /* =======================================================
+     航班分析其他統計卡片柔和配色
+     ======================================================= */
+
+  .flight-stat-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .flight-stat-card::after {
+    content: "";
+    position: absolute;
+    top: -42px;
+    right: -38px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: color-mix(
+      in srgb,
+      var(--flight-card-accent, var(--tyy-tiffany)) 10%,
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  .flight-classification-card,
+  .flight-status-delayed,
+  .flight-status-ontime,
+  .flight-status-early,
+  .flight-status-cancelled,
+  .flight-status-unfinished,
+  .flight-status-average,
+  .flight-rate-card {
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(
+          in srgb,
+          var(--flight-card-accent, var(--tyy-tiffany)) 11%,
+          var(--tyy-surface)
+        ),
+        var(--tyy-surface) 72%
+      );
+    border-color: color-mix(
+      in srgb,
+      var(--flight-card-accent, var(--tyy-tiffany)) 28%,
+      var(--tyy-border)
+    );
+  }
+
+  .flight-classification-departure {
+    --flight-card-accent: var(--tyy-tiffany);
+  }
+
+  .flight-classification-arrival {
+    --flight-card-accent: #5b9bd5;
+  }
+
+  .flight-classification-passenger {
+    --flight-card-accent: #55a77a;
+  }
+
+  .flight-classification-cargo {
+    --flight-card-accent: var(--tyy-orange);
+  }
+
+  .flight-status-delayed {
+    --flight-card-accent: var(--tyy-danger);
+  }
+
+  .flight-status-ontime {
+    --flight-card-accent: var(--tyy-success);
+  }
+
+  .flight-status-early {
+    --flight-card-accent: var(--tyy-info);
+  }
+
+  .flight-status-cancelled {
+    --flight-card-accent: var(--tyy-orange);
+  }
+
+  .flight-status-unfinished {
+    --flight-card-accent: #9b72cf;
+  }
+
+  .flight-status-average {
+    --flight-card-accent: var(--tyy-tiffany);
+  }
+
+  .flight-rate-delay-card {
+    --flight-card-accent: var(--tyy-orange);
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--tyy-orange) 12%, var(--tyy-surface)),
+        color-mix(in srgb, var(--tyy-danger) 4%, var(--tyy-surface))
+      );
+  }
+
+  .flight-rate-cancel-card {
+    --flight-card-accent: var(--tyy-tiffany);
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--tyy-tiffany) 12%, var(--tyy-surface)),
+        color-mix(in srgb, var(--tyy-orange) 4%, var(--tyy-surface))
+      );
+  }
+
+  .flight-classification-card .flight-stat-value,
+  .flight-status-delayed .flight-stat-value,
+  .flight-status-ontime .flight-stat-value,
+  .flight-status-early .flight-stat-value,
+  .flight-status-cancelled .flight-stat-value,
+  .flight-status-unfinished .flight-stat-value,
+  .flight-status-average .flight-stat-value,
+  .flight-rate-card .flight-rate-value {
+    color: color-mix(
+      in srgb,
+      var(--flight-card-accent, var(--tyy-tiffany)) 56%,
+      var(--tyy-heading)
+    );
+  }
+
+  body[data-theme="dark"] .flight-classification-card,
+  body[data-theme="dark"] .flight-status-delayed,
+  body[data-theme="dark"] .flight-status-ontime,
+  body[data-theme="dark"] .flight-status-early,
+  body[data-theme="dark"] .flight-status-cancelled,
+  body[data-theme="dark"] .flight-status-unfinished,
+  body[data-theme="dark"] .flight-status-average,
+  body[data-theme="dark"] .flight-rate-card {
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(
+          in srgb,
+          var(--flight-card-accent, var(--tyy-tiffany)) 16%,
+          var(--tyy-surface)
+        ),
+        var(--tyy-surface) 72%
+      ) !important;
+  }
+
+  body[data-theme="dark"] .flight-rate-delay-card {
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--tyy-orange) 17%, var(--tyy-surface)),
+        color-mix(in srgb, var(--tyy-danger) 7%, var(--tyy-surface))
+      ) !important;
+  }
+
+  body[data-theme="dark"] .flight-rate-cancel-card {
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--tyy-tiffany) 17%, var(--tyy-surface)),
+        color-mix(in srgb, var(--tyy-orange) 7%, var(--tyy-surface))
+      ) !important;
+  }
+
+  body[data-theme="dark"] .flight-classification-card .flight-stat-value,
+  body[data-theme="dark"] .flight-status-delayed .flight-stat-value,
+  body[data-theme="dark"] .flight-status-ontime .flight-stat-value,
+  body[data-theme="dark"] .flight-status-early .flight-stat-value,
+  body[data-theme="dark"] .flight-status-cancelled .flight-stat-value,
+  body[data-theme="dark"] .flight-status-unfinished .flight-stat-value,
+  body[data-theme="dark"] .flight-status-average .flight-stat-value,
+  body[data-theme="dark"] .flight-rate-card .flight-rate-value {
+    color: var(--tyy-heading);
+  }
+
+
+
+  /* =======================================================
+     三組指定配色：航班分析頁面最終覆寫
+     ======================================================= */
+  .flight-card-cyan {
+    background: linear-gradient(135deg, #7358a5, #9b70b2);
+  }
+
+  .flight-card-green {
+    background: linear-gradient(135deg, #b94f70, #9a5d84);
+  }
+
+  .flight-card-purple {
+    background: linear-gradient(135deg, #8064ad, #a56fa6);
+  }
+
+  .flight-card-dark {
+    background: linear-gradient(135deg, #6f536f, #463649);
+  }
+
+  .flight-classification-departure {
+    --flight-card-accent: #ff9a9e;
+  }
+
+  .flight-classification-arrival {
+    --flight-card-accent: #a18cd1;
+  }
+
+  .flight-classification-passenger {
+    --flight-card-accent: #fbc2eb;
+  }
+
+  .flight-classification-cargo {
+    --flight-card-accent: #fad0c4;
+  }
+
+  .flight-rate-delay-card {
+    --flight-card-accent: #ff9a9e;
+    background: linear-gradient(145deg, rgba(255, 154, 158, 0.16), rgba(250, 208, 196, 0.10), var(--tyy-surface));
+  }
+
+  .flight-rate-cancel-card {
+    --flight-card-accent: #a18cd1;
+    background: linear-gradient(145deg, rgba(161, 140, 209, 0.16), rgba(251, 194, 235, 0.10), var(--tyy-surface));
+  }
+
+  .flight-delay-bar {
+    background: linear-gradient(90deg, #c94d69, #ff9a9e);
+  }
+
+  .flight-cancel-bar {
+    background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+  }
+
+  body[data-theme="dark"] .flight-card-cyan {
+    background: linear-gradient(135deg, #60498d, #755896);
+  }
+
+  body[data-theme="dark"] .flight-card-green {
+    background: linear-gradient(135deg, #8f425d, #70445e);
+  }
+
+  body[data-theme="dark"] .flight-card-purple {
+    background: linear-gradient(135deg, #68508f, #805a87);
+  }
+
+  body[data-theme="dark"] .flight-card-dark {
+    background: linear-gradient(135deg, #4f3c55, #352a3d);
+  }
+
+
+
+  /* =======================================================
+     2026/07/12：航班分析日光模式淡桃 × 霧藍
+     ======================================================= */
+
+  body[data-theme="light"] .flight-filter-button {
+    color: #ffffff;
+    border-color: #557fb5;
+    background:
+      linear-gradient(
+        135deg,
+        #557fb5,
+        #7ea6d5
+      );
+  }
+
+  body[data-theme="light"] .flight-filter-button:hover {
+    color: #ffffff;
+    border-color: #3f6697;
+    background:
+      linear-gradient(
+        135deg,
+        #3f6697,
+        #6d93c3
+      );
+  }
+
+  body[data-theme="light"] .flight-card-cyan {
+    background:
+      linear-gradient(
+        135deg,
+        #557fb5,
+        #7ea6d5
+      );
+  }
+
+  body[data-theme="light"] .flight-card-green {
+    background:
+      linear-gradient(
+        135deg,
+        #5f8f84,
+        #7ba99e
+      );
+  }
+
+  body[data-theme="light"] .flight-card-purple {
+    background:
+      linear-gradient(
+        135deg,
+        #7358a5,
+        #a18cd1
+      );
+  }
+
+  body[data-theme="light"] .flight-card-dark {
+    background:
+      linear-gradient(
+        135deg,
+        #51657b,
+        #70859b
+      );
+  }
+
+  body[data-theme="light"] .flight-classification-card,
+  body[data-theme="light"] .flight-status-delayed,
+  body[data-theme="light"] .flight-status-ontime,
+  body[data-theme="light"] .flight-status-early,
+  body[data-theme="light"] .flight-status-cancelled,
+  body[data-theme="light"] .flight-status-unfinished,
+  body[data-theme="light"] .flight-status-average,
+  body[data-theme="light"] .flight-rate-card {
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(
+          in srgb,
+          var(--flight-card-accent, #7ea6d5) 10%,
+          #fffdfb
+        ),
+        #fffdfb 74%
+      );
+  }
+
+</style>
+
+<div class="flight-analysis-page">
+  <div class="row">
+    <div class="col-12">
+
+      <!-- === 頁面標題 === -->
+      <div class="flight-analysis-header">
+        <h4 class="card-title">航班分析總覽</h4>
+        <p>顯示目前資料庫中的航班數量、實際航班群組、出入境、客貨機及航班狀態統計。</p>
+      </div>
+
+      <div class="flight-source-card">
+        <i class="fa fa-database"></i>
+        <div>
+          <strong>資料來源：交通部 TDX 運輸資料流通服務平臺</strong><br>
+          本頁分析網站資料庫中約每小時同步的桃園機場航空即時航班資料，統計航班方向、狀態、延誤、客貨機與相關機場。
+          <small>TDX 即時欄位可能因來源單位供應狀況出現空值或更新時間差；分析結果取決於目前資料庫範圍，不代表完整官方歷史統計。最終航班資訊請以桃園國際機場及航空公司公告為準。</small>
+          <a href="https://tdx.transportdata.tw/" target="_blank" rel="noopener noreferrer">TDX 官方平臺 <i class="fa fa-external-link"></i></a>
+          ·
+          <a href="https://motc-ptx.gitbook.io/tdx-zi-liao-shi-yong-kui-hua-bao-dian/data_notice/public_transportation_data/air" target="_blank" rel="noopener noreferrer">航空資料使用注意事項 <i class="fa fa-external-link"></i></a>
+        </div>
+      </div>
+
+      <!-- === 日期篩選區 === -->
+      <div class="card flight-filter-card">
+        <div class="card-body">
+          <div class="flight-filter-title">分析日期篩選</div>
+
+          <form class="flight-filter-form" method="GET" action="{{ url_for('portfolio_bp.flight_analysis') }}" onsubmit="loadPage(this.action + '?' + new URLSearchParams(new FormData(this)).toString()); return false;">
+            <div class="flight-filter-group">
+              <label for="flightAnalysisDate">選擇航班日期</label>
+              <input type="date" id="flightAnalysisDate" name="date_filter" value="{{ date_filter or '' }}" min="{{ min_date or '' }}" max="{{ max_date or '' }}">
+              <p class="flight-date-range">資料日期範圍：{{ min_date or '尚無資料' }} 至 {{ max_date or '尚無資料' }}</p>
+            </div>
+
+            <button class="flight-filter-button" type="submit">套用篩選</button>
+            <a class="flight-clear-button" href="#" onclick="loadPage('{{ url_for('portfolio_bp.flight_analysis') }}'); return false;">顯示全部資料</a>
+          </form>
+
+          {% if date_filter %}
+          <p class="flight-current-filter">目前分析日期：<strong>{{ date_filter }}</strong></p>
+          {% else %}
+          <p class="flight-current-filter">目前分析範圍：<strong>全部日期</strong></p>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if analysis.total_flights > 0 %}
+
+      <!-- === 基本資料總覽 === -->
+      <h5 class="flight-analysis-section-title">基本資料總覽</h5>
+
+      <div class="row">
+        <div class="col-xl-3 col-md-6 grid-margin stretch-card">
+          <div class="card flight-highlight-card flight-card-cyan">
+            <div class="card-body">
+              <div class="flight-stat-title">航班號總數</div>
+              <div class="flight-stat-value">{{ analysis.total_flights }}</div>
+              <p class="flight-stat-description">包含共掛班號</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 grid-margin stretch-card">
+          <div class="card flight-highlight-card flight-card-green">
+            <div class="card-body">
+              <div class="flight-stat-title">實際航班群組</div>
+              <div class="flight-stat-value">{{ analysis.actual_flight_count }}</div>
+              <p class="flight-stat-description">合併疑似共掛班號後</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 grid-margin stretch-card">
+          <div class="card flight-highlight-card flight-card-purple">
+            <div class="card-body">
+              <div class="flight-stat-title">航空公司</div>
+              <div class="flight-stat-value">{{ analysis.airline_count }}</div>
+              <p class="flight-stat-description">目前分析範圍內的航空公司</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 grid-margin stretch-card">
+          <div class="card flight-highlight-card flight-card-dark">
+            <div class="card-body">
+              <div class="flight-stat-title">相關機場</div>
+              <div class="flight-stat-value">{{ analysis.airport_count }}</div>
+              <p class="flight-stat-description">出發與抵達機場總數</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- === 航班分類統計 === -->
+      <h5 class="flight-analysis-section-title">航班分類統計</h5>
+
+      <div class="row">
+        <div class="col-xl-3 col-md-6 grid-margin stretch-card">
+          <div class="card flight-stat-card flight-classification-card flight-classification-departure">
+            <div class="card-body">
+              <div class="flight-stat-title">出境航班</div>
+              <div class="flight-stat-value">{{ analysis.departure_count }}</div>
+              <p class="flight-stat-description">桃園機場出發航班</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 grid-margin stretch-card">
+          <div class="card flight-stat-card flight-classification-card flight-classification-arrival">
+            <div class="card-body">
+              <div class="flight-stat-title">入境航班</div>
+              <div class="flight-stat-value">{{ analysis.arrival_count }}</div>
+              <p class="flight-stat-description">抵達桃園機場航班</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 grid-margin stretch-card">
+          <div class="card flight-stat-card flight-classification-card flight-classification-passenger">
+            <div class="card-body">
+              <div class="flight-stat-title">客機</div>
+              <div class="flight-stat-value">{{ analysis.passenger_count }}</div>
+              <p class="flight-stat-description">非貨運航班數量</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 grid-margin stretch-card">
+          <div class="card flight-stat-card flight-classification-card flight-classification-cargo">
+            <div class="card-body">
+              <div class="flight-stat-title">貨機</div>
+              <div class="flight-stat-value">{{ analysis.cargo_count }}</div>
+              <p class="flight-stat-description">貨運航班數量</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- === 航班狀態統計 === -->
+      <h5 class="flight-analysis-section-title">航班狀態統計</h5>
+
+      <div class="row">
+        <div class="col-xl-2 col-lg-4 col-md-6 grid-margin stretch-card">
+          <div class="card flight-stat-card flight-status-delayed">
+            <div class="card-body">
+              <div class="flight-stat-title">延誤</div>
+              <div class="flight-stat-value">{{ analysis.delayed_count }}</div>
+              <p class="flight-stat-description">延誤超過 15 分鐘</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-2 col-lg-4 col-md-6 grid-margin stretch-card">
+          <div class="card flight-stat-card flight-status-ontime">
+            <div class="card-body">
+              <div class="flight-stat-title">準點</div>
+              <div class="flight-stat-value">{{ analysis.on_time_count }}</div>
+              <p class="flight-stat-description">時間差在準點範圍內</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-2 col-lg-4 col-md-6 grid-margin stretch-card">
+          <div class="card flight-stat-card flight-status-early">
+            <div class="card-body">
+              <div class="flight-stat-title">提早</div>
+              <div class="flight-stat-value">{{ analysis.early_count }}</div>
+              <p class="flight-stat-description">提早超過 5 分鐘</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-2 col-lg-4 col-md-6 grid-margin stretch-card">
+          <div class="card flight-stat-card flight-status-cancelled">
+            <div class="card-body">
+              <div class="flight-stat-title">取消</div>
+              <div class="flight-stat-value">{{ analysis.cancelled_count }}</div>
+              <p class="flight-stat-description">已取消航班</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-2 col-lg-4 col-md-6 grid-margin stretch-card">
+          <div class="card flight-stat-card flight-status-unfinished">
+            <div class="card-body">
+              <div class="flight-stat-title">尚未完成</div>
+              <div class="flight-stat-value">{{ analysis.unfinished_count }}</div>
+              <p class="flight-stat-description">尚未起飛或抵達</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-2 col-lg-4 col-md-6 grid-margin stretch-card">
+          <div class="card flight-stat-card flight-status-average">
+            <div class="card-body">
+              <div class="flight-stat-title">平均延誤</div>
+              <div class="flight-stat-value">{{ analysis.average_delay }}</div>
+              <p class="flight-stat-description">分鐘</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- === 航班異常比率 === -->
+      <h5 class="flight-analysis-section-title">航班異常比率</h5>
+
+      <div class="row">
+        <div class="col-md-6 grid-margin stretch-card">
+          <div class="card flight-stat-card flight-rate-card flight-rate-delay-card">
+            <div class="card-body">
+              <div class="flight-stat-title">延誤率</div>
+              <div class="flight-rate-value">{{ analysis.delay_rate }}%</div>
+
+              <div class="flight-progress">
+                <div class="flight-progress-bar flight-delay-bar" style="width: {{ analysis.delay_rate }}%;"></div>
+              </div>
+
+              <p class="flight-stat-description">延誤航班數 ÷ 航班號總數</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 grid-margin stretch-card">
+          <div class="card flight-stat-card flight-rate-card flight-rate-cancel-card">
+            <div class="card-body">
+              <div class="flight-stat-title">取消率</div>
+              <div class="flight-rate-value">{{ analysis.cancellation_rate }}%</div>
+
+              <div class="flight-progress">
+                <div class="flight-progress-bar flight-cancel-bar" style="width: {{ analysis.cancellation_rate }}%;"></div>
+              </div>
+
+              <p class="flight-stat-description">取消航班數 ÷ 航班號總數</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% else %}
+
+      <!-- === 查無資料 === -->
+      <div class="flight-empty-card">
+        <h5>查無航班資料</h5>
+
+        {% if date_filter %}
+        <p class="mb-0">{{ date_filter }} 沒有航班紀錄，請選擇其他日期或顯示全部資料。</p>
+        {% else %}
+        <p class="mb-0">目前資料庫中沒有航班紀錄。</p>
+        {% endif %}
+      </div>
+
+      {% endif %}
+
+    </div>
+  </div>
+</div>

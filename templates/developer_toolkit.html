@@ -1,0 +1,92 @@
+{% include "_developer_toolkit_styles.html" %}
+
+<div class="dev-toolkit-page">
+  <section class="dev-toolkit-hero">
+    <div>
+      <span class="dev-toolkit-eyebrow">TYY DEVELOPER TOOLKIT V1</span>
+      <h2>開發範本與技術筆記</h2>
+      <p>可依關鍵字或分類搜尋 Flask、SQLAlchemy、Heroku、API、機器學習、PyTorch 與除錯範本，點擊後直接查看完整內容。</p>
+    </div>
+    <div class="dev-toolkit-count">
+      共 {{ total_file_count }} 份筆記與範本
+    </div>
+  </section>
+
+  <section class="dev-toolkit-search">
+    <form
+      class="dev-toolkit-search-form"
+      method="GET"
+      action="{{ url_for('portfolio_bp.developer_toolkit') }}"
+      onsubmit="loadPage(this.action + '?' + new URLSearchParams(new FormData(this)).toString()); return false;">
+
+      <div class="dev-toolkit-field">
+        <label for="toolkitKeyword">關鍵字</label>
+        <input
+          id="toolkitKeyword"
+          type="search"
+          name="keyword"
+          value="{{ keyword }}"
+          placeholder="例如：Heroku、Blueprint、JOIN、部署">
+      </div>
+
+      <div class="dev-toolkit-field">
+        <label for="toolkitCategory">分類</label>
+        <select id="toolkitCategory" name="category_filter">
+          <option value="">全部分類</option>
+          {% for category in categories %}
+          <option
+            value="{{ category.key }}"
+            {% if category_filter == category.key %}selected{% endif %}>
+            {{ category.label }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <button type="submit" class="dev-toolkit-button dev-toolkit-button-primary">
+        <i class="fa fa-search"></i> 搜尋
+      </button>
+
+      <a
+        href="{{ url_for('portfolio_bp.developer_toolkit') }}"
+        class="dev-toolkit-link-button"
+        data-load-page>
+        清除條件
+      </a>
+    </form>
+  </section>
+
+  <p class="dev-toolkit-count">目前找到 {{ toolkit_files|length }} 個檔案。</p>
+
+  {% if toolkit_files %}
+  <section class="dev-toolkit-grid">
+    {% for item in toolkit_files %}
+    <article class="dev-toolkit-card">
+      <span class="dev-toolkit-category">{{ item.category }}</span>
+      <h3>{{ item.title }}</h3>
+      <p class="dev-toolkit-preview">
+        {{ item.preview }}{% if item.preview|length >= 180 %}...{% endif %}
+      </p>
+      <div class="dev-toolkit-path">{{ item.path }}</div>
+      <div class="dev-toolkit-card-actions">
+        <a
+          href="{{ url_for('portfolio_bp.developer_toolkit_view', path=item.path) }}"
+          class="dev-toolkit-button dev-toolkit-button-primary"
+          data-load-page>
+          <i class="fa fa-eye"></i> 查看內容
+        </a>
+        <a
+          href="{{ url_for('portfolio_bp.developer_toolkit_download', path=item.path) }}"
+          class="dev-toolkit-link-button">
+          <i class="fa fa-download"></i> 下載
+        </a>
+      </div>
+    </article>
+    {% endfor %}
+  </section>
+  {% else %}
+  <div class="dev-toolkit-empty">
+    找不到符合條件的範本，請更換關鍵字或清除條件。
+  </div>
+  {% endif %}
+</div>

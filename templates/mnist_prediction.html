@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+          <div>
+            <div class="mnist-section-label">MACHINE LEARNING</div>
+            <h3 class="card-title mb-2">MNIST 手寫數字辨識</h3>
+            <p class="text-muted mb-0">使用 KNN 模型辨識 28 × 28 的手寫數字。</p>
+          </div>
+          {% if model_accuracy is not none %}
+          <div class="mnist-metric-card mt-3 mt-md-0">
+            <span>測試準確率</span>
+            <strong>{{ (model_accuracy * 100) | round(2) }}%</strong>
+          </div>
+          {% endif %}
+        </div>
+
+        {% if error_message %}
+        <div class="alert alert-danger">{{ error_message }}</div>
+        {% endif %}
+
+        <div class="mnist-random-test-box">
+          <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center">
+            <div>
+              <h5 class="mb-2">原始測試資料隨機辨識</h5>
+              <p class="text-muted mb-3 mb-lg-0">從模型保留的測試資料中隨機抽取一張進行辨識。</p>
+            </div>
+            <form
+              method="POST"
+              action="{{ url_for('schoolassignment.mnist_prediction') }}"
+              onsubmit="return submitPageForm(this);">
+              <button type="submit" class="btn btn-outline-primary">
+                隨機抽一張辨識
+              </button>
+            </form>
+          </div>
+
+          {% if prediction_result is not none %}
+          <div class="row align-items-center mt-4">
+            <div class="col-md-5 text-center mb-3 mb-md-0">
+              <div class="mnist-pixel-grid" aria-label="MNIST 測試圖片">
+                {% for row in pixel_rows %}
+                  {% for pixel in row %}
+                  <span style="background-color: rgb({{ pixel }}, {{ pixel }}, {{ pixel }});"></span>
+                  {% endfor %}
+                {% endfor %}
+              </div>
+            </div>
+            <div class="col-md-7">
+              <div class="mnist-random-result">
+                <p><strong>模型預測：</strong>{{ prediction_result }}</p>
+                <p><strong>真正答案：</strong>{{ true_label }}</p>
+                <p><strong>信心分數：</strong>{{ confidence_text }}%</p>
+                {% if is_correct %}
+                <span class="badge bg-success">辨識正確</span>
+                {% else %}
+                <span class="badge bg-danger">辨識錯誤</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        {% set mnist_model_type = "machine_learning" %}
+        {% set mnist_model_label = "機器學習 KNN" %}
+        {% include "_mnist_handwriting_panel.html" %}
+      </div>
+    </div>
+  </div>
+</div>

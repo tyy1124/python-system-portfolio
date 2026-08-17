@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">賽跑遊戲</h4>
+        <p class="card-description">
+          請輸入跑者數量，系統會即時顯示每位跑者的賽跑進度。
+        </p>
+
+        <!-- === 跑者數量輸入區 === -->
+        <div class="form-group">
+          <label>跑者數量，限制 1～8 人：</label>
+          <input
+            type="number"
+            id="runner-count"
+            class="form-control"
+            min="1"
+            max="8"
+            value="8"
+            required
+          >
+        </div>
+
+        <!-- === 注意：這裡用 type="button"，不要用 submit === -->
+        <button type="button" class="btn btn-primary mt-3" onclick="startRaceGame();">
+          開始比賽
+        </button>
+
+        <hr>
+
+        <!-- === 比賽狀態 === -->
+        <p id="race-status" class="text-muted">尚未開始比賽。</p>
+
+        <!-- === 賽道顯示區 === -->
+        <div id="race-track-area"></div>
+
+        <hr>
+
+        <!-- === 名次顯示區 === -->
+        <h5>比賽名次</h5>
+        <ol id="race-ranking"></ol>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.race-row { margin-bottom: 22px; }
+  .race-info { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--tyy-text-secondary); font-size: 14px; }
+  .race-track { position: relative; width: 100%; height: 36px; overflow: hidden; border-radius: 20px; background: var(--tyy-surface-soft); }
+  .race-progress { width: 0%; height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--tyy-tiffany), var(--tyy-orange)); transition: width 0.25s linear; }
+  .runner-icon { position: absolute; top: 2px; left: 0%; display: flex; width: 34px; height: 34px; align-items: center; justify-content: center; border: 2px solid var(--tyy-tiffany-strong); border-radius: 50%; background: #ffffff; color: #182126; transform: translateX(-50%); transition: left 0.25s linear; font-size: 18px; }
+  .runner-number { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; border-radius: 50%; background: var(--tyy-danger); color: #ffffff; font-size: 12px; line-height: 18px; text-align: center; font-weight: 800; }
+  .runner-finished { background: var(--tyy-success); }
+</style>

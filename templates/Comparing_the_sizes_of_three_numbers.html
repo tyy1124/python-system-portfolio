@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">三個數字比大小</h4>
+        <p class="card-description">請輸入三個數字，系統會計算結果。</p>
+
+        <!-- 輸入表單 -->
+        <form method="post" action="{{ url_for('schoolassignment.Comparing_the_sizes_of_three_numbers') }}" onsubmit="return submitPageForm(this);">
+          <div class="form-group">
+            <label>地一個數字</label>
+            <input type="number" step="0.1" name="st_num" class="form-control"  required>
+          </div>
+
+          <div class="form-group">
+            <label>第二個數字</label>
+            <input type="number" step="0.1" name="nd_num" class="form-control"  required>
+          </div>
+          
+          <div class="form-group">
+            <label>第三個數字</label>
+            <input type="number" step="0.1" name="rd_num" class="form-control"  required>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">計算結果</button>
+        </form>
+
+        <hr>
+
+        <!-- 結果顯示區 -->
+        {% if max_num_result is not none %}
+        <div>
+          <p>第一個數字：{{ st_num }}</p>
+          <p>第二個數字：{{ nd_num }}</p>
+          <p>第三個數字：{{ rd_num }}</p>
+
+          <p>最大的數字為：{{ maxinum }}</p>
+          <p>最小的數字為：{{ minnum }}</p>
+        </div>
+        {% else %}
+        <p class="text-muted">尚未計算。</p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>

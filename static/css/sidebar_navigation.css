@@ -1,0 +1,269 @@
+/* =========================================================
+   TYY 左側選單文字層級與配色
+   ========================================================= */
+
+#sidebar .nav .nav-category {
+  margin-top: 0.65rem;
+  margin-bottom: 0.2rem;
+}
+
+#sidebar .nav .nav-category .nav-link {
+  min-height: auto;
+  padding-top: 0.75rem;
+  padding-bottom: 0.5rem;
+  color: var(--tyy-orange-strong);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+#sidebar .nav > .nav-item > .nav-link {
+  min-height: 48px;
+  padding-top: 0.72rem;
+  padding-bottom: 0.72rem;
+  color: var(--tyy-text-secondary);
+}
+
+#sidebar .nav > .nav-item > .nav-link .menu-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+#sidebar .nav > .nav-item > .nav-link .menu-icon {
+  color: var(--tyy-text-muted);
+  font-size: 1rem;
+}
+
+#sidebar .nav.sub-menu .nav-item .nav-link,
+#sidebar .sub-menu .nav-item .nav-link {
+  min-height: 38px;
+  padding-top: 0.48rem;
+  padding-bottom: 0.48rem;
+  color: var(--tyy-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+#sidebar .nav .nav-item .nav-link:hover,
+#sidebar .nav .nav-item .nav-link[aria-expanded="true"],
+#sidebar .nav .nav-item.active > .nav-link {
+  color: var(--tyy-heading);
+}
+
+#sidebar .nav.sub-menu .nav-item .nav-link:hover,
+#sidebar .sub-menu .nav-item .nav-link:hover {
+  color: var(--tyy-tiffany-strong);
+}
+
+body[data-theme="dark"] #sidebar .nav .nav-category .nav-link {
+  color: var(--tyy-orange);
+}
+
+body[data-theme="dark"] #sidebar .nav > .nav-item > .nav-link,
+body[data-theme="dark"] #sidebar .nav > .nav-item > .nav-link .menu-title {
+  color: #d8e9e8;
+}
+
+body[data-theme="dark"] #sidebar .nav.sub-menu .nav-item .nav-link,
+body[data-theme="dark"] #sidebar .sub-menu .nav-item .nav-link {
+  color: #a9c1c2;
+}
+
+body[data-theme="dark"] #sidebar .nav.sub-menu .nav-item .nav-link:hover,
+body[data-theme="dark"] #sidebar .sub-menu .nav-item .nav-link:hover {
+  color: var(--tyy-orange);
+}
+
+
+/* === 三色系層級強化：日光模式避免文字過淡 === */
+body[data-theme="light"] #sidebar .nav .nav-category .nav-link {
+  color: #8a4770;
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+body[data-theme="light"] #sidebar .nav > .nav-item > .nav-link,
+body[data-theme="light"] #sidebar .nav > .nav-item > .nav-link .menu-title {
+  color: #4b4056;
+}
+
+body[data-theme="light"] #sidebar .nav.sub-menu .nav-item .nav-link,
+body[data-theme="light"] #sidebar .sub-menu .nav-item .nav-link {
+  color: #6f6478;
+}
+
+body[data-theme="light"] #sidebar .nav.sub-menu .nav-item .nav-link:hover,
+body[data-theme="light"] #sidebar .sub-menu .nav-item .nav-link:hover {
+  color: #7358a5;
+}
+
+body[data-theme="dark"] #sidebar .nav .nav-category .nav-link {
+  color: #ff9a9e;
+}
+
+body[data-theme="dark"] #sidebar .nav > .nav-item > .nav-link,
+body[data-theme="dark"] #sidebar .nav > .nav-item > .nav-link .menu-title {
+  color: #eee6f2;
+}
+
+body[data-theme="dark"] #sidebar .nav.sub-menu .nav-item .nav-link,
+body[data-theme="dark"] #sidebar .sub-menu .nav-item .nav-link {
+  color: #c8bbcf;
+}
+
+body[data-theme="dark"] #sidebar .nav.sub-menu .nav-item .nav-link:hover,
+body[data-theme="dark"] #sidebar .sub-menu .nav-item .nav-link:hover {
+  color: #f3bce4;
+}
+
+
+/* =========================================================
+   2026/07/12：側邊欄 hover／active 黑框修正
+   Stellar 原始樣式會把整個 li 變黑，這裡改由 nav-link 顯示柔和底色
+   ========================================================= */
+
+/* === 清除原始模板套在 li 上的黑色背景 === */
+#sidebar .nav .nav-item.active:not(.navbar-brand-mini-wrapper),
+#sidebar .nav .nav-item:not(.nav-category):not(.nav-profile):hover,
+body[data-theme="light"] #sidebar .nav .nav-item.active:not(.navbar-brand-mini-wrapper),
+body[data-theme="light"] #sidebar .nav .nav-item:not(.nav-category):not(.nav-profile):hover,
+body[data-theme="dark"] #sidebar .nav .nav-item.active:not(.navbar-brand-mini-wrapper),
+body[data-theme="dark"] #sidebar .nav .nav-item:not(.nav-category):not(.nav-profile):hover {
+  background: transparent !important;
+}
+
+/* === 第一層選單使用完整寬度的圓角連結，不再切到文字 === */
+body:not(.sidebar-icon-only) #sidebar .nav:not(.sub-menu) > .nav-item:not(.nav-category):not(.nav-profile) {
+  padding-right: 0.72rem;
+  padding-left: 0.72rem;
+  overflow: visible;
+}
+
+body:not(.sidebar-icon-only) #sidebar .nav:not(.sub-menu) > .nav-item:not(.nav-category):not(.nav-profile) > .nav-link {
+  width: 100%;
+  max-width: 100%;
+  min-height: 46px;
+  padding: 0.68rem 0.82rem;
+  border: 1px solid transparent;
+  border-left: 3px solid transparent;
+  border-radius: 10px;
+  box-sizing: border-box;
+  overflow: visible;
+  white-space: normal;
+}
+
+body:not(.sidebar-icon-only) #sidebar .nav:not(.sub-menu) > .nav-item > .nav-link .menu-title {
+  min-width: 0;
+  overflow: visible;
+  white-space: normal;
+  text-overflow: clip;
+  line-height: 1.35;
+}
+
+/* === 日光模式：霧藍為主，淡桃與淡紫作為點綴 === */
+body[data-theme="light"] #sidebar .nav .nav-category .nav-link {
+  color: #557fb5;
+}
+
+body[data-theme="light"] #sidebar .nav:not(.sub-menu) > .nav-item:not(.nav-category):not(.nav-profile) > .nav-link:hover,
+body[data-theme="light"] #sidebar .nav:not(.sub-menu) > .nav-item:not(.nav-category):not(.nav-profile) > .nav-link[aria-expanded="true"],
+body[data-theme="light"] #sidebar .nav:not(.sub-menu) > .nav-item.active:not(.navbar-brand-mini-wrapper) > .nav-link {
+  color: #2f4057 !important;
+  border-color: #d7e3ef;
+  border-left-color: #557fb5;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(126, 166, 213, 0.22),
+      rgba(243, 214, 199, 0.22) 72%,
+      rgba(251, 194, 235, 0.10)
+    ) !important;
+  box-shadow: 0 6px 15px rgba(60, 84, 112, 0.07);
+}
+
+body[data-theme="light"] #sidebar .nav:not(.sub-menu) > .nav-item.active > .nav-link .menu-title,
+body[data-theme="light"] #sidebar .nav:not(.sub-menu) > .nav-item.active > .nav-link i,
+body[data-theme="light"] #sidebar .nav:not(.sub-menu) > .nav-item > .nav-link:hover .menu-title,
+body[data-theme="light"] #sidebar .nav:not(.sub-menu) > .nav-item > .nav-link:hover i {
+  color: #3f6697 !important;
+}
+
+body[data-theme="light"] #sidebar .nav.sub-menu {
+  margin-top: 0.28rem;
+  margin-bottom: 0.65rem;
+  padding: 0.2rem 0.72rem 0.35rem;
+}
+
+body[data-theme="light"] #sidebar .nav.sub-menu .nav-item .nav-link {
+  min-height: 36px;
+  margin: 0.08rem 0;
+  padding: 0.48rem 0.72rem 0.48rem 1.65rem;
+  border-radius: 8px;
+  color: #627286;
+}
+
+body[data-theme="light"] #sidebar .nav.sub-menu .nav-item .nav-link::before {
+  left: 0.55rem;
+  color: #91a8c2;
+}
+
+body[data-theme="light"] #sidebar .nav.sub-menu .nav-item .nav-link:hover,
+body[data-theme="light"] #sidebar .nav.sub-menu .nav-item .nav-link.active {
+  color: #3f6697 !important;
+  background: rgba(126, 166, 213, 0.13) !important;
+}
+
+/* === 深色模式：同樣移除黑框，改為深紫藍柔和底色 === */
+body[data-theme="dark"] #sidebar .nav:not(.sub-menu) > .nav-item:not(.nav-category):not(.nav-profile) > .nav-link:hover,
+body[data-theme="dark"] #sidebar .nav:not(.sub-menu) > .nav-item:not(.nav-category):not(.nav-profile) > .nav-link[aria-expanded="true"],
+body[data-theme="dark"] #sidebar .nav:not(.sub-menu) > .nav-item.active:not(.navbar-brand-mini-wrapper) > .nav-link {
+  color: #fff8ff !important;
+  border-color: rgba(199, 181, 238, 0.20);
+  border-left-color: #c7b5ee;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(126, 166, 213, 0.18),
+      rgba(161, 140, 209, 0.17),
+      rgba(251, 194, 235, 0.08)
+    ) !important;
+  box-shadow: none;
+}
+
+body[data-theme="dark"] #sidebar .nav:not(.sub-menu) > .nav-item.active > .nav-link .menu-title,
+body[data-theme="dark"] #sidebar .nav:not(.sub-menu) > .nav-item.active > .nav-link i,
+body[data-theme="dark"] #sidebar .nav:not(.sub-menu) > .nav-item > .nav-link:hover .menu-title,
+body[data-theme="dark"] #sidebar .nav:not(.sub-menu) > .nav-item > .nav-link:hover i {
+  color: #f2ebf7 !important;
+}
+
+body[data-theme="dark"] #sidebar .nav.sub-menu {
+  margin-top: 0.28rem;
+  margin-bottom: 0.65rem;
+  padding: 0.2rem 0.72rem 0.35rem;
+}
+
+body[data-theme="dark"] #sidebar .nav.sub-menu .nav-item .nav-link {
+  min-height: 36px;
+  margin: 0.08rem 0;
+  padding: 0.48rem 0.72rem 0.48rem 1.65rem;
+  border-radius: 8px;
+}
+
+body[data-theme="dark"] #sidebar .nav.sub-menu .nav-item .nav-link::before {
+  left: 0.55rem;
+  color: #9385a0;
+}
+
+body[data-theme="dark"] #sidebar .nav.sub-menu .nav-item .nav-link:hover,
+body[data-theme="dark"] #sidebar .nav.sub-menu .nav-item .nav-link.active {
+  color: #f3d8ed !important;
+  background: rgba(199, 181, 238, 0.11) !important;
+}
+
+/* === 收合側邊欄仍不使用黑色父層背景 === */
+.sidebar-icon-only #sidebar .nav .nav-item.active:not(.navbar-brand-mini-wrapper),
+.sidebar-icon-only #sidebar .nav .nav-item:not(.nav-category):not(.nav-profile):hover {
+  background: transparent !important;
+}

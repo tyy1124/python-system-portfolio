@@ -1,0 +1,206 @@
+<style>
+.legal-page-shell { max-width: 980px; margin: 0 auto; }
+  .legal-hero { padding: 30px; border: 1px solid var(--tyy-border); border-radius: 18px; background: linear-gradient(135deg, var(--tyy-surface) 0%, var(--tyy-surface-alt) 100%); box-shadow: var(--tyy-shadow); }
+  .legal-label { display: inline-flex; padding: 7px 12px; align-items: center; border-radius: 999px; background: var(--tyy-tiffany-soft); color: var(--tyy-tiffany-strong); font-size: 13px; font-weight: 700; }
+  .legal-title { margin: 14px 0 8px; font-size: 30px; font-weight: 800; color: var(--tyy-heading); }
+  .legal-subtitle { margin: 0; color: var(--tyy-text-secondary); line-height: 1.8; }
+  .legal-card { margin-top: 20px; padding: 28px; border: 1px solid var(--tyy-border); border-radius: 16px; background: var(--tyy-surface); box-shadow: var(--tyy-shadow); }
+  .legal-section + .legal-section { margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--tyy-border); }
+  .legal-section h4 { margin-bottom: 12px; color: var(--tyy-heading); font-size: 19px; font-weight: 800; }
+  .legal-section p, .legal-section li { color: var(--tyy-text-secondary); line-height: 1.85; }
+  .legal-section ul { margin-bottom: 0; padding-left: 22px; }
+  .legal-note { padding: 16px 18px; border-radius: 12px; background: linear-gradient(90deg, var(--tyy-tiffany-soft), var(--tyy-orange-soft)); border-left: 4px solid var(--tyy-orange); color: var(--tyy-text-secondary); line-height: 1.75; }
+  .legal-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  @media (max-width: 767px) { .legal-hero, .legal-card { padding: 21px; } .legal-title { font-size: 25px; } }
+
+  .legal-table { width: 100%; margin-top: 14px; border-collapse: collapse; }
+  .legal-table th, .legal-table td { padding: 13px 14px; border: 1px solid var(--tyy-border); text-align: left; vertical-align: top; line-height: 1.7; }
+  .legal-table th { width: 28%; background: var(--tyy-surface-soft); color: var(--tyy-heading); }
+  .legal-table td { color: var(--tyy-text-secondary); }
+  @media (max-width: 767px) { .legal-table, .legal-table tbody, .legal-table tr, .legal-table th, .legal-table td { display: block; width: 100%; } .legal-table tr + tr { margin-top: 12px; } }
+</style>
+
+<div class="legal-page-shell">
+  <div class="legal-hero">
+    <span class="legal-label">
+      <i class="icon-shield me-2"></i> 個人資料保護
+    </span>
+    <h2 class="legal-title">隱私權政策</h2>
+    <p class="legal-subtitle">
+      本政策說明 TYY 小站會蒐集哪些資料、使用目的、保存方式、
+      第三方服務，以及使用者可以如何管理自己的個人資料。
+    </p>
+    <p class="text-muted mt-3 mb-0">
+      最後更新：{{ legal_last_updated }}
+    </p>
+  </div>
+
+  <div class="legal-card">
+    <div class="legal-note">
+      TYY 小站目前是個人學習與作品展示網站。本站只在提供會員功能及維持服務所需的範圍內處理資料，
+      不會將會員資料出售給廣告商或其他無關第三方。
+    </div>
+
+    <section class="legal-section mt-4">
+      <h4>一、蒐集者與蒐集目的</h4>
+      <p>
+        個人資料蒐集者為「TYY 小站網站管理者」。資料主要用於：
+      </p>
+      <ul>
+        <li>建立及驗證會員帳號。</li>
+        <li>寄送註冊驗證碼及必要的服務通知。</li>
+        <li>顯示、修改及保存會員個人資料與大頭貼。</li>
+        <li>維持登入狀態、網站功能、安全性及錯誤排查。</li>
+        <li>處理使用者的查詢、更正、停止使用或刪除資料請求。</li>
+      </ul>
+    </section>
+
+    <section class="legal-section">
+      <h4>二、蒐集的資料類別</h4>
+      <table class="legal-table">
+        <tbody>
+          <tr>
+            <th>帳號資料</th>
+            <td>帳號、姓名、Email 與登入驗證資料。</td>
+          </tr>
+          <tr>
+            <th>選填個人資料</th>
+            <td>手機、生日、性別、城市、地址、職業、個人網站與自我介紹。</td>
+          </tr>
+          <tr>
+            <th>圖片資料</th>
+            <td>使用者自行上傳的大頭貼及其雲端圖片網址。</td>
+          </tr>
+          <tr>
+            <th>技術資料</th>
+            <td>Session、Cookie，以及伺服器可能自動產生的登入時間、IP、瀏覽器或錯誤紀錄。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="legal-section">
+      <h4>三、資料提供方式與必要性</h4>
+      <p>
+        帳號、姓名、Email 及登入驗證資料，是建立和使用會員功能所必要的資料。
+        若不提供，可能無法完成註冊或登入。
+      </p>
+      <p class="mb-0">
+        手機、生日、性別、城市、地址、職業、網站、自我介紹及自訂大頭貼原則上為選填；
+        不提供不影響主要會員功能，只會使個人資料頁顯示較少內容。
+      </p>
+    </section>
+
+    <section class="legal-section">
+      <h4>四、利用期間、地區、對象與方式</h4>
+      <table class="legal-table">
+        <tbody>
+          <tr>
+            <th>期間</th>
+            <td>帳號存在期間、提供服務所必要的期間，以及依法或為處理爭議所需的合理期間。</td>
+          </tr>
+          <tr>
+            <th>地區</th>
+            <td>網站服務所在區域，以及雲端主機、資料庫、Email 與圖片服務提供者實際處理資料的地區。</td>
+          </tr>
+          <tr>
+            <th>對象</th>
+            <td>網站管理者，以及在提供服務必要範圍內的受託服務供應商。</td>
+          </tr>
+          <tr>
+            <th>方式</th>
+            <td>以自動化系統進行蒐集、記錄、儲存、修改、檢索、顯示、備份及刪除。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="legal-section">
+      <h4>五、第三方服務與跨境處理</h4>
+      <p>
+        本站可能使用下列類型的服務供應商處理必要資料：
+      </p>
+      <ul>
+        <li>雲端主機與資料庫服務：執行網站及保存會員資料。</li>
+        <li>Cloudinary：保存及顯示使用者上傳的大頭貼。</li>
+        <li>Email 服務供應商：寄送註冊驗證碼或服務通知。</li>
+      </ul>
+      <p class="mb-0 mt-3">
+        部分供應商的伺服器可能位於境外，因此資料可能發生跨境傳輸。
+        本站會將傳輸範圍限制在提供功能所必要的程度，並依各服務供應商的安全機制處理。
+      </p>
+    </section>
+
+    <section class="legal-section">
+      <h4>六、Cookie 與 Session</h4>
+      <p class="mb-0">
+        本站使用 Session Cookie 維持登入狀態與部分互動功能。
+        停用 Cookie 可能造成登入、遊戲紀錄或頁面功能無法正常使用。
+        本站目前不以會員個人資料進行第三方廣告追蹤。
+      </p>
+    </section>
+
+    <section class="legal-section">
+      <h4>七、使用者的個人資料權利</h4>
+      <p>使用者得依法提出下列請求：</p>
+      <ul>
+        <li>查詢或閱覽自己的個人資料。</li>
+        <li>請求提供資料複製本。</li>
+        <li>請求補充或更正資料。</li>
+        <li>請求停止蒐集、處理或利用。</li>
+        <li>請求刪除資料。</li>
+      </ul>
+      <p class="mb-0 mt-3">
+        部分資料可直接在「個人資料」頁修改；其他請求可透過下方聯絡方式提出。
+        為避免他人冒用，網站管理者可能先進行必要的身分確認。
+      </p>
+    </section>
+
+    <section class="legal-section">
+      <h4>八、資料安全</h4>
+      <p class="mb-0">
+        本站會依網站規模採取合理的存取控制、環境變數管理、檔案格式與大小限制、
+        資料庫權限及連線保護等措施。但任何網路服務都無法保證絕對安全，
+        使用者也應妥善保管自己的帳號與登入資訊。
+      </p>
+    </section>
+
+    <section class="legal-section">
+      <h4>九、資料刪除與帳號停止使用</h4>
+      <p class="mb-0">
+        使用者可要求刪除個人資料或停止使用帳號。完成確認後，本站會在合理期間內處理；
+        但依法必須保存、為防止詐欺、處理爭議或備份輪替尚未完成的資料，
+        可能在必要期間內暫時保留，並限制其使用。
+      </p>
+    </section>
+
+    <section class="legal-section">
+      <h4>十、政策更新與聯絡方式</h4>
+      <p>
+        本政策可能配合功能、第三方服務或法規變化更新，並於本頁標示最後更新日期。
+      </p>
+      <p class="mb-0">
+        {% if legal_contact_email %}
+          個人資料相關請求或疑問，請聯絡：
+          <a href="mailto:{{ legal_contact_email }}">{{ legal_contact_email }}</a>
+        {% else %}
+          個人資料相關請求或疑問，請透過網站管理者提供的聯絡方式提出。
+        {% endif %}
+      </p>
+    </section>
+
+    <div class="legal-actions">
+      <a href="#"
+         class="btn btn-primary"
+         onclick="loadPage('{{ url_for('terms_of_use') }}'); return false;">
+        查看使用條款
+      </a>
+      <a href="{{ url_for('public_privacy_policy') }}"
+         class="btn btn-outline-secondary"
+         target="_blank"
+         rel="noopener noreferrer">
+        在獨立頁面開啟
+      </a>
+    </div>
+  </div>
+</div>

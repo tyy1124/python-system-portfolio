@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="5;url=/login">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>註冊成功</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/signin.css') }}">
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <div class="signin-card">
+
+            <div class="card-top">
+                <p class="small-title">REGISTER SUCCESS</p>
+                <h1>註冊成功</h1>
+                <p class="sub-text">{{ user_name }}，歡迎您的加入</p>
+            </div>
+
+                <p id="statusMessage" class="status-message success" style="text-align: center;">
+                    註冊完成，5 秒後自動回到登入畫面
+                </p>
+            <div class="bottom-text">
+                <p>如果沒有自動跳轉，<a href="/login">點此回到登入畫面</a></p>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

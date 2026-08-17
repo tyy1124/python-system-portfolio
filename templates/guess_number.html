@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">終極密碼</h4>
+        <p class="card-description">
+          請猜 {{ min_number }} 到 {{ max_number }} 之間的一個數字。
+        </p>
+
+        <form method="post" action="{{ url_for('schoolassignment.guess_number') }}" onsubmit="return submitPageForm(this);">
+          <div class="form-group">
+            <label>你猜的數字：</label>
+            <input type="number" name="user_number" class="form-control" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">送出猜測</button>
+        </form>
+
+        <hr>
+
+        {% if message is not none %}
+          {% if game_over %}
+            <p class="text-success">{{ message }}</p>
+            <button class="btn btn-warning mt-3" onclick="loadPage('{{ url_for('schoolassignment.guess_number') }}'); return false;">
+              重新開始
+            </button>
+          {% else %}
+            <p class="text-danger">{{ message }}</p>
+          {% endif %}
+        {% else %}
+          <p class="text-muted">遊戲開始，請輸入你的第一個猜測。</p>
+        {% endif %}
+
+        <p class="mt-3">目前猜測次數：{{ count }}</p>
+
+      </div>
+    </div>
+  </div>
+</div>

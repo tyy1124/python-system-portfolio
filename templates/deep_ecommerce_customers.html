@@ -1,0 +1,121 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">深度學習版 電商年度消費預測</h4>
+        <p class="card-description">
+          使用 EcommerceCustomers.csv 資料集，透過 PyTorch MLP 神經網路，
+          根據使用者的 App、網站使用行為與會員年資，預測年度消費金額。
+        </p>
+
+        {% if error_message is not none %}
+          <p class="text-danger">{{ error_message }}</p>
+        {% endif %}
+
+        <form method="post" action="{{ url_for('schoolassignment.deep_ecommerce_customers') }}" onsubmit="return submitPageForm(this);">
+
+          <div class="form-group">
+            <label>平均每次瀏覽時間 Avg. Session Length，單位：約分鐘</label>
+            <input
+              type="number"
+              step="0.01"
+              name="avg_session_length"
+              class="form-control"
+              placeholder="例如：34.5"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>App 使用時間 Time on App，單位：約分鐘</label>
+            <input
+              type="number"
+              step="0.01"
+              name="time_on_app"
+              class="form-control"
+              placeholder="例如：12.8"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>網站使用時間 Time on Website，單位：約分鐘</label>
+            <input
+              type="number"
+              step="0.01"
+              name="time_on_website"
+              class="form-control"
+              placeholder="例如：37.2"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>會員年資 Length of Membership，單位：年</label>
+            <input
+              type="number"
+              step="0.01"
+              name="length_of_membership"
+              class="form-control"
+              placeholder="例如：3.5"
+              required
+            >
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">使用深度學習預測年度消費金額</button>
+        </form>
+
+        <hr>
+
+        {% if predict_spent_text is not none %}
+          <h5>預測結果</h5>
+
+          <p>平均每次瀏覽時間：{{ avg_session_length }} 分鐘</p>
+          <p>App 使用時間：{{ time_on_app }} 分鐘</p>
+          <p>網站使用時間：{{ time_on_website }} 分鐘</p>
+          <p>會員年資：{{ length_of_membership }} 年</p>
+
+          <h4 class="text-success mt-3">
+            預測年度消費金額：約 {{ predict_spent_text }} 美元
+          </h4>
+
+          <hr>
+
+          <h5>模型資訊</h5>
+          <p>模型：PyTorch MLP 神經網路</p>
+          <p>神經網路結構：4 → 64 → 32 → 1</p>
+          <p>Loss Function：MSELoss</p>
+          <p>Optimizer：Adam</p>
+          <p>Epoch：300</p>
+          <p>Batch Size：32</p>
+          <p>R² 分數：{{ r2 }}</p>
+          <p>平均絕對誤差 MAE：{{ "{:,.2f}".format(mae) }}</p>
+          <p>最後 Loss：{{ final_loss }}</p>
+
+          <p class="text-muted">
+            注意：這是深度學習版本，第一次開啟時會先訓練模型，因此可能會稍微等待。
+          </p>
+
+        {% else %}
+          <p class="text-muted">尚未進行深度學習年度消費預測。</p>
+
+          {% if r2 is not none %}
+            <hr>
+            <h5>模型資訊</h5>
+            <p>模型：PyTorch MLP 神經網路</p>
+            <p>神經網路結構：4 → 64 → 32 → 1</p>
+            <p>Loss Function：MSELoss</p>
+            <p>Optimizer：Adam</p>
+            <p>Epoch：300</p>
+            <p>Batch Size：32</p>
+            <p>R² 分數：{{ r2 }}</p>
+            <p>平均絕對誤差 MAE：{{ "{:,.2f}".format(mae) }}</p>
+            <p>最後 Loss：{{ final_loss }}</p>
+          {% endif %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>

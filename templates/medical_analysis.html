@@ -1,0 +1,498 @@
+<div id="medicalAnalysisPage" class="medical-analysis-page">
+  {% if error_message %}
+    <div class="alert alert-danger medical-error-card" role="alert">
+      <h5 class="mb-2"><i class="fa fa-exclamation-triangle me-2"></i>醫療分析頁無法載入</h5>
+      <p class="mb-0">{{ error_message }}</p>
+    </div>
+  {% elif medical_data %}
+    <script id="medicalAnalysisData" type="application/json">{{ medical_data | tojson }}</script>
+
+    <!-- === 頁首與資料來源 === -->
+    <section class="medical-hero-card">
+      <div class="medical-hero-content">
+        <div>
+          <div class="medical-eyebrow">HEALTH DATA EXPLORER</div>
+          <h2>臺灣抗憂鬱藥物使用趨勢分析</h2>
+          <p>
+            以全國、性別、年齡、健保業務組與縣市等維度，互動檢視民國
+            {{ medical_data.metadata.first_year }}～{{ medical_data.metadata.latest_year }} 年的使用人數與變化。
+          </p>
+        </div>
+        <div class="medical-source-panel">
+          <span class="medical-source-badge"><i class="fa fa-database"></i> 官方開放資料</span>
+          <strong>衛生福利部中央健康保險署</strong>
+          <span>資料集：抗憂鬱藥物使用人數</span>
+          <span>Resource ID：{{ medical_data.metadata.resource_id }}</span>
+          <a href="{{ medical_data.metadata.source_url }}" target="_blank" rel="noopener noreferrer">
+            查看政府資料開放平臺來源 <i class="fa fa-external-link"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- === 分析控制列 === -->
+    <section class="medical-control-card" aria-label="分析條件">
+      <div class="medical-control-heading">
+        <div>
+          <h5><i class="fa fa-sliders me-2"></i>分析條件</h5>
+          <p>調整年份後，全國、性別、年齡、業務組及縣市成長分析會同步更新。</p>
+        </div>
+        <div class="medical-control-actions">
+          <button type="button" id="medicalToggleFilters" class="medical-button medical-button-secondary" aria-expanded="true" aria-controls="medicalFilterBody">
+            <i class="fa fa-compress"></i> 收合條件
+          </button>
+          <button type="button" id="medicalResetFilters" class="medical-button medical-button-secondary">
+            <i class="fa fa-refresh"></i> 重設條件
+          </button>
+        </div>
+      </div>
+
+      <div id="medicalFilterBody" class="medical-filter-body">
+      <div class="medical-control-grid">
+        <label class="medical-field">
+          <span>開始年度</span>
+          <select id="medicalStartYear" class="form-select"></select>
+        </label>
+        <label class="medical-field">
+          <span>結束年度</span>
+          <select id="medicalEndYear" class="form-select"></select>
+        </label>
+        <label class="medical-field">
+          <span>主要趨勢顯示</span>
+          <select id="medicalTrendMode" class="form-select">
+            <option value="count">實際人數</option>
+            <option value="index">起始年＝100 指數</option>
+          </select>
+        </label>
+        <label class="medical-field">
+          <span>圖表預設高度</span>
+          <select id="medicalChartHeight" class="form-select">
+            <option value="compact">精簡</option>
+            <option value="normal" selected>標準</option>
+            <option value="tall">加高</option>
+          </select>
+        </label>
+      </div>
+      </div>
+    </section>
+
+    <!-- === 最新年度 KPI === -->
+    <section class="medical-section">
+      <div class="medical-section-heading">
+        <div>
+          <span class="medical-section-kicker">LATEST SNAPSHOT</span>
+          <h4>民國 {{ medical_data.metadata.latest_year }} 年重點數據</h4>
+        </div>
+        <span class="medical-section-note">滑鼠移到卡片可查看說明</span>
+      </div>
+
+      <div class="medical-kpi-grid">
+        <article class="medical-kpi-card medical-kpi-primary" title="當年度曾使用抗憂鬱藥物的人數，不等同憂鬱症患者人數。">
+          <span class="medical-kpi-icon"><i class="fa fa-users"></i></span>
+          <span class="medical-kpi-label">最新年度使用人數</span>
+          <strong>{{ "{:,}".format(medical_data.kpis.latest_total) }}</strong>
+          <small>人</small>
+        </article>
+        {% set latest_yoy_value = medical_data.kpis.latest_yoy | float %}
+        <article class="medical-kpi-card medical-kpi-orange medical-kpi-yoy" title="與前一年度總使用人數相比的變化率。">
+          <span class="medical-kpi-icon"><i class="fa fa-line-chart"></i></span>
+          <span class="medical-kpi-label">最新年增率</span>
+          <strong>
+            <span class="medical-change-badge {% if latest_yoy_value > 0 %}medical-change-positive{% elif latest_yoy_value < 0 %}medical-change-negative{% else %}medical-change-neutral{% endif %}">
+              {% if latest_yoy_value > 0 %}+{% endif %}{{ medical_data.kpis.latest_yoy }}%
+            </span>
+          </strong>
+          <small>相較前一年</small>
+        </article>
+        <article class="medical-kpi-card" title="女性使用人數占當年度總人數的比例。">
+          <span class="medical-kpi-icon"><i class="fa fa-venus-mars"></i></span>
+          <span class="medical-kpi-label">女性占比</span>
+          <strong>{{ medical_data.kpis.female_share }}%</strong>
+          <small>性別結構</small>
+        </article>
+        <article class="medical-kpi-card" title="65 歲以上使用人數占當年度總人數的比例。">
+          <span class="medical-kpi-icon"><i class="fa fa-heartbeat"></i></span>
+          <span class="medical-kpi-label">65 歲以上占比</span>
+          <strong>{{ medical_data.kpis.senior_share }}%</strong>
+          <small>年齡結構</small>
+        </article>
+        <article class="medical-kpi-card" title="從資料首年到最新年的整體增幅。">
+          <span class="medical-kpi-icon"><i class="fa fa-arrow-up"></i></span>
+          <span class="medical-kpi-label">長期總增幅</span>
+          <strong>{{ medical_data.kpis.total_growth_rate }}%</strong>
+          <small>增加 {{ "{:,}".format(medical_data.kpis.total_growth) }} 人</small>
+        </article>
+        <article class="medical-kpi-card" title="依首年到最新年計算的年平均複合成長率。">
+          <span class="medical-kpi-icon"><i class="fa fa-area-chart"></i></span>
+          <span class="medical-kpi-label">年複合成長率</span>
+          <strong>{{ medical_data.kpis.cagr }}%</strong>
+          <small>CAGR</small>
+        </article>
+      </div>
+    </section>
+
+    <!-- === 選定期間洞察 === -->
+    <section class="medical-section">
+      <div class="medical-section-heading">
+        <div>
+          <span class="medical-section-kicker">SELECTED PERIOD</span>
+          <h4>選定期間摘要</h4>
+        </div>
+      </div>
+      <div id="medicalPeriodInsights" class="medical-insight-grid" aria-live="polite"></div>
+    </section>
+
+    <!-- === 全國趨勢 === -->
+    <section class="medical-section">
+      <div class="medical-section-heading">
+        <div>
+          <span class="medical-section-kicker">NATIONAL TREND</span>
+          <h4>全國使用趨勢與年度變化</h4>
+        </div>
+        <p>民國 102 年起官方藥品定義有所調整，圖中以虛線標記。</p>
+      </div>
+
+      <div class="medical-chart-grid medical-chart-grid-2">
+        <article class="medical-chart-card" data-chart-card="nationalTrendChart">
+          <header class="medical-chart-header">
+            <div>
+              <h5>歷年使用人數趨勢</h5>
+              <p id="nationalTrendSubtitle">顯示選定年度範圍</p>
+            </div>
+            <div class="medical-chart-tools">
+              <button type="button" data-chart-action="height" title="切換圖表高度"><i class="fa fa-arrows-v"></i></button>
+              <button type="button" data-chart-action="expand" title="放大圖表"><i class="fa fa-expand"></i></button>
+              <button type="button" data-chart-action="download" title="下載 PNG"><i class="fa fa-download"></i></button>
+            </div>
+          </header>
+          <div class="medical-chart-canvas-wrap"><canvas id="nationalTrendChart"></canvas></div>
+        </article>
+
+        <article class="medical-chart-card" data-chart-card="nationalGrowthChart">
+          <header class="medical-chart-header">
+            <div>
+              <h5>年度成長率（YoY）</h5>
+              <p>正值代表較前一年增加，負值代表減少</p>
+            </div>
+            <div class="medical-chart-tools">
+              <button type="button" data-chart-action="height" title="切換圖表高度"><i class="fa fa-arrows-v"></i></button>
+              <button type="button" data-chart-action="expand" title="放大圖表"><i class="fa fa-expand"></i></button>
+              <button type="button" data-chart-action="download" title="下載 PNG"><i class="fa fa-download"></i></button>
+            </div>
+          </header>
+          <div class="medical-chart-canvas-wrap"><canvas id="nationalGrowthChart"></canvas></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- === 性別分析 === -->
+    <section class="medical-section">
+      <div class="medical-section-heading medical-section-heading-controls">
+        <div>
+          <span class="medical-section-kicker">GENDER</span>
+          <h4>性別趨勢與結構</h4>
+        </div>
+        <label class="medical-inline-field">
+          <span>趨勢顯示</span>
+          <select id="medicalGenderMode" class="form-select form-select-sm">
+            <option value="count">人數</option>
+            <option value="share">占比</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="medical-chart-grid medical-chart-grid-2-1">
+        <article class="medical-chart-card" data-chart-card="genderTrendChart">
+          <header class="medical-chart-header">
+            <div><h5>男女歷年趨勢</h5><p>可切換人數或占當年總人數比例</p></div>
+            <div class="medical-chart-tools">
+              <button type="button" data-chart-action="height"><i class="fa fa-arrows-v"></i></button>
+              <button type="button" data-chart-action="expand"><i class="fa fa-expand"></i></button>
+              <button type="button" data-chart-action="download"><i class="fa fa-download"></i></button>
+            </div>
+          </header>
+          <div class="medical-chart-canvas-wrap"><canvas id="genderTrendChart"></canvas></div>
+        </article>
+
+        <article class="medical-chart-card" data-chart-card="genderShareChart">
+          <header class="medical-chart-header">
+            <div><h5>結束年度性別比例</h5><p id="genderShareYearLabel"></p></div>
+            <div class="medical-chart-tools">
+              <button type="button" data-chart-action="height"><i class="fa fa-arrows-v"></i></button>
+              <button type="button" data-chart-action="expand"><i class="fa fa-expand"></i></button>
+              <button type="button" data-chart-action="download"><i class="fa fa-download"></i></button>
+            </div>
+          </header>
+          <div class="medical-chart-canvas-wrap"><canvas id="genderShareChart"></canvas></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- === 年齡分析 === -->
+    <section class="medical-section">
+      <div class="medical-section-heading medical-section-heading-controls">
+        <div>
+          <span class="medical-section-kicker">AGE GROUPS</span>
+          <h4>年齡層結構與長期變化</h4>
+        </div>
+        <label class="medical-inline-field">
+          <span>趨勢顯示</span>
+          <select id="medicalAgeMode" class="form-select form-select-sm">
+            <option value="count">人數</option>
+            <option value="share">占比</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="medical-chart-grid medical-chart-grid-2">
+        <article class="medical-chart-card" data-chart-card="ageTrendChart">
+          <header class="medical-chart-header">
+            <div><h5>年齡層歷年趨勢</h5><p>人數模式為堆疊面積；占比模式合計為 100%</p></div>
+            <div class="medical-chart-tools">
+              <button type="button" data-chart-action="height"><i class="fa fa-arrows-v"></i></button>
+              <button type="button" data-chart-action="expand"><i class="fa fa-expand"></i></button>
+              <button type="button" data-chart-action="download"><i class="fa fa-download"></i></button>
+            </div>
+          </header>
+          <div class="medical-chart-canvas-wrap"><canvas id="ageTrendChart"></canvas></div>
+        </article>
+
+        <article class="medical-chart-card" data-chart-card="ageRankingChart">
+          <header class="medical-chart-header">
+            <div><h5>結束年度年齡層比較</h5><p id="ageRankingYearLabel"></p></div>
+            <div class="medical-chart-tools">
+              <button type="button" data-chart-action="height"><i class="fa fa-arrows-v"></i></button>
+              <button type="button" data-chart-action="expand"><i class="fa fa-expand"></i></button>
+              <button type="button" data-chart-action="download"><i class="fa fa-download"></i></button>
+            </div>
+          </header>
+          <div class="medical-chart-canvas-wrap"><canvas id="ageRankingChart"></canvas></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- === 業務組分析 === -->
+    <section class="medical-section">
+      <div class="medical-section-heading medical-section-heading-controls">
+        <div>
+          <span class="medical-section-kicker">NHI REGIONS</span>
+          <h4>健保業務組比較</h4>
+        </div>
+        <label class="medical-inline-field">
+          <span>趨勢顯示</span>
+          <select id="medicalBranchMode" class="form-select form-select-sm">
+            <option value="count">人數</option>
+            <option value="index">起始年＝100 指數</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="medical-chart-grid medical-chart-grid-2">
+        <article class="medical-chart-card" data-chart-card="branchTrendChart">
+          <header class="medical-chart-header">
+            <div><h5>各業務組歷年趨勢</h5><p>同一保險對象可能跨區就醫，不可將各區視為互斥人口</p></div>
+            <div class="medical-chart-tools">
+              <button type="button" data-chart-action="height"><i class="fa fa-arrows-v"></i></button>
+              <button type="button" data-chart-action="expand"><i class="fa fa-expand"></i></button>
+              <button type="button" data-chart-action="download"><i class="fa fa-download"></i></button>
+            </div>
+          </header>
+          <div class="medical-chart-canvas-wrap"><canvas id="branchTrendChart"></canvas></div>
+        </article>
+
+        <article class="medical-chart-card" data-chart-card="branchRankingChart">
+          <header class="medical-chart-header">
+            <div><h5>結束年度業務組排序</h5><p id="branchRankingYearLabel"></p></div>
+            <div class="medical-chart-tools">
+              <button type="button" data-chart-action="height"><i class="fa fa-arrows-v"></i></button>
+              <button type="button" data-chart-action="expand"><i class="fa fa-expand"></i></button>
+              <button type="button" data-chart-action="download"><i class="fa fa-download"></i></button>
+            </div>
+          </header>
+          <div class="medical-chart-canvas-wrap"><canvas id="branchRankingChart"></canvas></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- === 縣市分析 === -->
+    <section class="medical-section">
+      <div class="medical-section-heading">
+        <div>
+          <span class="medical-section-kicker">CITY ANALYSIS</span>
+          <h4>縣市排名、趨勢與期間成長</h4>
+        </div>
+        <p>縣市資料自民國 {{ medical_data.metadata.city_first_year }} 年起提供，依特約醫事服務機構所在地統計。</p>
+      </div>
+
+      <div class="medical-city-controls">
+        <label class="medical-field">
+          <span>排名年度</span>
+          <select id="medicalCityYear" class="form-select"></select>
+        </label>
+        <label class="medical-field">
+          <span>顯示名次</span>
+          <select id="medicalCityTopN" class="form-select">
+            <option value="5">前 5 名</option>
+            <option value="10" selected>前 10 名</option>
+            <option value="all">全部縣市</option>
+          </select>
+        </label>
+        <div class="medical-city-picker-wrap">
+          <span>趨勢比較縣市（最多 6 個）</span>
+          <div id="medicalCityPicker" class="medical-city-picker"></div>
+        </div>
+      </div>
+
+      <div class="medical-chart-grid medical-chart-grid-2">
+        <article class="medical-chart-card" data-chart-card="cityRankingChart">
+          <header class="medical-chart-header">
+            <div><h5>縣市使用人數排名</h5><p id="cityRankingSubtitle"></p></div>
+            <div class="medical-chart-tools">
+              <button type="button" data-chart-action="height"><i class="fa fa-arrows-v"></i></button>
+              <button type="button" data-chart-action="expand"><i class="fa fa-expand"></i></button>
+              <button type="button" data-chart-action="download"><i class="fa fa-download"></i></button>
+            </div>
+          </header>
+          <div class="medical-chart-canvas-wrap"><canvas id="cityRankingChart"></canvas></div>
+        </article>
+
+        <article class="medical-chart-card" data-chart-card="cityTrendChart">
+          <header class="medical-chart-header">
+            <div><h5>選定縣市歷年趨勢</h5><p>勾選上方縣市進行多線比較</p></div>
+            <div class="medical-chart-tools">
+              <button type="button" data-chart-action="height"><i class="fa fa-arrows-v"></i></button>
+              <button type="button" data-chart-action="expand"><i class="fa fa-expand"></i></button>
+              <button type="button" data-chart-action="download"><i class="fa fa-download"></i></button>
+            </div>
+          </header>
+          <div class="medical-chart-canvas-wrap"><canvas id="cityTrendChart"></canvas></div>
+        </article>
+
+        <article class="medical-chart-card medical-chart-card-wide" data-chart-card="cityGrowthChart">
+          <header class="medical-chart-header">
+            <div><h5>選定期間縣市成長率</h5><p id="cityGrowthSubtitle"></p></div>
+            <div class="medical-chart-tools">
+              <button type="button" data-chart-action="height"><i class="fa fa-arrows-v"></i></button>
+              <button type="button" data-chart-action="expand"><i class="fa fa-expand"></i></button>
+              <button type="button" data-chart-action="download"><i class="fa fa-download"></i></button>
+            </div>
+          </header>
+          <div class="medical-chart-canvas-wrap"><canvas id="cityGrowthChart"></canvas></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- === 資料表 === -->
+    <section class="medical-section">
+      <div class="medical-section-heading medical-section-heading-controls">
+        <div>
+          <span class="medical-section-kicker">DATA TABLE</span>
+          <h4>年度主要數據明細</h4>
+        </div>
+        <div class="medical-table-actions">
+          <label class="medical-inline-field">
+            <span>搜尋年度</span>
+            <input id="medicalTableSearch" type="search" class="form-control form-control-sm" placeholder="例如：113">
+          </label>
+          <button id="medicalExportCsv" type="button" class="medical-button medical-button-primary">
+            <i class="fa fa-file-excel-o"></i> 匯出目前資料
+          </button>
+        </div>
+      </div>
+
+      <div class="medical-table-card">
+        <div class="table-responsive">
+          <table class="table medical-data-table">
+            <thead>
+              <tr>
+                <th>民國年</th>
+                <th>西元年</th>
+                <th>總人數</th>
+                <th>年增率</th>
+                <th>男性</th>
+                <th>女性</th>
+                <th>30歲以下</th>
+                <th>31－40歲</th>
+                <th>41－50歲</th>
+                <th>51－65歲</th>
+                <th>65歲以上</th>
+              </tr>
+            </thead>
+            <tbody id="medicalDataTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- === 解讀與限制 === -->
+    <section class="medical-section">
+      <div class="medical-section-heading">
+        <div>
+          <span class="medical-section-kicker">INTERPRETATION</span>
+          <h4>資料品質、定義與使用限制</h4>
+        </div>
+      </div>
+
+      <div class="medical-note-grid">
+        <article class="medical-note-card medical-note-warning">
+          <i class="fa fa-exclamation-circle"></i>
+          <div>
+            <h5>不是憂鬱症盛行率</h5>
+            <p>資料代表曾使用抗憂鬱藥物的人數，不等同憂鬱症確診患者人數，也不能直接判斷疾病盛行率。</p>
+          </div>
+        </article>
+        <article class="medical-note-card">
+          <i class="fa fa-code-fork"></i>
+          <div>
+            <h5>民國 102 年定義調整</h5>
+            <p>94～101 年以 ATC 前 4 碼 N06A 計；102 年起包含 N06A 單方與 N06CA 複方，跨年度比較需注意口徑變化。</p>
+          </div>
+        </article>
+        <article class="medical-note-card">
+          <i class="fa fa-map-marker"></i>
+          <div>
+            <h5>縣市依醫療機構所在地</h5>
+            <p>縣市數據依特約醫事服務機構所在縣市統計，並非使用者戶籍或居住地。</p>
+          </div>
+        </article>
+        <article class="medical-note-card">
+          <i class="fa fa-clone"></i>
+          <div>
+            <h5>區域加總可能重複</h5>
+            <p>同一保險對象可能跨縣市或跨業務組就醫，因此區域加總可能高於全國總人數，不能當作互斥人口相加。</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="medical-quality-card">
+        <div>
+          <span>性別加總與全國總數</span>
+          <strong class="{{ 'medical-quality-ok' if medical_data.quality.gender_matches_total else 'medical-quality-warning' }}">
+            {{ '一致' if medical_data.quality.gender_matches_total else '需檢查' }}
+          </strong>
+        </div>
+        <div>
+          <span>年齡加總與全國總數</span>
+          <strong class="{{ 'medical-quality-ok' if medical_data.quality.age_matches_total else 'medical-quality-warning' }}">
+            {{ '一致' if medical_data.quality.age_matches_total else '需檢查' }}
+          </strong>
+        </div>
+        <div>
+          <span>最新年度業務組加總高於總數</span>
+          <strong>{{ "{:,}".format(medical_data.quality.latest_branch_extra) }} 人</strong>
+        </div>
+        <div>
+          <span>最新年度縣市加總高於總數</span>
+          <strong>{{ "{:,}".format(medical_data.quality.latest_city_extra) }} 人</strong>
+        </div>
+      </div>
+
+      <div class="medical-source-footnote">
+        <strong>資料來源：</strong>
+        衛生福利部中央健康保險署，「抗憂鬱藥物使用人數」，政府資料開放平臺／健保資料開放服務；
+        Resource ID：{{ medical_data.metadata.resource_id }}。官方詮釋資料更新日期：{{ medical_data.metadata.official_metadata_updated_at }}。
+        本頁為資料視覺化與學習展示，不提供醫療診斷或個人用藥建議。
+      </div>
+    </section>
+  {% endif %}
+</div>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- viewport：RWD 響應式設定，讓手機、平板、電腦都能正常縮放顯示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>主頁資訊</title>
+    <!-- plugins:css：模板基礎外掛 CSS，主要是圖示、Bootstrap 基礎樣式等 -->
+    <!-- simple-line-icons：簡潔線條圖示，例如 icon-menu、icon-home、icon-chart -->
+    <link rel="stylesheet" href="assets/vendors/simple-line-icons/css/simple-line-icons.css">
+    <!-- vendor.bundle.base.css：模板基礎樣式包，通常包含 Bootstrap、按鈕、表格、卡片、排版基礎樣式 -->
+    <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page：這一頁額外功能會用到的 CSS -->
+    <!-- font-awesome：另一套常用圖示庫，例如 fa-user、fa-home、fa-search 這類圖示 -->
+    <link rel="stylesheet" href="assets/vendors/font-awesome/css/font-awesome.min.css" />
+    <!-- bootstrap-datepicker：日期選擇器樣式，做日曆選日期時會用到 -->
+    <link rel="stylesheet" href="assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
+    <!-- jvectormap：地圖套件樣式，用來顯示世界地圖、區域地圖 -->
+    <link rel="stylesheet" href="assets/vendors/jvectormap/jquery-jvectormap.css">
+    <!-- daterangepicker：日期區間選擇器樣式，例如選 2024/01/01 到 2024/01/31 -->
+    <link rel="stylesheet" href="assets/vendors/daterangepicker/daterangepicker.css">
+    <!-- chartist：Chartist 圖表套件樣式，用來顯示圖表 -->
+    <link rel="stylesheet" href="assets/vendors/chartist/chartist.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css：模板工具自動插入 CSS 的標記，現在可以先不用管 -->
+    <!-- endinject -->
+    <!-- Layout styles：整體版型主樣式 -->
+    <!-- style.css：Stellar Admin 主要樣式，控制側邊欄、上方導覽列、卡片、背景、間距、整體外觀 -->
+    <link rel="stylesheet" href="assets/css/vertical-light-layout/style.css">
+    <!-- End layout styles -->
+    <!-- favicon：瀏覽器分頁標題旁邊的小圖示 -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico" />
+  </head>
+  <body>
+    <div class="container-scroller">
+      <!-- partial:partials/_navbar.html -->
+      <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+          <a class="navbar-brand brand-logo" href="index.html">
+            <img src="assets/images/logo.png" alt="logo" class="logo-dark" style="height: 40px; width: auto; object-fit: contain;" />
+          </a>
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="icon-menu"></span>
+          </button>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center">
+          <h5 class="mb-0 font-weight-medium d-none d-lg-flex">歡迎來到 TYY 小站</h5>
+          <ul class="navbar-nav navbar-nav-right">
+            <form class="search-form d-none d-md-block" action="#">
+              <i class="icon-magnifier"></i>
+              <input type="search" class="form-control" placeholder="Search Here" title="Search here">
+            </form>
+            <li class="nav-item"><a href="#" class="nav-link"><i class="icon-basket-loaded"></i></a></li>
+            <li class="nav-item"><a href="#" class="nav-link"><i class="icon-chart"></i></a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link count-indicator message-dropdown" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="icon-speech"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown">
+                <a class="dropdown-item py-3">
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                  </div>
+                </a>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                  </div>
+                </a>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                  </div>
+                </a>
+              </div>
+            </li>
+            <li class="nav-item dropdown language-dropdown d-none d-sm-flex align-items-center"></li>
+            <li class="nav-item dropdown d-none d-xl-inline-flex user-dropdown">
+              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                <img class="img-xs rounded-circle ms-2" src="assets/images/faces/face8.jpg" alt="Profile image"style="width: 40px; height: 40px; object-fit: cover;"> 
+                <span class="font-weight-normal"> {{user_name}}</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end navbar-dropdown" aria-labelledby="UserDropdown">
+                <div class="dropdown-header text-center">
+                  <img class="img-md rounded-circle" src="assets/images/faces/face8.jpg" alt="Profile image">
+                  <p class="mb-1 mt-3">{{user_name}}</p>
+                  <p class="font-weight-light text-muted mb-0">{{email}}</p>
+                </div>
+                <a class="dropdown-item"><i class="dropdown-item-icon icon-user text-primary"></i> 個人資料</a>
+                <a class="dropdown-item"><i class="dropdown-item-icon icon-speech text-primary"></i> 訊息</a>
+                <a class="dropdown-item"><i class="dropdown-item-icon icon-power text-primary"></i> 登出 </a>
+              </div>
+            </li>
+          </ul>
+          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="icon-menu"></span>
+          </button>
+        </div>
+      </nav>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+          <ul class="nav">
+            <li class="nav-item navbar-brand-mini-wrapper">
+              <a class="nav-link navbar-brand brand-logo-mini" href="index.html"><img src="assets/images/logo-mini.svg" alt="logo" /></a>
+            </li>
+            <li class="nav-item nav-profile">
+              <a href="#" class="nav-link">
+                <div class="profile-image">
+                  <img class="img-xs rounded-circle" src="assets/images/faces/face8.jpg" alt="profile image" style="width: 40px; height: 40px; object-fit: cover;">
+                  <div class="dot-indicator bg-success"></div>
+                </div>
+                <div class="text-wrapper">
+                  <p class="profile-name">{{user_name}}</p>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item nav-category">
+              <span class="nav-link">功能表</span>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">
+                <span class="menu-title">第一欄位</span>
+                <i class="icon-screen-desktop menu-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item nav-category"><span class="nav-link">第一區功能標題</span></li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                <span class="menu-title">第二欄位</span>
+                <i class="icon-layers menu-icon"></i>
+              </a>
+              <div class="collapse" id="ui-basic">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">第二欄位的小欄位1</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">第二欄位的小欄位2</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">第二欄位的小欄位3</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
+                <span class="menu-title">第三欄位</span>
+                <i class="icon-globe menu-icon"></i>
+              </a>
+              <div class="collapse" id="icons">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="pages/icons/font-awesome.html">一區三小</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#forms" aria-expanded="false" aria-controls="forms">
+                <span class="menu-title">第四欄位</span>
+                <i class="icon-book-open menu-icon"></i>
+              </a>
+              <div class="collapse" id="forms">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="pages/forms/basic_elements.html">第四欄位的小欄位1</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+                <span class="menu-title">第五欄位</span>
+                <i class="icon-chart menu-icon"></i>
+              </a>
+              <div class="collapse" id="charts">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">ChartJs</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
+                <span class="menu-title">第六欄位</span>
+                <i class="icon-grid menu-icon"></i>
+              </a>
+              <div class="collapse" id="tables">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">第八欄位小欄位1</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item nav-category"><span class="nav-link">第二區功能標題</span></li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                <span class="menu-title">二區一</span>
+                <i class="icon-disc menu-icon"></i>
+              </a>
+              <div class="collapse" id="auth">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html">二區一小</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item nav-category"><span class="nav-link">三區</span></li>
+            <li class="nav-item">
+              <a class="nav-link" href="../../docs/documentation.html" target="_blank">
+                <span class="menu-title">三區一</span>
+                <i class="icon-folder-alt menu-icon"></i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <!-- partial：區塊引用註記，表示這裡原本是模板拆分區塊的一部分 -->
+         <!-- main-panel：右側主內容區 開始 -->
+    <div class="main-panel">
+          <!-- content-wrapper：主要內容包裝區 開始 -->
+      <div class="content-wrapper">
+          <!-- content-wrapper ends：主要內容包裝區 結束 -->
+          </div>
+          <!-- partial:partials/_footer.html：頁尾 footer 區塊開始 -->
+          <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">頁尾資訊<a href="#"> Terms of use 使用條款 </a><a href="#"> Privacy Policy 隱私權政策 </a></span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">頁尾資訊 <i class="icon-heart text-danger"></i></span>
+            </div>
+          </footer>
+          <!-- partial：頁尾 footer 區塊結束 -->
+        </div>
+        <!-- main-panel ends：右側主內容區 main-panel 結束 -->
+      </div>
+      <!-- page-body-wrapper ends：頁面主體外框結束，包含左側 sidebar 和右側 main-panel -->
+    </div>
+    <!-- container-scroller：整個頁面最大外框結束 -->
+    <!-- plugins:js：模板基礎 JavaScript 外掛開始 -->
+    <script src="assets/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject：自動注入區塊結束，模板工具用標記 -->
+    <!-- Plugin js for this page：這一頁額外功能需要的 JavaScript -->
+    <script src="assets/vendors/chart.js/chart.umd.js"></script>
+    <script src="assets/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="assets/vendors/moment/moment.min.js"></script>
+    <script src="assets/vendors/daterangepicker/daterangepicker.js"></script>
+    <script src="assets/vendors/chartist/chartist.min.js"></script>
+    <script src="assets/vendors/progressbar.js/progressbar.min.js"></script>
+    <script src="assets/js/jquery.cookie.js"></script>
+    <!-- End plugin js for this page：這一頁額外功能 JavaScript 結束 -->
+    <!-- inject:js：模板主要互動 JavaScript 開始 -->
+    <script src="assets/js/off-canvas.js"></script>
+    <script src="assets/js/hoverable-collapse.js"></script>
+    <script src="assets/js/misc.js"></script>
+    <script src="assets/js/settings.js"></script>
+    <script src="assets/js/todolist.js"></script>
+    <!-- endinject：模板主要互動 JavaScript 結束 -->
+    <!-- Custom js for this page：這一頁專用 JavaScript 開始 -->
+    <script src="assets/js/dashboard.js"></script>
+    <!-- End custom js for this page：這一頁專用 JavaScript 結束 -->
+  </body>
+</html>

@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h3>剪刀石頭布</h3>
+        <p>請選擇你的出拳：</p>
+
+        <!-- 出拳圖片區 -->
+        <div style="display: flex; gap: 30px; margin-top: 20px;">
+
+          <!-- 剪刀 -->
+          <form method="post" action="{{ url_for('schoolassignment.rock_paper_scissors_play') }}" onsubmit="return submitPageForm(this);">
+            <input type="hidden" name="user_choice" value="scissors">
+            <button type="submit" style="border: none; background: none; cursor: pointer;">
+              <img src="/static/image/scissors.png" alt="剪刀" width="120">
+              <p>剪刀</p>
+            </button>
+          </form>
+
+          <!-- 石頭 -->
+          <form method="post" action="{{ url_for('schoolassignment.rock_paper_scissors_play') }}" onsubmit="return submitPageForm(this);">
+            <input type="hidden" name="user_choice" value="stone">
+            <button type="submit" style="border: none; background: none; cursor: pointer;">
+              <img src="/static/image/stone.png" alt="石頭" width="120">
+              <p>石頭</p>
+            </button>
+          </form>
+
+          <!-- 布 -->
+          <form method="post" action="{{ url_for('schoolassignment.rock_paper_scissors_play') }}" onsubmit="return submitPageForm(this);">
+            <input type="hidden" name="user_choice" value="paper">
+            <button type="submit" style="border: none; background: none; cursor: pointer;">
+              <img src="/static/image/paper.png" alt="布" width="120">
+              <p>布</p>
+            </button>
+          </form>
+
+        </div>
+
+        <hr>
+
+        <!-- 結果顯示區 -->
+        <div>
+          <p>你的出拳：{{ user_choice }}</p>
+          <p>電腦出拳：{{ computer_choice }}</p>
+          <p>結果：{{ result }}</p>
+        </div>
+
+        <hr>
+
+        <!-- 勝敗統計 -->
+        <div>
+          <p>勝利次數：{{ win }}</p>
+          <p>平手次數：{{ tie }}</p>
+          <p>失敗次數：{{ lose }}</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

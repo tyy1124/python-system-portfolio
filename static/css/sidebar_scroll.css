@@ -1,0 +1,104 @@
+/* === TYY 左側選單與主內容獨立滾動設定 === */
+:root {
+  --tyy-navbar-height: 70px;
+}
+
+@media (min-width: 992px) {
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden !important;
+  }
+
+  .container-scroller {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden !important;
+  }
+
+  .page-body-wrapper {
+    height: 100vh;
+    min-height: 100vh !important;
+    overflow: hidden !important;
+    align-items: stretch;
+  }
+
+  #sidebar.sidebar {
+    height: calc(100vh - var(--tyy-navbar-height));
+    min-height: 0 !important;
+    max-height: calc(100vh - var(--tyy-navbar-height));
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    flex-shrink: 0;
+    overscroll-behavior-y: contain;
+  }
+
+  .main-panel {
+    height: calc(100vh - var(--tyy-navbar-height));
+    min-height: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain;
+  }
+}
+
+#sidebar .nav {
+  min-height: 100%;
+  margin-bottom: 0;
+  padding-bottom: 30px;
+}
+
+#sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+#sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.main-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-panel::-webkit-scrollbar-track {
+  background: var(--tyy-page-bg, #edf0f5);
+}
+
+.main-panel::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: var(--tyy-border-strong, #b8bec8);
+}
+
+.main-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--tyy-text-muted, #929aa6);
+}
+
+#sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.main-panel {
+  scrollbar-width: thin;
+  scrollbar-color: var(--tyy-border-strong, #b8bec8) var(--tyy-page-bg, #edf0f5);
+}
+
+@media (max-width: 991.98px) {
+  #sidebar.sidebar {
+    height: calc(100vh - var(--tyy-navbar-height));
+    max-height: calc(100vh - var(--tyy-navbar-height));
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain;
+  }
+}

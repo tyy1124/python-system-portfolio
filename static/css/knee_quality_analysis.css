@@ -1,0 +1,1632 @@
+/* =========================================================
+   TYY 人工膝關節醫療品質分析與資料工作台
+   依賴 theme_mode.css 的 --tyy-* 語意變數
+   ========================================================= */
+
+.knee-page {
+  color: var(--tyy-text);
+}
+
+.knee-page *,
+.knee-page *::before,
+.knee-page *::after {
+  box-sizing: border-box;
+}
+
+.knee-hero,
+.knee-card {
+  border: 1px solid var(--tyy-border);
+  border-radius: 18px;
+  background: var(--tyy-surface);
+  box-shadow: var(--tyy-shadow);
+}
+
+.knee-hero {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  padding: 1.7rem;
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--tyy-tiffany-soft) 78%, var(--tyy-surface)),
+      var(--tyy-surface) 55%,
+      color-mix(in srgb, var(--tyy-orange-soft) 74%, var(--tyy-surface)));
+}
+
+.knee-hero::before {
+  content: "";
+  position: absolute;
+  top: -90px;
+  right: -80px;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--tyy-tiffany) 24%, transparent), transparent 70%);
+  pointer-events: none;
+}
+
+.knee-hero h2,
+.knee-section-heading h3,
+.knee-card h3,
+.knee-card h4,
+.knee-card h5 {
+  color: var(--tyy-heading);
+}
+
+.knee-hero h2 {
+  margin: 0.25rem 0 0.75rem;
+  font-size: clamp(1.55rem, 2.6vw, 2.3rem);
+  line-height: 1.25;
+}
+
+.knee-hero p {
+  max-width: 780px;
+  margin: 0;
+  color: var(--tyy-text-secondary);
+  line-height: 1.8;
+}
+
+.knee-eyebrow {
+  display: inline-block;
+  color: var(--tyy-tiffany-strong);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.knee-hero-badge {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 220px;
+  padding: 1.1rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.35rem;
+  border: 1px solid color-mix(in srgb, var(--tyy-orange) 38%, var(--tyy-border));
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--tyy-orange-soft) 65%, var(--tyy-surface));
+  text-align: center;
+}
+
+.knee-hero-badge i {
+  color: var(--tyy-orange);
+  font-size: 2rem;
+}
+
+.knee-hero-badge strong {
+  color: var(--tyy-heading);
+  font-size: 1rem;
+}
+
+.knee-hero-badge span {
+  color: var(--tyy-text-secondary);
+  font-size: 0.78rem;
+}
+
+.knee-alert {
+  border-radius: 14px;
+  line-height: 1.7;
+}
+
+.knee-alert ul {
+  max-height: 250px;
+  overflow: auto;
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.knee-card {
+  margin-bottom: 1.25rem;
+  padding: 1.25rem;
+}
+
+.knee-source-card {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.knee-source-card p {
+  margin-bottom: 0.45rem;
+  color: var(--tyy-text-secondary);
+  line-height: 1.7;
+}
+
+.knee-source-card code {
+  color: var(--tyy-orange-strong);
+  background: var(--tyy-orange-soft);
+}
+
+.knee-source-icon {
+  display: grid;
+  flex: 0 0 50px;
+  width: 50px;
+  height: 50px;
+  place-items: center;
+  border-radius: 14px;
+  background: var(--tyy-tiffany-soft);
+  color: var(--tyy-tiffany-strong);
+  font-size: 1.3rem;
+}
+
+.knee-source-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 0.8rem;
+}
+
+.knee-source-links a {
+  color: var(--tyy-tiffany-strong);
+  font-weight: 700;
+}
+
+.knee-dataset-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.knee-dataset-main {
+  flex: 1 1 390px;
+}
+
+.knee-dataset-main label,
+.knee-filter-grid label,
+.knee-details label,
+.knee-compare-controls label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--tyy-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.knee-dataset-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 0.55rem;
+  color: var(--tyy-text-muted);
+  font-size: 0.78rem;
+}
+
+.knee-dataset-meta i {
+  color: var(--tyy-tiffany);
+}
+
+.knee-dataset-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  justify-content: flex-end;
+}
+
+.knee-management-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.knee-details {
+  margin-bottom: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.knee-details summary {
+  display: flex;
+  padding: 1rem 1.2rem;
+  align-items: center;
+  gap: 0.6rem;
+  border-bottom: 1px solid transparent;
+  color: var(--tyy-heading);
+  cursor: pointer;
+  font-weight: 800;
+  list-style: none;
+}
+
+.knee-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.knee-details summary::after {
+  content: "\f078";
+  margin-left: auto;
+  color: var(--tyy-text-muted);
+  font-family: FontAwesome;
+  transition: transform 180ms ease;
+}
+
+.knee-details[open] summary {
+  border-bottom-color: var(--tyy-border);
+  background: var(--tyy-surface-alt);
+}
+
+.knee-details[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.knee-details summary i {
+  color: var(--tyy-orange);
+}
+
+.knee-details-body {
+  padding: 1.2rem;
+}
+
+.knee-details .form-text {
+  color: var(--tyy-text-muted);
+  line-height: 1.5;
+}
+
+.knee-validation-guide {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--tyy-border);
+  color: var(--tyy-text-secondary);
+  font-size: 0.77rem;
+}
+
+.knee-validation-guide strong {
+  width: 100%;
+  color: var(--tyy-heading);
+}
+
+.knee-validation-guide span {
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--tyy-border);
+  border-radius: 999px;
+  background: var(--tyy-surface-alt);
+}
+
+.knee-form-grid,
+.knee-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.knee-form-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.knee-span-2 {
+  grid-column: span 2;
+}
+
+.knee-rate-preview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 0.4rem 0 1rem;
+}
+
+.knee-rate-preview > div {
+  padding: 0.8rem;
+  border: 1px solid var(--tyy-border);
+  border-radius: 12px;
+  background: var(--tyy-surface-alt);
+}
+
+.knee-rate-preview span {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--tyy-text-muted);
+  font-size: 0.75rem;
+}
+
+.knee-rate-preview strong {
+  color: var(--tyy-tiffany-strong);
+  font-size: 1.15rem;
+}
+
+.knee-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.knee-section-heading h3 {
+  margin: 0.15rem 0 0;
+  font-size: 1.25rem;
+}
+
+.knee-limit-text,
+.knee-table-count {
+  color: var(--tyy-text-muted);
+  font-size: 0.8rem;
+}
+
+.knee-dataset-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.knee-dataset-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--tyy-border);
+  border-radius: 13px;
+  background: var(--tyy-surface-alt);
+}
+
+.knee-dataset-item h5 {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+}
+
+.knee-dataset-item p {
+  margin: 0;
+  color: var(--tyy-text-muted);
+  font-size: 0.78rem;
+}
+
+.knee-dataset-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.knee-dataset-item-actions form {
+  margin: 0;
+}
+
+.knee-empty-state {
+  padding: 2rem;
+  color: var(--tyy-text-muted);
+  text-align: center;
+}
+
+.knee-empty-state i {
+  display: block;
+  margin-bottom: 0.6rem;
+  color: var(--tyy-tiffany);
+  font-size: 2rem;
+}
+
+.knee-filter-card {
+  position: static;
+}
+
+.knee-filter-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.9rem;
+  color: var(--tyy-text-secondary);
+  font-size: 0.78rem;
+}
+
+.knee-filter-summary span {
+  padding: 0.32rem 0.6rem;
+  border-radius: 999px;
+  background: var(--tyy-tiffany-soft);
+}
+
+.knee-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.knee-kpi {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--tyy-border);
+  border-radius: 16px;
+  background: var(--tyy-surface);
+  box-shadow: var(--tyy-shadow);
+}
+
+.knee-kpi span {
+  display: block;
+  min-height: 2.1em;
+  color: var(--tyy-text-secondary);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.knee-kpi strong {
+  display: block;
+  margin: 0.45rem 0 0.25rem;
+  color: var(--tyy-heading);
+  font-size: clamp(1.2rem, 2vw, 1.72rem);
+  line-height: 1;
+}
+
+.knee-kpi small {
+  color: var(--tyy-text-muted);
+  font-size: 0.68rem;
+}
+
+.knee-kpi-tiffany {
+  border-top: 4px solid var(--tyy-tiffany);
+}
+
+.knee-kpi-orange {
+  border-top: 4px solid var(--tyy-orange);
+}
+
+.knee-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.knee-chart-card {
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.knee-chart-card > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.knee-chart-card h4 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+}
+
+.knee-chart-card p {
+  margin: 0;
+  color: var(--tyy-text-muted);
+  font-size: 0.76rem;
+}
+
+.knee-chart-tools {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.knee-chart-tools button {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--tyy-border);
+  border-radius: 9px;
+  background: var(--tyy-surface-alt);
+  color: var(--tyy-text-secondary);
+  cursor: pointer;
+}
+
+.knee-chart-tools button:hover {
+  border-color: var(--tyy-tiffany);
+  color: var(--tyy-tiffany-strong);
+}
+
+.knee-chart-shell {
+  position: relative;
+  width: 100%;
+  height: 330px;
+  min-height: 230px;
+}
+
+.knee-page[data-chart-density="compact"] .knee-chart-shell {
+  height: 245px;
+}
+
+.knee-page[data-chart-density="tall"] .knee-chart-shell {
+  height: 430px;
+}
+
+.knee-chart-card[data-local-height="tall"] .knee-chart-shell {
+  height: 520px !important;
+}
+
+.knee-chart-card[data-local-height="compact"] .knee-chart-shell {
+  height: 235px !important;
+}
+
+.knee-chart-card.knee-fullscreen {
+  position: fixed;
+  inset: 18px;
+  z-index: 1055;
+  overflow: auto;
+  margin: 0;
+  padding: 1.2rem;
+  background: var(--tyy-surface);
+}
+
+.knee-chart-card.knee-fullscreen .knee-chart-shell {
+  height: calc(100vh - 140px) !important;
+}
+
+body.knee-chart-open {
+  overflow: hidden;
+}
+
+.knee-compare-controls {
+  max-width: 680px;
+  margin-bottom: 1rem;
+}
+
+.knee-compare-controls select {
+  min-height: 180px;
+}
+
+.knee-compare-controls small {
+  color: var(--tyy-text-muted);
+}
+
+.knee-compare-chart {
+  padding: 0;
+}
+
+.knee-chart-tall {
+  height: 420px;
+}
+
+.knee-table {
+  color: var(--tyy-text);
+}
+
+.knee-table thead th {
+  border-top: none;
+  border-bottom-color: var(--tyy-border-strong);
+  color: var(--tyy-heading);
+  white-space: nowrap;
+}
+
+.knee-table tbody td {
+  border-color: var(--tyy-border);
+  vertical-align: middle;
+}
+
+.knee-table tbody tr:hover {
+  background: var(--tyy-tiffany-soft);
+}
+
+.knee-rate-good {
+  color: var(--tyy-success);
+  font-weight: 800;
+}
+
+.knee-rate-watch {
+  color: var(--tyy-warning);
+  font-weight: 800;
+}
+
+.knee-rate-high {
+  color: var(--tyy-danger);
+  font-weight: 800;
+}
+
+.knee-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding-top: 0.8rem;
+}
+
+.knee-pagination span {
+  color: var(--tyy-text-secondary);
+  font-size: 0.8rem;
+}
+
+.knee-method-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.knee-method-grid > div {
+  padding: 1rem;
+  border: 1px solid var(--tyy-border);
+  border-radius: 13px;
+  background: var(--tyy-surface-alt);
+}
+
+.knee-method-grid h5 {
+  margin-bottom: 0.45rem;
+  font-size: 0.9rem;
+}
+
+.knee-method-grid p {
+  margin: 0;
+  color: var(--tyy-text-secondary);
+  font-size: 0.77rem;
+  line-height: 1.65;
+}
+
+/* === 深色模式細節 === */
+body[data-theme="dark"] .knee-hero {
+  background:
+    radial-gradient(circle at 10% 5%, rgba(75, 216, 207, 0.11), transparent 34%),
+    radial-gradient(circle at 92% 20%, rgba(251, 194, 235, 0.10), transparent 34%),
+    linear-gradient(135deg, #10262b, #132126 56%, #2c211c);
+}
+
+body[data-theme="dark"] .knee-page .form-control,
+body[data-theme="dark"] .knee-page select,
+body[data-theme="dark"] .knee-page input {
+  border-color: var(--tyy-border);
+  background: var(--tyy-input-bg);
+  color: var(--tyy-text);
+}
+
+body[data-theme="dark"] .knee-page .form-control::placeholder {
+  color: var(--tyy-text-muted);
+}
+
+body[data-theme="dark"] .knee-page .btn-outline-secondary {
+  border-color: var(--tyy-border-strong);
+  color: var(--tyy-text-secondary);
+}
+
+body[data-theme="dark"] .knee-page .table-responsive {
+  border-color: var(--tyy-border);
+}
+
+@media (max-width: 1280px) {
+  .knee-kpi-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .knee-filter-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .knee-method-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 991px) {
+  .knee-hero,
+  .knee-dataset-bar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .knee-hero-badge {
+    min-width: 0;
+  }
+
+  .knee-management-grid,
+  .knee-chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .knee-dataset-actions {
+    justify-content: flex-start;
+  }
+
+  .knee-filter-card {
+    position: static;
+  }
+}
+
+@media (max-width: 767px) {
+  .knee-card,
+  .knee-hero {
+    border-radius: 14px;
+    padding: 1rem;
+  }
+
+  .knee-source-card {
+    flex-direction: column;
+  }
+
+  .knee-form-grid,
+  .knee-filter-grid,
+  .knee-rate-preview,
+  .knee-kpi-grid,
+  .knee-method-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .knee-span-2 {
+    grid-column: auto;
+  }
+
+  .knee-dataset-item,
+  .knee-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .knee-dataset-item-actions {
+    width: 100%;
+  }
+
+  .knee-chart-shell {
+    height: 300px;
+  }
+
+  .knee-chart-card.knee-fullscreen {
+    inset: 6px;
+  }
+}
+
+
+/* === 分析條件收合、表格與圖表深色底色修正 === */
+.knee-filter-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; justify-content: flex-end; }
+.knee-filter-body { display: block; }
+.knee-filter-card.knee-filter-collapsed .knee-filter-body { display: none; }
+.knee-filter-card.knee-filter-collapsed .knee-section-heading { margin-bottom: 0; }
+.knee-chart-shell { padding: 10px; border: 1px solid var(--tyy-border); border-radius: 12px; background: var(--tyy-surface-alt); }
+.knee-table-card .table-responsive { background: var(--tyy-surface); }
+.knee-table { --bs-table-bg: var(--tyy-surface); --bs-table-color: var(--tyy-text); --bs-table-border-color: var(--tyy-border); --bs-table-hover-bg: var(--tyy-tiffany-soft); background: var(--tyy-surface); }
+.knee-table tbody, .knee-table tbody tr, .knee-table tbody td { background-color: var(--tyy-surface) !important; color: var(--tyy-text) !important; }
+.knee-table tbody tr:hover td { background-color: var(--tyy-tiffany-soft) !important; }
+body[data-theme="dark"] .knee-table-card, body[data-theme="dark"] .knee-table-card .table-responsive, body[data-theme="dark"] .knee-table { background: var(--tyy-surface) !important; }
+@media (max-width: 767px) { .knee-filter-actions { width: 100%; justify-content: flex-start; } .knee-filter-actions .btn { flex: 1 1 auto; } }
+
+/* === 分布圖局部放大控制 === */
+.knee-chart-select {
+  min-width: 128px;
+  height: 32px;
+  padding: 0 0.45rem;
+  border: 1px solid var(--tyy-border);
+  border-radius: 9px;
+  background: var(--tyy-surface-alt);
+  color: var(--tyy-text-secondary);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.knee-chart-select:focus {
+  border-color: var(--tyy-tiffany);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--tyy-tiffany-soft);
+}
+
+/* === 指定院所搜尋與選擇 === */
+.knee-hospital-search-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.6rem;
+  margin-bottom: 0.65rem;
+}
+
+.knee-hospital-compare-status {
+  margin-bottom: 0.5rem;
+  color: var(--tyy-tiffany-strong);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.knee-compare-controls select option {
+  padding: 0.35rem 0.5rem;
+  background: var(--tyy-input-bg);
+  color: var(--tyy-text);
+}
+
+.knee-compare-controls select option:checked {
+  background: linear-gradient(135deg, var(--tyy-tiffany), var(--tyy-orange));
+  color: #ffffff;
+}
+
+@media (max-width: 767px) {
+  .knee-chart-tools {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .knee-chart-select {
+    width: 100%;
+    order: -1;
+  }
+
+  .knee-hospital-search-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   感染率分布：明顯可見的局部放大控制
+   ========================================================= */
+.knee-distribution-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem 1rem;
+  margin: 0.85rem 0 0.95rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--tyy-tiffany) 35%, var(--tyy-border));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--tyy-tiffany-soft) 48%, var(--tyy-surface));
+}
+
+.knee-distribution-presets,
+.knee-distribution-custom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.knee-distribution-label,
+.knee-distribution-custom label {
+  margin: 0 0.25rem 0 0;
+  color: var(--tyy-heading);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.knee-distribution-label i {
+  color: var(--tyy-orange);
+}
+
+.knee-distribution-mode,
+#kneeDistributionApply {
+  min-height: 34px;
+  padding: 0.35rem 0.72rem;
+  border: 1px solid var(--tyy-border);
+  border-radius: 9px;
+  background: var(--tyy-surface);
+  color: var(--tyy-text-secondary);
+  font-size: 0.76rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 150ms ease;
+}
+
+.knee-distribution-mode:hover,
+#kneeDistributionApply:hover,
+.knee-distribution-mode.is-active {
+  border-color: var(--tyy-tiffany);
+  background: var(--tyy-tiffany-strong);
+  color: #ffffff;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--tyy-tiffany) 22%, transparent);
+}
+
+.knee-distribution-custom input {
+  width: 82px;
+  height: 34px;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--tyy-border);
+  border-radius: 9px;
+  background: var(--tyy-input-bg);
+  color: var(--tyy-text);
+  font-size: 0.78rem;
+}
+
+.knee-distribution-custom input:focus {
+  border-color: var(--tyy-tiffany);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--tyy-tiffany-soft);
+}
+
+#kneeDistributionStatus {
+  flex: 1 1 100%;
+  color: var(--tyy-text-muted);
+  font-size: 0.76rem;
+}
+
+body[data-theme="dark"] .knee-distribution-toolbar {
+  background: color-mix(in srgb, var(--tyy-tiffany-soft) 32%, var(--tyy-surface));
+}
+
+@media (max-width: 767px) {
+  .knee-distribution-toolbar,
+  .knee-distribution-presets,
+  .knee-distribution-custom {
+    align-items: stretch;
+  }
+
+  .knee-distribution-presets,
+  .knee-distribution-custom {
+    width: 100%;
+  }
+
+  .knee-distribution-mode {
+    flex: 1 1 calc(33.333% - 0.45rem);
+  }
+
+  .knee-distribution-custom input {
+    flex: 1 1 80px;
+    width: auto;
+  }
+}
+
+
+/* =========================================================
+   指定院所：核取方塊多選清單（不需 Ctrl）
+   ========================================================= */
+.knee-hospital-choice-list {
+  max-height: 330px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  padding: 0.7rem;
+  border: 1px solid var(--tyy-border);
+  border-radius: 12px;
+  background: var(--tyy-input-bg);
+}
+
+.knee-hospital-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0.65rem 0.72rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--tyy-surface);
+  color: var(--tyy-text);
+  cursor: pointer;
+  transition: 150ms ease;
+}
+
+.knee-hospital-choice:hover {
+  border-color: color-mix(in srgb, var(--tyy-tiffany) 55%, var(--tyy-border));
+  background: color-mix(in srgb, var(--tyy-tiffany-soft) 55%, var(--tyy-surface));
+}
+
+.knee-hospital-choice.is-selected {
+  border-color: var(--tyy-tiffany);
+  background: color-mix(in srgb, var(--tyy-tiffany-soft) 72%, var(--tyy-surface));
+  box-shadow: inset 3px 0 0 var(--tyy-orange);
+}
+
+.knee-hospital-choice input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin-top: 0.12rem;
+  accent-color: var(--tyy-tiffany-strong);
+}
+
+.knee-hospital-choice-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+}
+
+.knee-hospital-choice-text strong {
+  overflow: hidden;
+  color: var(--tyy-heading);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.knee-hospital-choice-text small {
+  color: var(--tyy-text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+}
+
+.knee-hospital-choice-empty {
+  grid-column: 1 / -1;
+  padding: 1rem;
+  color: var(--tyy-text-muted);
+  text-align: center;
+}
+
+body[data-theme="dark"] .knee-hospital-choice {
+  background: color-mix(in srgb, var(--tyy-surface) 88%, #081619);
+}
+
+@media (max-width: 767px) {
+  .knee-hospital-choice-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================================================
+   三張散布圖局部放大控制
+   ========================================================= */
+
+.knee-scatter-zoom-toolbar {
+  margin: 0 1.25rem 0.85rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--tyy-border);
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--tyy-tiffany) 8%, var(--tyy-surface)),
+      color-mix(in srgb, var(--tyy-orange) 5%, var(--tyy-surface))
+    );
+  color: var(--tyy-text);
+}
+
+.knee-scatter-zoom-presets {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.knee-scatter-zoom-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-right: 0.25rem;
+  color: var(--tyy-heading);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.knee-scatter-zoom-label i {
+  color: var(--tyy-tiffany-strong);
+}
+
+.knee-scatter-zoom-mode,
+.knee-scatter-custom-apply {
+  border: 1px solid var(--tyy-border);
+  border-radius: 999px;
+  background: var(--tyy-surface);
+  color: var(--tyy-text);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.25;
+  transition:
+    border-color 0.18s ease,
+    color 0.18s ease,
+    background-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.knee-scatter-zoom-mode:hover,
+.knee-scatter-custom-apply:hover {
+  border-color: var(--tyy-tiffany);
+  color: var(--tyy-tiffany-strong);
+  transform: translateY(-1px);
+}
+
+.knee-scatter-zoom-mode.is-active {
+  border-color: var(--tyy-tiffany-strong);
+  background: var(--tyy-tiffany-strong);
+  color: #ffffff;
+  box-shadow: 0 5px 14px color-mix(
+    in srgb,
+    var(--tyy-tiffany-strong) 24%,
+    transparent
+  );
+}
+
+.knee-scatter-custom {
+  margin-top: 0.7rem;
+  border-top: 1px dashed var(--tyy-border);
+  padding-top: 0.65rem;
+}
+
+.knee-scatter-custom summary {
+  width: fit-content;
+  color: var(--tyy-tiffany-strong);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+}
+
+.knee-scatter-custom-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(110px, 1fr)) auto;
+  align-items: end;
+  gap: 0.65rem;
+  margin-top: 0.7rem;
+}
+
+.knee-scatter-custom-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0;
+  color: var(--tyy-text-muted);
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+
+.knee-scatter-custom-grid input {
+  width: 100%;
+  min-height: 36px;
+  border: 1px solid var(--tyy-border);
+  border-radius: 8px;
+  background: var(--tyy-input-bg, var(--tyy-surface));
+  color: var(--tyy-text);
+  padding: 0.4rem 0.55rem;
+}
+
+.knee-scatter-custom-grid input:focus {
+  border-color: var(--tyy-tiffany);
+  outline: 0;
+  box-shadow: 0 0 0 3px color-mix(
+    in srgb,
+    var(--tyy-tiffany) 16%,
+    transparent
+  );
+}
+
+.knee-scatter-custom-apply {
+  min-height: 36px;
+  border-radius: 9px;
+  background: color-mix(
+    in srgb,
+    var(--tyy-orange) 14%,
+    var(--tyy-surface)
+  );
+  color: var(--tyy-orange-strong);
+}
+
+.knee-scatter-zoom-toolbar > small {
+  display: block;
+  margin-top: 0.65rem;
+  color: var(--tyy-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+body.theme-dark .knee-scatter-zoom-toolbar,
+body.dark-mode .knee-scatter-zoom-toolbar {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--tyy-tiffany) 10%, var(--tyy-surface)),
+      color-mix(in srgb, var(--tyy-orange) 7%, var(--tyy-surface))
+    );
+}
+
+body.theme-dark .knee-scatter-zoom-mode,
+body.theme-dark .knee-scatter-custom-apply,
+body.dark-mode .knee-scatter-zoom-mode,
+body.dark-mode .knee-scatter-custom-apply {
+  background: color-mix(
+    in srgb,
+    var(--tyy-surface) 92%,
+    #ffffff 8%
+  );
+}
+
+body.theme-dark .knee-scatter-zoom-mode.is-active,
+body.dark-mode .knee-scatter-zoom-mode.is-active {
+  background: var(--tyy-tiffany);
+  border-color: var(--tyy-tiffany);
+  color: #07292b;
+}
+
+@media (max-width: 1100px) {
+  .knee-scatter-custom-grid {
+    grid-template-columns: repeat(2, minmax(130px, 1fr));
+  }
+
+  .knee-scatter-custom-apply {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 650px) {
+  .knee-scatter-zoom-toolbar {
+    margin-inline: 0.8rem;
+    padding: 0.75rem;
+  }
+
+  .knee-scatter-zoom-presets {
+    align-items: stretch;
+  }
+
+  .knee-scatter-zoom-label {
+    width: 100%;
+    margin-bottom: 0.15rem;
+  }
+
+  .knee-scatter-zoom-mode {
+    flex: 1 1 calc(50% - 0.45rem);
+    text-align: center;
+  }
+
+  .knee-scatter-custom-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .knee-scatter-custom-apply {
+    grid-column: auto;
+  }
+}
+
+
+/* =========================================================
+   2026/07/11：人工膝關節分析卡片柔和配色
+   ========================================================= */
+
+/* === 六張 KPI 卡片 === */
+.knee-kpi {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--tyy-tiffany) 8%, var(--tyy-surface)),
+      var(--tyy-surface)
+    );
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.knee-kpi:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(
+    in srgb,
+    var(--tyy-tiffany) 38%,
+    var(--tyy-border)
+  );
+  box-shadow: var(--tyy-shadow-hover);
+}
+
+.knee-kpi::after {
+  content: "";
+  position: absolute;
+  top: -42px;
+  right: -38px;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: color-mix(
+    in srgb,
+    var(--tyy-tiffany) 9%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+.knee-kpi:nth-child(2),
+.knee-kpi:nth-child(5) {
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--tyy-orange) 10%, var(--tyy-surface)),
+      var(--tyy-surface)
+    );
+}
+
+.knee-kpi:nth-child(2)::after,
+.knee-kpi:nth-child(5)::after {
+  background: color-mix(
+    in srgb,
+    var(--tyy-orange) 10%,
+    transparent
+  );
+}
+
+.knee-kpi:nth-child(3) {
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, #5b9bd5 9%, var(--tyy-surface)),
+      var(--tyy-surface)
+    );
+}
+
+.knee-kpi:nth-child(4) {
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, #55a77a 9%, var(--tyy-surface)),
+      var(--tyy-surface)
+    );
+}
+
+.knee-kpi:nth-child(6) {
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, #8a70b8 8%, var(--tyy-surface)),
+      var(--tyy-surface)
+    );
+}
+
+/* === 圖表卡片：交替使用蒂芬尼藍與暖橘淡色 === */
+.knee-chart-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--tyy-tiffany) 5%, var(--tyy-surface)),
+      var(--tyy-surface) 58%,
+      color-mix(in srgb, var(--tyy-orange) 3%, var(--tyy-surface))
+    );
+}
+
+.knee-chart-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    var(--tyy-tiffany),
+    color-mix(in srgb, var(--tyy-tiffany) 28%, transparent)
+  );
+  pointer-events: none;
+}
+
+.knee-chart-card:nth-child(even)::before {
+  background: linear-gradient(
+    180deg,
+    var(--tyy-orange),
+    color-mix(in srgb, var(--tyy-orange) 28%, transparent)
+  );
+}
+
+/* === 比較、資料表與方法說明卡片加一點層次 === */
+.knee-compare-card,
+.knee-table-card,
+.knee-method-card,
+.knee-private-datasets {
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--tyy-tiffany) 4%, var(--tyy-surface)),
+      color-mix(in srgb, var(--tyy-orange) 2%, var(--tyy-surface))
+    );
+}
+
+/* === 深色模式 === */
+body[data-theme="dark"] .knee-kpi {
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--tyy-tiffany) 13%, var(--tyy-surface)),
+      var(--tyy-surface)
+    );
+}
+
+body[data-theme="dark"] .knee-kpi:nth-child(2),
+body[data-theme="dark"] .knee-kpi:nth-child(5) {
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--tyy-orange) 13%, var(--tyy-surface)),
+      var(--tyy-surface)
+    );
+}
+
+body[data-theme="dark"] .knee-kpi:nth-child(3) {
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, #5b9bd5 12%, var(--tyy-surface)),
+      var(--tyy-surface)
+    );
+}
+
+body[data-theme="dark"] .knee-kpi:nth-child(4) {
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, #55a77a 12%, var(--tyy-surface)),
+      var(--tyy-surface)
+    );
+}
+
+body[data-theme="dark"] .knee-kpi:nth-child(6) {
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, #8a70b8 11%, var(--tyy-surface)),
+      var(--tyy-surface)
+    );
+}
+
+body[data-theme="dark"] .knee-chart-card {
+  background:
+    linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--tyy-tiffany) 8%, var(--tyy-surface)),
+      var(--tyy-surface) 58%,
+      color-mix(in srgb, var(--tyy-orange) 6%, var(--tyy-surface))
+    );
+}
+
+
+/* =========================================================
+   三組指定配色：人工膝關節頁面最終覆寫
+   ========================================================= */
+.knee-hero {
+  background: linear-gradient(135deg, #f1ecfb, #fffefe 52%, #fff0f3);
+}
+
+.knee-hero-badge {
+  border-color: rgba(185, 79, 112, 0.28);
+  background: linear-gradient(145deg, rgba(255, 154, 158, 0.17), rgba(250, 208, 196, 0.14));
+}
+
+.knee-hero-badge i {
+  color: #b94f70;
+}
+
+.knee-kpi:nth-child(3n + 1) {
+  background: linear-gradient(145deg, rgba(255, 154, 158, 0.17), rgba(250, 208, 196, 0.10), var(--tyy-surface) 76%);
+}
+
+.knee-kpi:nth-child(3n + 2) {
+  background: linear-gradient(145deg, rgba(161, 140, 209, 0.17), rgba(251, 194, 235, 0.10), var(--tyy-surface) 76%);
+}
+
+.knee-kpi:nth-child(3n) {
+  background: linear-gradient(145deg, rgba(250, 208, 196, 0.18), rgba(255, 209, 255, 0.11), var(--tyy-surface) 76%);
+}
+
+.knee-kpi:nth-child(3n + 1)::after {
+  background: rgba(255, 154, 158, 0.09);
+}
+
+.knee-kpi:nth-child(3n + 2)::after {
+  background: rgba(161, 140, 209, 0.10);
+}
+
+.knee-kpi:nth-child(3n)::after {
+  background: rgba(251, 194, 235, 0.10);
+}
+
+.knee-chart-card {
+  background: linear-gradient(155deg, rgba(161, 140, 209, 0.06), var(--tyy-surface) 55%, rgba(255, 154, 158, 0.04));
+}
+
+.knee-chart-card::before {
+  background: linear-gradient(180deg, #a18cd1, rgba(251, 194, 235, 0.55));
+}
+
+.knee-chart-card:nth-child(even)::before {
+  background: linear-gradient(180deg, #ff9a9e, rgba(250, 208, 196, 0.55));
+}
+
+.knee-compare-card,
+.knee-table-card,
+.knee-method-card,
+.knee-private-datasets {
+  background: linear-gradient(145deg, rgba(161, 140, 209, 0.045), rgba(255, 154, 158, 0.025), var(--tyy-surface));
+}
+
+body[data-theme="dark"] .knee-hero {
+  background: linear-gradient(135deg, rgba(199, 181, 238, 0.14), #211b2b 52%, rgba(255, 154, 158, 0.10));
+}
+
+body[data-theme="dark"] .knee-kpi:nth-child(3n + 1) {
+  background: linear-gradient(145deg, rgba(255, 154, 158, 0.16), var(--tyy-surface) 74%);
+}
+
+body[data-theme="dark"] .knee-kpi:nth-child(3n + 2) {
+  background: linear-gradient(145deg, rgba(199, 181, 238, 0.17), var(--tyy-surface) 74%);
+}
+
+body[data-theme="dark"] .knee-kpi:nth-child(3n) {
+  background: linear-gradient(145deg, rgba(243, 188, 228, 0.14), var(--tyy-surface) 74%);
+}
+
+body[data-theme="dark"] .knee-chart-card {
+  background: linear-gradient(155deg, rgba(199, 181, 238, 0.08), var(--tyy-surface) 56%, rgba(255, 154, 158, 0.055));
+}
+
+
+/* =========================================================
+   2026/07/12：人工膝關節分析日光模式淡桃 × 霧藍配色
+   ========================================================= */
+
+body[data-theme="light"] .knee-hero {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(126, 166, 213, 0.16),
+      #fffdfb 54%,
+      rgba(243, 214, 199, 0.22)
+    );
+}
+
+body[data-theme="light"] .knee-hero::before {
+  background:
+    radial-gradient(
+      circle,
+      rgba(126, 166, 213, 0.22),
+      transparent 70%
+    );
+}
+
+body[data-theme="light"] .knee-hero-badge {
+  border-color: rgba(85, 127, 181, 0.25);
+  background:
+    linear-gradient(
+      145deg,
+      #eaf2fb,
+      #fff1ea
+    );
+}
+
+body[data-theme="light"] .knee-hero-badge i {
+  color: #557fb5;
+}
+
+body[data-theme="light"] .knee-kpi:nth-child(1),
+body[data-theme="light"] .knee-kpi:nth-child(4) {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(126, 166, 213, 0.16),
+      var(--tyy-surface) 76%
+    );
+}
+
+body[data-theme="light"] .knee-kpi:nth-child(2),
+body[data-theme="light"] .knee-kpi:nth-child(5) {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(243, 214, 199, 0.30),
+      var(--tyy-surface) 76%
+    );
+}
+
+body[data-theme="light"] .knee-kpi:nth-child(3) {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(161, 140, 209, 0.13),
+      var(--tyy-surface) 76%
+    );
+}
+
+body[data-theme="light"] .knee-kpi:nth-child(6) {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(251, 194, 235, 0.14),
+      var(--tyy-surface) 76%
+    );
+}
+
+body[data-theme="light"] .knee-chart-card {
+  background:
+    linear-gradient(
+      155deg,
+      rgba(126, 166, 213, 0.065),
+      var(--tyy-surface) 55%,
+      rgba(243, 214, 199, 0.09)
+    );
+}
+
+body[data-theme="light"] .knee-chart-card::before {
+  background:
+    linear-gradient(
+      180deg,
+      #7ea6d5,
+      rgba(126, 166, 213, 0.35)
+    );
+}
+
+body[data-theme="light"] .knee-chart-card:nth-child(even)::before {
+  background:
+    linear-gradient(
+      180deg,
+      #d99f88,
+      rgba(243, 214, 199, 0.55)
+    );
+}

@@ -1,0 +1,178 @@
+<style>
+.tyy-dashboard { width: 100%; }
+  .tyy-welcome-card { position: relative; overflow: hidden; margin-bottom: 24px; border: 0; border-radius: 16px; background: linear-gradient(135deg, #6f58a8 0%, #9d75b7 55%, #c45f82 120%); color: #ffffff; box-shadow: var(--tyy-shadow-hover); }
+  .tyy-welcome-card::after { position: absolute; top: -70px; right: -45px; width: 220px; height: 220px; border: 28px solid rgba(255,255,255,0.08); border-radius: 50%; content: ""; }
+  .tyy-welcome-card .card-body { position: relative; z-index: 1; padding: 32px; }
+  .tyy-welcome-title { margin-bottom: 10px; font-size: 29px; font-weight: 800; color: #ffffff; }
+  .tyy-welcome-text { max-width: 760px; margin-bottom: 20px; color: rgba(255,255,255,0.88); line-height: 1.8; }
+  .tyy-welcome-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .tyy-welcome-link { display: inline-flex; padding: 10px 17px; align-items: center; border-radius: 8px; background: rgba(255,255,255,0.96); color: #17343a; font-weight: 700; text-decoration: none; }
+  .tyy-welcome-link:hover { color: #17343a; text-decoration: none; transform: translateY(-1px); }
+  .tyy-section-title { margin-bottom: 15px; font-weight: 800; color: var(--tyy-heading); }
+  .tyy-stat-card, .tyy-feature-card, .tyy-update-card { border: 1px solid var(--tyy-border); border-radius: 12px; background: var(--tyy-surface); box-shadow: var(--tyy-shadow); }
+  .tyy-stat-card .card-body { padding: 22px; }
+  .tyy-stat-label { margin-bottom: 8px; color: var(--tyy-text-secondary); font-size: 14px; }
+  .tyy-stat-number { margin-bottom: 0; color: var(--tyy-heading); font-size: 30px; font-weight: 800; }
+  .tyy-stat-note { margin-top: 7px; margin-bottom: 0; color: var(--tyy-text-muted); font-size: 12px; }
+  .tyy-feature-card { height: 100%; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .tyy-feature-card:hover { transform: translateY(-4px); box-shadow: var(--tyy-shadow-hover); }
+  .tyy-feature-card .card-body { display: flex; min-height: 190px; flex-direction: column; padding: 22px; }
+  .tyy-feature-category { margin-bottom: 10px; color: var(--tyy-tiffany-strong); font-size: 13px; font-weight: 800; }
+  .tyy-feature-title { margin-bottom: 10px; color: var(--tyy-heading); font-size: 18px; font-weight: 800; }
+  .tyy-feature-description { margin-bottom: 18px; color: var(--tyy-text-secondary); line-height: 1.65; }
+  .tyy-feature-link { display: inline-flex; margin-top: auto; align-items: center; color: var(--tyy-rose-strong); font-weight: 700; text-decoration: none; }
+  .tyy-feature-link:hover { color: var(--tyy-tiffany-strong); text-decoration: none; }
+  .tyy-update-card .card-body { padding: 24px; }
+  .tyy-update-list { margin: 0; padding: 0; list-style: none; }
+  .tyy-update-list li { position: relative; margin-bottom: 14px; padding-left: 24px; color: var(--tyy-text-secondary); line-height: 1.6; }
+  .tyy-update-list li:last-child { margin-bottom: 0; }
+  .tyy-update-list li::before { position: absolute; top: 7px; left: 0; width: 9px; height: 9px; border-radius: 50%; background: linear-gradient(135deg, var(--tyy-lilac), var(--tyy-rose)); content: ""; }
+  .tyy-guide-box { height: 100%; padding: 24px; border: 1px dashed var(--tyy-border-strong); border-radius: 12px; background: var(--tyy-surface-alt); }
+  .tyy-guide-box p { margin-bottom: 12px; color: var(--tyy-text-secondary); line-height: 1.7; }
+  .tyy-guide-box p:last-child { margin-bottom: 0; }
+
+  .tyy-update-heading { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+  .tyy-update-heading .tyy-section-title { margin-bottom: 3px; }
+  .tyy-update-date { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px solid var(--tyy-border); border-radius: 999px; background: var(--tyy-tiffany-soft); color: var(--tyy-tiffany-strong); font-size: 12px; font-weight: 800; white-space: nowrap; }
+  .tyy-update-title { margin-bottom: 16px; color: var(--tyy-heading); font-size: 17px; font-weight: 800; line-height: 1.5; }
+  .tyy-update-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--tyy-border); }
+  .tyy-update-more { display: inline-flex; align-items: center; gap: 7px; color: var(--tyy-rose-strong); font-weight: 800; text-decoration: none; }
+  .tyy-update-more:hover { color: var(--tyy-tiffany-strong); text-decoration: none; }
+  @media (max-width: 767px) { .tyy-welcome-card .card-body { padding: 24px; } .tyy-welcome-title { font-size: 24px; } }
+
+  /* === 日光模式：首頁主視覺改為霧藍＋淡桃 === */
+  body[data-theme="light"] .tyy-welcome-card {
+    background:
+      linear-gradient(
+        135deg,
+        #4f78ad 0%,
+        #7ea6d5 52%,
+        #e7b9a7 126%
+      );
+    box-shadow: 0 16px 34px rgba(60, 84, 112, 0.18);
+  }
+
+  body[data-theme="light"] .tyy-welcome-link {
+    color: #344f70;
+    background: rgba(255, 253, 251, 0.96);
+  }
+
+  body[data-theme="light"] .tyy-welcome-link:hover {
+    color: #2f4057;
+    background: #ffffff;
+  }
+
+</style>
+
+<div class="tyy-dashboard">
+  <div class="card tyy-welcome-card">
+    <div class="card-body">
+      <div class="tyy-welcome-title">歡迎回來，{{ user_name }}</div>
+      <p class="tyy-welcome-text">這裡集中展示課堂作業、機器學習、深度學習、航班資料系統與自行開發的作品。你可以使用上方搜尋框快速找到功能，也可以從下方快捷入口開始瀏覽。</p>
+      <div class="tyy-welcome-actions">
+        <a class="tyy-welcome-link" href="#" onclick="loadPage('{{ url_for('portfolio_bp.flight_system') }}'); return false;">查看航班系統</a>
+        <a class="tyy-welcome-link" href="#" onclick="loadPage('{{ url_for('schoolassignment.mnist_prediction') }}'); return false;">體驗手寫辨識</a>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="tyy-section-title">網站內容總覽</h4>
+
+  <div class="row">
+    <div class="col-xl-3 col-md-6 grid-margin stretch-card">
+      <div class="card tyy-stat-card">
+        <div class="card-body">
+          <div class="tyy-stat-label">可操作功能</div>
+          <p class="tyy-stat-number">{{ total_feature_count }}</p>
+          <p class="tyy-stat-note">目前已登記的網站功能</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 grid-margin stretch-card">
+      <div class="card tyy-stat-card">
+        <div class="card-body">
+          <div class="tyy-stat-label">機器學習</div>
+          <p class="tyy-stat-number">{{ category_counts.get("機器學習", 0) }}</p>
+          <p class="tyy-stat-note">已完成模型預先訓練</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 grid-margin stretch-card">
+      <div class="card tyy-stat-card">
+        <div class="card-body">
+          <div class="tyy-stat-label">深度學習</div>
+          <p class="tyy-stat-number">{{ category_counts.get("深度學習", 0) }}</p>
+          <p class="tyy-stat-note">使用 PyTorch 模型權重</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 grid-margin stretch-card">
+      <div class="card tyy-stat-card">
+        <div class="card-body">
+          <div class="tyy-stat-label">自行作品</div>
+          <p class="tyy-stat-number">{{ category_counts.get("作品集", 0) }}</p>
+          <p class="tyy-stat-note">持續新增與改進中</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="tyy-section-title">常用功能</h4>
+
+  <div class="row">
+    {% for item in featured_items %}
+    <div class="col-xl-4 col-md-6 grid-margin stretch-card">
+      <div class="card tyy-feature-card">
+        <div class="card-body">
+          <div class="tyy-feature-category">{{ item.category }}</div>
+          <div class="tyy-feature-title">{{ item.title }}</div>
+          <p class="tyy-feature-description">{{ item.description }}</p>
+          <a class="tyy-feature-link" href="#" onclick="loadPage('{{ item.url }}'); return false;">開啟功能 →</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="row">
+    <div class="col-lg-7 grid-margin stretch-card">
+      <div class="card tyy-update-card">
+        <div class="card-body">
+          {% if latest_update %}
+          <div class="tyy-update-heading">
+            <div>
+              <h4 class="tyy-section-title">最新更新</h4>
+              <div class="tyy-update-title">{{ latest_update.title }}</div>
+            </div>
+            <span class="tyy-update-date"><i class="fa fa-calendar"></i>{{ latest_update.date }}</span>
+          </div>
+          <ul class="tyy-update-list">
+            {% for item in latest_update.summary %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+          <div class="tyy-update-actions">
+            <a class="tyy-update-more" href="{{ url_for('update_detail', update_slug=latest_update.slug) }}" data-load-page>查看本次完整內容 <i class="fa fa-angle-right"></i></a>
+            <a class="tyy-update-more" href="{{ url_for('update_history') }}" data-load-page>More／歷史更新 <i class="fa fa-history"></i></a>
+          </div>
+          {% else %}
+          <h4 class="tyy-section-title">最新更新</h4>
+          <p class="mb-0 text-muted">目前尚無更新公告。</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5 grid-margin stretch-card">
+      <div class="tyy-guide-box">
+        <h4 class="tyy-section-title">如何瀏覽</h4>
+        <p>使用左側選單依分類展開課堂作業、機器學習、深度學習與作品集。</p>
+        <p>使用上方搜尋框輸入「房價」、「MNIST」、「航班」或「遊戲」，可以直接找到相關功能。</p>
+        <p>點擊上方房屋圖示、左側主頁或帳號選單中的回到主頁，即可重新顯示這個頁面。</p>
+      </div>
+    </div>
+  </div>
+</div>

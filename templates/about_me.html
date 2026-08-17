@@ -1,0 +1,84 @@
+<div class="about-page">
+  <section class="about-hero">
+    <span class="about-eyebrow">About TYY</span>
+    <h2>從課堂練習，逐步做成真正能操作的作品網站</h2>
+    <p>我是 TYY，目前以 Python、Flask、資料庫與資料分析為主要學習方向。這個網站記錄我從基礎程式練習、會員系統、雲端部署，一路延伸到航班資料、醫療資料分析、機器學習與深度學習的開發過程。</p>
+  </section>
+
+  <section class="about-stat-grid">
+    <article class="about-stat">
+      <span>網站功能</span>
+      <strong>{{ total_feature_count }}</strong>
+    </article>
+    <article class="about-stat">
+      <span>機器學習作品</span>
+      <strong>{{ category_counts.get('機器學習', 0) }}</strong>
+    </article>
+    <article class="about-stat">
+      <span>深度學習作品</span>
+      <strong>{{ category_counts.get('深度學習', 0) }}</strong>
+    </article>
+    <article class="about-stat">
+      <span>自行開發作品</span>
+      <strong>{{ category_counts.get('作品集', 0) }}</strong>
+    </article>
+  </section>
+
+  <h3 class="about-section-title">目前專注的方向</h3>
+  <section class="about-grid">
+    <article class="about-card">
+      <i class="fa fa-code"></i>
+      <h3>網站與系統開發</h3>
+      <p>使用 Flask Blueprint、Jinja2、Bootstrap、JavaScript Fetch 與 SQLAlchemy，把功能拆分成可維護的頁面、Route 與資料表。</p>
+    </article>
+    <article class="about-card">
+      <i class="fa fa-bar-chart"></i>
+      <h3>資料整理與互動分析</h3>
+      <p>將公開資料清理後轉成圖表、篩選器、統計卡片與可下載資料，並處理欄位驗證、錯誤提示及不同主題模式。</p>
+    </article>
+    <article class="about-card">
+      <i class="fa fa-cogs"></i>
+      <h3>實際流程與持續改善</h3>
+      <p>曾接觸 ERP 與生產流程，也持續把開發中遇到的部署、資料庫、資安與效能問題整理成自己的工具箱。</p>
+    </article>
+  </section>
+
+  <h3 class="about-section-title">這個網站的成長歷程</h3>
+  <section class="about-timeline">
+    <article class="about-timeline-item">
+      <strong>基礎階段</strong>
+      <p>從 Python、HTML、Flask Route、表單與 Session 開始，完成課堂作業與簡單互動功能。</p>
+    </article>
+    <article class="about-timeline-item">
+      <strong>系統階段</strong>
+      <p>加入註冊登入、Email 驗證、個人資料、Cloudinary 頭像、資料庫關聯、深色模式與全站搜尋。</p>
+    </article>
+    <article class="about-timeline-item">
+      <strong>作品階段</strong>
+      <p>整合 TDX 航班 API、資料同步、航班查詢與統計，並建立醫療資料分析及會員獨立資料工作台。</p>
+    </article>
+    <article class="about-timeline-item">
+      <strong>AI 階段</strong>
+      <p>將機器學習與 PyTorch 模型改為預先訓練後載入，並加入真正的手寫辨識與使用者回饋資料蒐集。</p>
+    </article>
+  </section>
+
+  <h3 class="about-section-title">開發原則</h3>
+  <section class="about-grid">
+    <article class="about-card">
+      <i class="fa fa-search"></i>
+      <h3>先理解再使用</h3>
+      <p>不只讓功能可以執行，也會理解 Route、資料流、資料表關聯與模型載入的原因。</p>
+    </article>
+    <article class="about-card">
+      <i class="fa fa-check-square-o"></i>
+      <h3>測試與逐步修正</h3>
+      <p>從本機測試、錯誤日誌、不同畫面尺寸到 Heroku 部署，持續找出問題並改善操作體驗。</p>
+    </article>
+    <article class="about-card">
+      <i class="fa fa-shield"></i>
+      <h3>重視資料與安全</h3>
+      <p>敏感資訊使用環境變數保存，會員資料分表管理，並持續補強密碼、權限、輸入驗證與安全設定。</p>
+    </article>
+  </section>
+</div>

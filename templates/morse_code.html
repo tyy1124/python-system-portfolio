@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">摩斯密碼轉換</h4>
+        <p class="card-description">
+          可進行摩斯密碼轉英數，或英數轉摩斯密碼。
+        </p>
+
+        <form method="post" action="{{ url_for('schoolassignment.morse_code') }}" onsubmit="return submitPageForm(this);">
+
+          <div class="form-group">
+            <label>請選擇轉換模式：</label>
+            <select name="mode" class="form-control" required>
+              <option value="M">摩斯密碼轉英數</option>
+              <option value="W">英數轉摩斯密碼</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>請輸入內容：</label>
+            <input type="text" name="user_input" class="form-control" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">開始轉換</button>
+        </form>
+
+        <hr>
+
+        {% if error_message is not none %}
+          <p class="text-danger">{{ error_message }}</p>
+        {% elif result is not none %}
+          <p>輸入內容：{{ user_input }}</p>
+          <p>轉換結果：{{ result }}</p>
+        {% else %}
+          <p class="text-muted">尚未進行摩斯密碼轉換。</p>
+        {% endif %}
+
+        <hr>
+
+        <p class="text-muted">
+          摩斯密碼轉英數時，請用空白分隔每個摩斯碼，例如：.... . .-.. .-.. ---
+        </p>
+
+      </div>
+    </div>
+  </div>
+</div>

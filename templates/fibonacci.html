@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">費氏數列</h4>
+
+        <!-- 輸入表單 -->
+        <form method="post" action="{{ url_for('schoolassignment.fibonacci') }}" onsubmit="return submitPageForm(this);">
+          <div class="form-group">
+            <label>數列長度</label>
+            <input type="number" step="0.1" name="quantity" class="form-control"  required>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">開始</button>
+        </form>
+
+        <hr>
+
+        <!-- 結果顯示區 -->
+        {% if quantity is not none %}
+        <div>
+          <p>費氏數列：{{ result }}</p>
+        </div>
+        {% else %}
+        <p class="text-muted">尚未計算。</p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>

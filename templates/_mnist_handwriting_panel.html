@@ -1,0 +1,122 @@
+<div
+  class="mnist-handwriting-app"
+  data-model-type="{{ mnist_model_type }}"
+  data-predict-url="{{ url_for('schoolassignment.mnist_handwriting_predict') }}"
+  data-feedback-url-template="{{ url_for('schoolassignment.mnist_feedback', sample_id=0) }}">
+
+  <div class="card mnist-handwriting-card mt-4">
+    <div class="card-body">
+      <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-4">
+        <div>
+          <div class="mnist-section-label">TRY IT YOURSELF</div>
+          <h4 class="card-title mb-2">真正手寫數字辨識</h4>
+          <p class="text-muted mb-0">
+            使用滑鼠、觸控板或手機直接寫下 0～9，再由 {{ mnist_model_label }} 辨識。
+          </p>
+        </div>
+        <span class="mnist-model-badge mt-3 mt-lg-0">{{ mnist_model_label }}</span>
+      </div>
+
+      <div class="row align-items-stretch">
+        <div class="col-xl-6 mb-4 mb-xl-0">
+          <div class="mnist-canvas-panel">
+            <div class="mnist-canvas-header">
+              <span>請在白色畫布中央寫一個數字</span>
+              <span class="mnist-drawing-status">尚未書寫</span>
+            </div>
+
+            <div class="mnist-canvas-wrap">
+              <canvas
+                class="mnist-drawing-canvas"
+                width="280"
+                height="280"
+                aria-label="手寫數字畫布">
+              </canvas>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 mt-3">
+              <button type="button" class="btn btn-outline-secondary mnist-clear-button">
+                <i class="fa fa-eraser me-1"></i>
+                清除重寫
+              </button>
+              <button type="button" class="btn btn-primary mnist-predict-button">
+                <i class="fa fa-search me-1"></i>
+                開始辨識
+              </button>
+            </div>
+
+            <p class="mnist-canvas-help mt-3 mb-0">
+              系統會自動裁切、縮放及置中，再轉換成 MNIST 使用的 28 × 28 格式。
+            </p>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="mnist-result-panel" aria-live="polite">
+            <div class="mnist-result-placeholder">
+              <i class="fa fa-pencil-square-o"></i>
+              <h5>等待你的手寫數字</h5>
+              <p>完成書寫後按下「開始辨識」。</p>
+            </div>
+
+            <div class="mnist-result-content d-none">
+              <div class="row align-items-center">
+                <div class="col-sm-5 text-center mb-3 mb-sm-0">
+                  <canvas
+                    class="mnist-preview-canvas"
+                    width="140"
+                    height="140"
+                    aria-label="處理後的 28 x 28 圖片預覽">
+                  </canvas>
+                  <div class="small text-muted mt-2">模型實際收到的圖片</div>
+                </div>
+
+                <div class="col-sm-7">
+                  <div class="mnist-prediction-caption">模型判斷這是</div>
+                  <div class="mnist-predicted-number">-</div>
+                  <div class="mnist-confidence-text">信心分數：-</div>
+                </div>
+              </div>
+
+              <hr class="my-4">
+
+              <div class="mnist-feedback-area">
+                <h5 class="mb-2">模型判斷正確嗎？</h5>
+                <p class="text-muted small mb-3">
+                  你的回饋會保存到資料庫，之後可以匯出作為重新訓練資料。
+                </p>
+
+                <div class="mnist-feedback-main-buttons d-flex flex-wrap gap-2">
+                  <button type="button" class="btn btn-success mnist-feedback-correct">
+                    <i class="fa fa-check me-1"></i>
+                    辨識正確
+                  </button>
+                  <button type="button" class="btn btn-outline-danger mnist-feedback-wrong">
+                    <i class="fa fa-times me-1"></i>
+                    辨識錯誤
+                  </button>
+                </div>
+
+                <div class="mnist-correct-label-panel d-none mt-3">
+                  <div class="small font-weight-medium mb-2">請選擇真正的數字：</div>
+                  <div class="mnist-digit-buttons">
+                    {% for digit in range(10) %}
+                    <button
+                      type="button"
+                      class="mnist-digit-button"
+                      data-correct-label="{{ digit }}">
+                      {{ digit }}
+                    </button>
+                    {% endfor %}
+                  </div>
+                </div>
+
+                <div class="mnist-feedback-message d-none mt-3"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

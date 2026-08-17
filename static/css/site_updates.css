@@ -1,0 +1,29 @@
+/* === TYY 小站更新公告 === */
+.site-update-page { width: 100%; color: var(--tyy-text); }
+.site-update-hero, .site-update-detail-hero, .site-update-summary-card, .site-update-list-card, .site-update-section-card, .site-update-empty { border: 1px solid var(--tyy-border); border-radius: 17px; background: var(--tyy-surface); box-shadow: var(--tyy-shadow); }
+.site-update-hero, .site-update-detail-hero { display: flex; gap: 24px; align-items: center; justify-content: space-between; margin-bottom: 22px; padding: 26px; background: radial-gradient(circle at 8% 10%, var(--tyy-tiffany-soft), transparent 38%), radial-gradient(circle at 94% 20%, var(--tyy-orange-soft), transparent 34%), var(--tyy-surface); }
+.site-update-hero h2, .site-update-detail-hero h2, .site-update-list-card h3, .site-update-summary-card h3, .site-update-section-card h3 { color: var(--tyy-heading); }
+.site-update-hero h2, .site-update-detail-hero h2 { margin: 4px 0 9px; font-size: clamp(1.55rem, 3vw, 2.15rem); font-weight: 850; }
+.site-update-hero p { max-width: 760px; margin: 0; color: var(--tyy-text-secondary); line-height: 1.8; }
+.site-update-eyebrow { color: var(--tyy-tiffany-strong); font-size: 0.73rem; font-weight: 850; letter-spacing: 0.14em; }
+.site-update-home-button { display: inline-flex; min-height: 40px; padding: 9px 14px; gap: 7px; align-items: center; justify-content: center; border: 1px solid var(--tyy-border-strong); border-radius: 10px; background: var(--tyy-surface-alt); color: var(--tyy-text-secondary); font-weight: 750; cursor: pointer; white-space: nowrap; }
+.site-update-home-button:hover { border-color: var(--tyy-tiffany); color: var(--tyy-tiffany-strong); }
+.site-update-list { display: grid; gap: 14px; }
+.site-update-list-card { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto; gap: 20px; align-items: center; padding: 20px; }
+.site-update-date-block { display: flex; flex-direction: column; gap: 7px; color: var(--tyy-heading); font-weight: 850; }
+.site-update-date-block small { align-self: flex-start; padding: 4px 8px; border-radius: 999px; background: var(--tyy-orange-soft); color: var(--tyy-orange-strong); font-size: 0.68rem; }
+.site-update-list-content h3 { margin: 0 0 9px; font-size: 1.04rem; font-weight: 850; }
+.site-update-list-content ul, .site-update-summary-list, .site-update-section-card ul { margin: 0; padding-left: 1.15rem; color: var(--tyy-text-secondary); line-height: 1.75; }
+.site-update-open { display: inline-flex; gap: 7px; align-items: center; color: var(--tyy-orange-strong); font-weight: 800; text-decoration: none; white-space: nowrap; }
+.site-update-open:hover { color: var(--tyy-tiffany-strong); text-decoration: none; }
+.site-update-detail-date { display: inline-flex; gap: 7px; align-items: center; margin-top: 8px; color: var(--tyy-orange-strong); font-weight: 800; }
+.site-update-detail-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.site-update-summary-card { margin-bottom: 18px; padding: 22px; border-top: 4px solid var(--tyy-tiffany); }
+.site-update-summary-card h3, .site-update-section-card h3 { margin-bottom: 12px; font-size: 1rem; font-weight: 850; }
+.site-update-section-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.site-update-section-card { position: relative; min-width: 0; padding: 22px; overflow: hidden; }
+.site-update-section-number { position: absolute; top: 9px; right: 14px; color: color-mix(in srgb, var(--tyy-tiffany) 28%, transparent); font-size: 2.4rem; font-weight: 900; }
+.site-update-section-card h3 { position: relative; padding-right: 48px; }
+.site-update-empty { padding: 34px; color: var(--tyy-text-muted); text-align: center; }
+@media (max-width: 900px) { .site-update-list-card { grid-template-columns: 1fr; } .site-update-open { justify-self: flex-start; } .site-update-section-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .site-update-hero, .site-update-detail-hero { align-items: flex-start; flex-direction: column; padding: 20px; } .site-update-detail-actions { width: 100%; } .site-update-home-button { flex: 1 1 auto; } }

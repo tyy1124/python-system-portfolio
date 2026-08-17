@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帳號註冊</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/signin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register_validation.css') }}">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="signin-card">
+
+            <div class="card-top">
+                <p class="small-title">CREATE ACCOUNT</p>
+                <h1>Register</h1>
+                <p class="sub-text">建立你的帳號，開始使用系統</p>
+            </div>
+
+            <form
+                id="registerForm"
+                action="{{ url_for('register') }}"
+                method="POST"
+                data-check-account-url="{{ url_for('check_account') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div class="input-group">
+                    <label for="account">帳號</label>
+                    <input
+                        type="text"
+                        id="account"
+                        name="account"
+                        placeholder="請輸入帳號"
+                        value="{{ account | default('') }}"
+                        maxlength="100"
+                        autocomplete="username"
+                        required>
+
+                    <small
+                        id="accountMessage"
+                        class="field-message {% if account_error %}is-error{% endif %}"
+                        aria-live="polite">
+                        {{ account_error | default('') }}
+                    </small>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">密碼</label>
+                    <div class="password-box">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="請輸入 6～20 位密碼"
+                            value="{{ password | default('') }}"
+                            minlength="6"
+                            maxlength="20"
+                            autocomplete="new-password"
+                            required>
+                        <button type="button" id="togglePassword">顯示</button>
+                    </div>
+
+                    <small
+                        id="passwordMessage"
+                        class="field-message {% if password_error %}is-error{% endif %}"
+                        aria-live="polite">
+                        {% if password_error %}
+                            {{ password_error }}
+                        {% else %}
+                            密碼長度需為 6～20 個字元
+                        {% endif %}
+                    </small>
+                </div>
+
+                <div class="input-group">
+                    <label for="user_name">姓名</label>
+                    <input
+                        type="text"
+                        id="user_name"
+                        name="user_name"
+                        placeholder="請輸入姓名"
+                        value="{{ user_name | default('') }}"
+                        maxlength="100"
+                        autocomplete="name"
+                        required>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">信箱</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="請輸入 Email"
+                        value="{{ email | default('') }}"
+                        maxlength="255"
+                        autocomplete="email"
+                        required>
+                </div>
+
+                <div class="input-group">
+                    <label for="input_code">驗證碼</label>
+                    <input
+                        type="text"
+                        id="input_code"
+                        name="input_code"
+                        placeholder="請輸入驗證碼"
+                        inputmode="numeric"
+                        maxlength="6"
+                        autocomplete="one-time-code">
+                </div>
+
+                {% if msg %}
+                    <p id="statusMessage" class="status-message">{{ msg }}</p>
+                {% else %}
+                    <p id="statusMessage" class="status-message"></p>
+                {% endif %}
+
+                <button
+                    type="submit"
+                    class="signin-btn register-action-button"
+                    name="action"
+                    value="send_code">
+                    寄送驗證碼
+                </button>
+
+                <button
+                    type="submit"
+                    class="signin-btn register-action-button"
+                    name="action"
+                    value="register"
+                    style="margin-top: 12px;">
+                    完成註冊
+                </button>
+
+            </form>
+
+            <div class="bottom-text">
+                <p>已經有帳號？ <a href="{{ url_for('login') }}">回到登入畫面</a></p>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/signin.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/register_validation.js') }}"></script>
+</body>
+</html>

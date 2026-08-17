@@ -1,0 +1,117 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">USA 房價預測</h4>
+        <p class="card-description">
+          使用 USA_Housing.csv 資料集，透過 Linear Regression 線性迴歸模型預測房屋價格。
+        </p>
+
+        {% if error_message is not none %}
+          <p class="text-danger">{{ error_message }}</p>
+        {% endif %}
+
+        <form method="post" action="{{ url_for('schoolassignment.usa_housing') }}" onsubmit="return submitPageForm(this);">
+
+          <div class="form-group">
+            <label>地區平均收入，單位：美元</label>
+            <input
+              type="number"
+              step="0.01"
+              name="area_income"
+              class="form-control"
+              placeholder="例如：70000"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>房屋平均年齡，單位：年</label>
+            <input
+              type="number"
+              step="0.1"
+              name="house_age"
+              class="form-control"
+              placeholder="例如：6"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>平均房間數，單位：間</label>
+            <input
+              type="number"
+              step="0.1"
+              name="number_of_rooms"
+              class="form-control"
+              placeholder="例如：7"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>平均臥室數，單位：間</label>
+            <input
+              type="number"
+              step="0.1"
+              name="number_of_bedrooms"
+              class="form-control"
+              placeholder="例如：4"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>地區人口，單位：人</label>
+            <input
+              type="number"
+              step="1"
+              name="area_population"
+              class="form-control"
+              placeholder="例如：40000"
+              required
+            >
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">預測房價</button>
+        </form>
+
+        <hr>
+
+        {% if predict_price_text is not none %}
+          <h5>預測結果</h5>
+
+          <p>地區平均收入：{{ "{:,.2f}".format(area_income) }} 美元</p>
+          <p>房屋平均年齡：{{ house_age }} 年</p>
+          <p>平均房間數：{{ number_of_rooms }} 間</p>
+          <p>平均臥室數：{{ number_of_bedrooms }} 間</p>
+          <p>地區人口：{{ "{:,.0f}".format(area_population) }} 人</p>
+
+          <h4 class="text-success mt-3">
+            預測房價：約 {{ predict_price_text }} 美元
+          </h4>
+
+          <hr>
+
+          <h5>模型資訊</h5>
+          <p>模型：Linear Regression 線性迴歸</p>
+          <p>R² 分數：{{ r2 }}</p>
+          <p>平均絕對誤差 MAE：{{ "{:,.2f}".format(mae) }}</p>
+
+        {% else %}
+          <p class="text-muted">尚未進行房價預測。</p>
+
+          {% if r2 is not none %}
+            <hr>
+            <h5>模型資訊</h5>
+            <p>模型：Linear Regression 線性迴歸</p>
+            <p>R² 分數：{{ r2 }}</p>
+            <p>平均絕對誤差 MAE：{{ "{:,.2f}".format(mae) }}</p>
+          {% endif %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>

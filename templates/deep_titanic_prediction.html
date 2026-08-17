@@ -1,0 +1,111 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">深度學習版 Titanic 生存預測</h4>
+        <p class="card-description">
+          使用 Titanic 訓練資料集，透過 PyTorch MLP 神經網路，
+          根據艙等、性別與年齡推估生存機率。
+        </p>
+
+        {% if error_message is not none %}
+          <p class="text-danger">{{ error_message }}</p>
+        {% endif %}
+
+        <form method="post" action="{{ url_for('schoolassignment.deep_titanic_prediction') }}" onsubmit="return submitPageForm(this);">
+
+          <div class="form-group">
+            <label>艙等 Pclass</label>
+            <select name="pclass" class="form-control" required>
+              <option value="1">1 等艙</option>
+              <option value="2">2 等艙</option>
+              <option value="3">3 等艙</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>性別 Sex</label>
+            <select name="sex" class="form-control" required>
+              <option value="male">男性 male</option>
+              <option value="female">女性 female</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>年齡 Age，單位：歲</label>
+            <input
+              type="number"
+              step="0.1"
+              name="age"
+              class="form-control"
+              placeholder="例如：28"
+              required
+            >
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">
+            使用深度學習預測生存機率
+          </button>
+        </form>
+
+        <hr>
+
+        {% if survival_probability_text is not none %}
+          <h5>預測結果</h5>
+
+          <p>艙等：{{ pclass }} 等艙</p>
+
+          {% if sex == "male" %}
+            <p>性別：男性</p>
+          {% elif sex == "female" %}
+            <p>性別：女性</p>
+          {% endif %}
+
+          <p>年齡：{{ age }} 歲</p>
+
+          <h4 class="text-success mt-3">
+            推估生存機率：{{ survival_probability_text }}%
+          </h4>
+
+          <p class="mt-2">{{ prediction_result }}</p>
+
+          <hr>
+
+          <h5>模型資訊</h5>
+          <p>模型：PyTorch MLP 神經網路</p>
+          <p>神經網路結構：3 → 64 → 32 → 2</p>
+          <p>Loss Function：CrossEntropyLoss</p>
+          <p>Optimizer：Adam</p>
+          <p>Epoch：200</p>
+          <p>Batch Size：32</p>
+          <p>使用特徵：艙等、性別、年齡</p>
+          <p>測試資料準確率 Accuracy：{{ model_accuracy }}</p>
+          <p>最後 Loss：{{ final_loss }}</p>
+
+          <p class="text-muted">
+            注意：這是深度學習版本，第一次開啟時會先訓練模型，因此可能會稍微等待。
+          </p>
+
+        {% else %}
+          <p class="text-muted">尚未進行深度學習 Titanic 生存預測。</p>
+
+          {% if model_accuracy is not none %}
+            <hr>
+            <h5>模型資訊</h5>
+            <p>模型：PyTorch MLP 神經網路</p>
+            <p>神經網路結構：3 → 64 → 32 → 2</p>
+            <p>Loss Function：CrossEntropyLoss</p>
+            <p>Optimizer：Adam</p>
+            <p>Epoch：200</p>
+            <p>Batch Size：32</p>
+            <p>使用特徵：艙等、性別、年齡</p>
+            <p>測試資料準確率 Accuracy：{{ model_accuracy }}</p>
+            <p>最後 Loss：{{ final_loss }}</p>
+          {% endif %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>

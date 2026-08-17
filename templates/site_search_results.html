@@ -1,0 +1,50 @@
+<style>
+.tyy-search-page { width: 100%; }
+  .tyy-search-header { display: flex; margin-bottom: 22px; align-items: flex-start; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
+  .tyy-search-header h4 { margin-bottom: 8px; font-weight: 800; color: var(--tyy-heading); }
+  .tyy-search-summary { margin-bottom: 0; color: var(--tyy-text-secondary); }
+  .tyy-search-home { display: inline-flex; padding: 9px 16px; align-items: center; border: 1px solid var(--tyy-border-strong); border-radius: 8px; background: var(--tyy-surface); color: var(--tyy-heading); text-decoration: none; }
+  .tyy-search-home:hover { border-color: var(--tyy-tiffany); background: var(--tyy-tiffany-soft); color: var(--tyy-tiffany-strong); text-decoration: none; }
+  .tyy-search-card { height: 100%; border: 1px solid var(--tyy-border); border-radius: 12px; background: var(--tyy-surface); box-shadow: var(--tyy-shadow); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .tyy-search-card:hover { transform: translateY(-3px); box-shadow: var(--tyy-shadow-hover); }
+  .tyy-search-card .card-body { display: flex; min-height: 190px; flex-direction: column; padding: 22px; }
+  .tyy-search-category { margin-bottom: 10px; color: var(--tyy-tiffany-strong); font-size: 13px; font-weight: 800; }
+  .tyy-search-title { margin-bottom: 10px; color: var(--tyy-heading); font-size: 18px; font-weight: 800; }
+  .tyy-search-description { margin-bottom: 18px; color: var(--tyy-text-secondary); line-height: 1.65; }
+  .tyy-search-open { display: inline-flex; margin-top: auto; color: var(--tyy-orange-strong); font-weight: 700; text-decoration: none; }
+  .tyy-search-open:hover { color: var(--tyy-tiffany-strong); text-decoration: none; }
+  .tyy-search-empty { padding: 48px 25px; border: 1px solid var(--tyy-border); border-radius: 12px; background: var(--tyy-surface); text-align: center; color: var(--tyy-text-secondary); box-shadow: var(--tyy-shadow); }
+  .tyy-search-empty h5 { margin-bottom: 10px; color: var(--tyy-heading); }
+</style>
+
+<div class="tyy-search-page">
+  <div class="tyy-search-header">
+    <div>
+      <h4>搜尋結果</h4>
+      <p class="tyy-search-summary">關鍵字「{{ keyword }}」共找到 {{ search_results|length }} 個功能。</p>
+    </div>
+    <a class="tyy-search-home" href="#" onclick="loadPage('{{ url_for('home_dashboard') }}'); return false;">回到主頁</a>
+  </div>
+
+  {% if search_results %}
+  <div class="row">
+    {% for item in search_results %}
+    <div class="col-xl-4 col-md-6 grid-margin stretch-card">
+      <div class="card tyy-search-card">
+        <div class="card-body">
+          <div class="tyy-search-category">{{ item.category }}</div>
+          <div class="tyy-search-title">{{ item.title }}</div>
+          <p class="tyy-search-description">{{ item.description }}</p>
+          <a class="tyy-search-open" href="#" onclick="loadPage('{{ item.url }}'); return false;">開啟功能 →</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="tyy-search-empty">
+    <h5>找不到符合的功能</h5>
+    <p class="mb-0">可以嘗試輸入「航班」、「房價」、「MNIST」、「Titanic」、「遊戲」或「個人資料」。</p>
+  </div>
+  {% endif %}
+</div>

@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">巴斯卡三角形</h4>
+        <p class="card-description">
+          請輸入層數，系統會產生巴斯卡三角形。
+        </p>
+
+        <form method="post" action="{{ url_for('schoolassignment.pascal_triangle') }}" onsubmit="return submitPageForm(this);">
+          <div class="form-group">
+            <label>請輸入層數：</label>
+            <input type="number" name="level" class="form-control" min="1" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">產生巴斯卡三角形</button>
+        </form>
+
+        <hr>
+
+        {% if pascal is not none %}
+          <p>層數：{{ level }}</p>
+
+          <div class="text-center">
+            {% for row in pascal %}
+              <div>
+                {% for number in row %}
+                  <span style="display:inline-block; min-width:35px;">
+                    {{ number }}
+                  </span>
+                {% endfor %}
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-muted">尚未產生巴斯卡三角形。</p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>

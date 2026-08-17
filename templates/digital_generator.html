@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">數字產生器</h4>
+
+        <!-- 輸入表單 -->
+        <form method="post" action="{{ url_for('schoolassignment.digital_generator') }}" onsubmit="return submitPageForm(this);">
+          <div class="form-group">
+            <label>最小值</label>
+            <input type="number" step="0.1" name="minnum" class="form-control"  required>
+          </div>
+
+          <div class="form-group">
+            <label>最大值</label>
+            <input type="number" step="0.1" name="maxinum" class="form-control"  required>
+          </div>
+          
+          <div class="form-group">
+            <label>數字產生的數量</label>
+            <input type="number" step="0.1" name="quantity" class="form-control"  required>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">開始</button>
+        </form>
+
+        <hr>
+
+        <!-- 結果顯示區 -->
+        {% if maxinum is not none %}
+        <div>
+          <p>最小值：{{ maxinum }}</p>
+          <p>最大值：{{ minnum }}</p>
+          <p>數字產生的數量：{{ quantity }}</p>
+
+          <p>產生的數字：{{ result }}</p>
+          <p>最大數字：{{ max_result }}</p>
+          <p>最小數字：{{ min_result }}</p>
+          <p>平均值：{{ avg_result }}</p>
+        </div>
+        {% else %}
+        <p class="text-muted">尚未計算。</p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>

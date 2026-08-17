@@ -1,0 +1,206 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, "Microsoft JhengHei", sans-serif;
+    min-height: 100vh;
+    background: #050816 url("../image/space-bg.png") center center / cover no-repeat;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.18), transparent 25%),
+        radial-gradient(circle at 80% 30%, rgba(255, 105, 180, 0.12), transparent 22%),
+        radial-gradient(circle at 70% 80%, rgba(0, 255, 255, 0.10), transparent 25%);
+    pointer-events: none;
+}
+
+.auth-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.signin-card {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(10, 14, 28, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 20px;
+    padding: 34px 28px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+
+.card-top {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.small-title {
+    color: #8ea6ff;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.card-top h1 {
+    font-size: 34px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.sub-text {
+    color: #b9c0d1;
+    font-size: 14px;
+}
+
+.input-group {
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #d8def0;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+    font-size: 15px;
+    outline: none;
+    transition: 0.25s;
+}
+
+.input-group input::placeholder {
+    color: #95a0bd;
+}
+
+.input-group input:focus {
+    border-color: #7f9cff;
+    box-shadow: 0 0 0 3px rgba(127, 156, 255, 0.16);
+}
+
+.password-box {
+    display: flex;
+    gap: 10px;
+}
+
+.password-box input {
+    flex: 1;
+}
+
+.password-box button {
+    border: none;
+    padding: 0 16px;
+    border-radius: 12px;
+    background: rgba(127, 156, 255, 0.16);
+    color: #dbe3ff;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.password-box button:hover {
+    background: rgba(127, 156, 255, 0.28);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    font-size: 14px;
+    color: #c8d0e4;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.remember-me input {
+    accent-color: #7f9cff;
+}
+
+.forgot-link,
+.bottom-text a {
+    color: #9bb0ff;
+    text-decoration: none;
+}
+
+.forgot-link:hover,
+.bottom-text a:hover {
+    text-decoration: underline;
+}
+
+.status-message {
+    min-height: 20px;
+    font-size: 14px;
+    color: #ff9ea1;
+    margin-bottom: 14px;
+}
+
+.status-message.success {
+    color: #87f7b3;
+}
+
+.signin-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.signin-btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.95;
+}
+
+.bottom-text {
+    text-align: center;
+    margin-top: 20px;
+    color: #b9c0d1;
+    font-size: 14px;
+}
+
+@media (max-width: 480px) {
+    .signin-card {
+        padding: 28px 20px;
+    }
+
+    .card-top h1 {
+        font-size: 28px;
+    }
+
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}

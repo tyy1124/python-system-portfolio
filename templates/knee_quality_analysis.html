@@ -1,0 +1,655 @@
+<div
+  id="kneeQualityAnalysisPage"
+  class="knee-page"
+  data-dataset-key="{{ selected_dataset_key }}"
+  data-page-url="{{ url_for('portfolio_bp.knee_quality_analysis') }}">
+
+  {% if knee_data %}
+    <script id="kneeQualityData" type="application/json">{{ knee_data | tojson }}</script>
+  {% endif %}
+
+  <section class="knee-hero">
+    <div>
+      <span class="knee-eyebrow">醫療品質資料工作台</span>
+      <h2>人工膝關節置換傷口感染分析</h2>
+      <p>
+        分析人工膝關節置換手術後 90 天內傷口感染率、手術量、病患年齡、
+        重大傷病比例與院所差異，並支援會員獨立匯入、手動輸入與匯出資料。
+      </p>
+    </div>
+    <div class="knee-hero-badge">
+      <i class="fa fa-hospital-o" aria-hidden="true"></i>
+      <strong>負向品質指標</strong>
+      <span>感染率較低通常代表相對表現較好</span>
+    </div>
+  </section>
+
+  {% if success_message %}
+    <div class="alert alert-success knee-alert" role="alert">
+      <i class="fa fa-check-circle" aria-hidden="true"></i>
+      {{ success_message }}
+    </div>
+  {% endif %}
+
+  {% if error_messages %}
+    <div class="alert alert-danger knee-alert" role="alert">
+      <strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 資料未完成處理</strong>
+      <ul>
+        {% for message in error_messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {% if warning_messages %}
+    <div class="alert alert-warning knee-alert" role="alert">
+      <strong><i class="fa fa-info-circle" aria-hidden="true"></i> 匯入提醒</strong>
+      <ul>
+        {% for message in warning_messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <section class="knee-card knee-source-card">
+    <div class="knee-source-icon"><i class="fa fa-database" aria-hidden="true"></i></div>
+    <div>
+      <h4>資料來源與判讀說明</h4>
+      <p>
+        預設資料來自衛生福利部中央健康保險署／健保資料開放平台，
+        資料集「人工膝關節置換手術後九十日以內傷口感染率」，
+        Resource ID：<code>A21030000I-E3200F-001</code>。
+      </p>
+      <p>
+        本頁呈現的是院所層級醫療品質指標，不是個人診斷結果。
+        感染率會受到案件量、病患條件與統計期間影響，不宜只用單一數字判定院所優劣。
+      </p>
+      <div class="knee-source-links">
+        <a href="https://data.gov.tw/datasets/39211" target="_blank" rel="noopener noreferrer"><i class="fa fa-external-link"></i> 政府資料開放平臺</a>
+        <a href="https://med.nhi.gov.tw/ihqe0000/pep007.html" target="_blank" rel="noopener noreferrer"><i class="fa fa-book"></i> 健保署指標說明</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="knee-card knee-dataset-bar">
+    <div class="knee-dataset-main">
+      <label for="kneeDatasetSelect">目前分析資料集</label>
+      <select id="kneeDatasetSelect" class="form-control">
+        <option value="official" {% if selected_dataset_key == "official" %}selected{% endif %}>健保署官方公開資料（唯讀）</option>
+        {% for dataset in user_datasets %}
+          <option value="{{ dataset.id }}" {% if selected_dataset_key == dataset.id|string %}selected{% endif %}>
+            {{ dataset.dataset_name }}（{{ dataset.row_count }} 列）
+          </option>
+        {% endfor %}
+      </select>
+      {% if knee_data %}
+        <div class="knee-dataset-meta">
+          <span><i class="fa fa-table"></i> {{ knee_data.dataset.row_count | int }} 列</span>
+          <span><i class="fa fa-tag"></i>
+            {% if knee_data.dataset.source_type == "official" %}官方資料{% elif knee_data.dataset.source_type == "upload" %}CSV 匯入{% else %}手動建立{% endif %}
+          </span>
+          {% if knee_data.dataset.updated_at %}
+            <span><i class="fa fa-clock-o"></i> {{ knee_data.dataset.updated_at }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="knee-dataset-actions">
+      <a class="btn btn-outline-primary" href="{{ url_for('portfolio_bp.knee_quality_export', dataset=selected_dataset_key) }}"><i class="fa fa-download"></i> 下載完整資料</a>
+      <button type="button" id="kneeExportFiltered" class="btn btn-primary"><i class="fa fa-filter"></i> 匯出篩選結果</button>
+      <a class="btn btn-outline-secondary" href="{{ url_for('portfolio_bp.knee_quality_template') }}"><i class="fa fa-file-o"></i> 空白範本</a>
+      <a class="btn btn-outline-secondary" href="{{ url_for('portfolio_bp.knee_quality_example') }}"><i class="fa fa-file-text-o"></i> 範例檔</a>
+    </div>
+  </section>
+
+  <section class="knee-management-grid">
+    <details class="knee-card knee-details" open>
+      <summary><i class="fa fa-upload"></i> 匯入自己的 CSV 資料</summary>
+      <div class="knee-details-body">
+        <form
+          method="post"
+          action="{{ url_for('portfolio_bp.knee_quality_upload') }}"
+          enctype="multipart/form-data"
+          onsubmit="return submitPageForm(this);">
+          <div class="form-group">
+            <label for="kneeDatasetName">資料集名稱</label>
+            <input id="kneeDatasetName" type="text" name="dataset_name" class="form-control" minlength="2" maxlength="120" placeholder="例如：院內 2025 年人工膝關節資料" required>
+          </div>
+          <div class="form-group">
+            <label for="kneeDatasetFile">CSV 檔案</label>
+            <input id="kneeDatasetFile" type="file" name="dataset_file" class="form-control" accept=".csv,text/csv" required>
+            <small class="form-text">
+              支援 UTF-8、UTF-8-SIG、Big5、CP950；最多 {{ limits.max_file_size_mb }} MB、
+              每份最多 {{ "{:,}".format(limits.max_rows_per_dataset) }} 列。
+            </small>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-cloud-upload"></i> 驗證並匯入</button>
+        </form>
+
+        <div class="knee-validation-guide">
+          <strong>匯入時會自動檢查：</strong>
+          <span>必要欄位</span>
+          <span>年度格式</span>
+          <span>代碼長度</span>
+          <span>數字範圍</span>
+          <span>重複資料</span>
+          <span>感染率與案件數是否一致</span>
+        </div>
+      </div>
+    </details>
+
+    <details class="knee-card knee-details">
+      <summary><i class="fa fa-keyboard-o"></i> 使用小型輸入系統新增資料</summary>
+      <div class="knee-details-body">
+        <form
+          id="kneeManualForm"
+          method="post"
+          action="{{ url_for('portfolio_bp.knee_quality_manual_add') }}"
+          onsubmit="return submitPageForm(this);">
+
+          <div class="knee-form-grid">
+            <div class="form-group knee-span-2">
+              <label for="kneeTargetDataset">加入哪一份私人資料集</label>
+              <select id="kneeTargetDataset" name="target_dataset" class="form-control">
+                <option value="new">建立新的手動資料集</option>
+                {% for dataset in user_datasets %}
+                  <option value="{{ dataset.id }}">{{ dataset.dataset_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="form-group knee-span-2" id="kneeManualDatasetNameGroup">
+              <label for="kneeManualDatasetName">新資料集名稱</label>
+              <input id="kneeManualDatasetName" type="text" name="manual_dataset_name" class="form-control" minlength="2" maxlength="120" placeholder="例如：我的膝關節品質紀錄">
+            </div>
+
+            <div class="form-group">
+              <label for="kneeManualYear">西元年</label>
+              <input id="kneeManualYear" type="number" name="manual_year" class="form-control" min="1900" max="2100" value="2025" required>
+            </div>
+
+            <div class="form-group">
+              <label for="kneeManualPeriodType">統計期間</label>
+              <select id="kneeManualPeriodType" name="manual_period_type" class="form-control" required>
+                <option value="上半年度">上半年度</option>
+                <option value="全年度" selected>全年度</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="kneeInstitutionCode">醫事機構代碼</label>
+              <input id="kneeInstitutionCode" type="text" name="institution_code" class="form-control" inputmode="numeric" minlength="1" maxlength="10" placeholder="0101090517" required>
+            </div>
+
+            <div class="form-group">
+              <label for="kneeInstitutionName">院所名稱</label>
+              <input id="kneeInstitutionName" type="text" name="institution_name" class="form-control" maxlength="255" required>
+            </div>
+
+            <div class="form-group">
+              <label for="kneeContractType">特約類別</label>
+              <select id="kneeContractType" name="contract_type" class="form-control" required>
+                <option value="1">1－醫學中心</option>
+                <option value="2" selected>2－區域醫院</option>
+                <option value="3">3－地區醫院</option>
+                <option value="4">4－診所</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="kneeCountyCode">縣市代碼</label>
+              <input id="kneeCountyCode" type="text" name="county_code" class="form-control" inputmode="numeric" maxlength="5" placeholder="63000" required>
+            </div>
+
+            <div class="form-group">
+              <label for="kneeTownshipCode">鄉鎮代碼</label>
+              <input id="kneeTownshipCode" type="text" name="township_code" class="form-control" inputmode="numeric" maxlength="8" placeholder="63000010" required>
+            </div>
+
+            <div class="form-group">
+              <label for="kneeReplacementCases">置換案件數</label>
+              <input id="kneeReplacementCases" type="number" name="replacement_cases" class="form-control knee-rate-input" min="1" step="1" required>
+            </div>
+
+            <div class="form-group">
+              <label for="kneeInfectionCases">90 天內傷口感染案件數</label>
+              <input id="kneeInfectionCases" type="number" name="infection_cases" class="form-control knee-rate-input" min="0" step="1" required>
+            </div>
+
+            <div class="form-group">
+              <label for="kneePatientCount">置換病人數</label>
+              <input id="kneePatientCount" type="number" name="patient_count" class="form-control knee-rate-input" min="1" step="1" required>
+            </div>
+
+            <div class="form-group">
+              <label for="kneeSurgeonCount">置換醫師數</label>
+              <input id="kneeSurgeonCount" type="number" name="surgeon_count" class="form-control" min="1" step="1" required>
+            </div>
+
+            <div class="form-group">
+              <label for="kneeAverageAge">病患平均年齡</label>
+              <input id="kneeAverageAge" type="number" name="average_age" class="form-control" min="0" max="120" step="0.0001" required>
+            </div>
+
+            <div class="form-group">
+              <label for="kneeCatastrophicCount">重大傷病人數</label>
+              <input id="kneeCatastrophicCount" type="number" name="catastrophic_count" class="form-control knee-rate-input" min="0" step="1" required>
+            </div>
+          </div>
+
+          <div class="knee-rate-preview">
+            <div>
+              <span>自動計算傷口感染率</span>
+              <strong id="kneeManualInfectionRate">—</strong>
+            </div>
+            <div>
+              <span>自動計算重大傷病比率</span>
+              <strong id="kneeManualCatastrophicRate">—</strong>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary"><i class="fa fa-plus-circle"></i> 驗證並新增</button>
+        </form>
+      </div>
+    </details>
+  </section>
+
+  <section class="knee-card knee-private-datasets">
+    <div class="knee-section-heading">
+      <div>
+        <span class="knee-eyebrow">會員獨立保存</span>
+        <h3>我的資料集</h3>
+      </div>
+      <div class="knee-limit-text">
+        {{ limits.current_dataset_count }}／{{ limits.max_datasets }} 份資料集，
+        {{ "{:,}".format(limits.current_total_rows) }}／{{ "{:,}".format(limits.max_total_rows) }} 列
+      </div>
+    </div>
+
+    {% if user_datasets %}
+      <div class="knee-dataset-list">
+        {% for dataset in user_datasets %}
+          <article class="knee-dataset-item">
+            <div>
+              <h5>{{ dataset.dataset_name }}</h5>
+              <p>
+                {{ dataset.row_count }} 列 ·
+                {% if dataset.source_type == "upload" %}CSV 匯入{% else %}手動建立{% endif %} ·
+                {{ dataset.updated_at.strftime("%Y-%m-%d %H:%M") if dataset.updated_at else "" }}
+              </p>
+            </div>
+            <div class="knee-dataset-item-actions">
+              <button type="button" class="btn btn-sm btn-outline-primary knee-open-dataset" data-dataset-id="{{ dataset.id }}">分析</button>
+              <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('portfolio_bp.knee_quality_export', dataset=dataset.id) }}">下載</a>
+              <form method="post" action="{{ url_for('portfolio_bp.knee_quality_dataset_delete') }}" onsubmit="return confirm('確定刪除這份資料集及全部資料嗎？') && submitPageForm(this);">
+                <input type="hidden" name="dataset_id" value="{{ dataset.id }}">
+                <button type="submit" class="btn btn-sm btn-outline-danger">刪除</button>
+              </form>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="knee-empty-state">
+        <i class="fa fa-folder-open-o"></i>
+        <p>尚未建立私人資料集，可以匯入 CSV 或使用上方小型輸入系統。</p>
+      </div>
+    {% endif %}
+  </section>
+
+  {% if knee_data %}
+    <section class="knee-card knee-filter-card">
+      <div class="knee-section-heading">
+        <div>
+          <span class="knee-eyebrow">Interactive filters</span>
+          <h3>分析條件</h3>
+        </div>
+        <div class="knee-filter-actions">
+          <button type="button" id="kneeToggleFilters" class="btn btn-outline-secondary btn-sm" aria-expanded="true" aria-controls="kneeFilterBody"><i class="fa fa-compress"></i> 收合條件</button>
+          <button type="button" id="kneeResetFilters" class="btn btn-outline-secondary btn-sm"><i class="fa fa-undo"></i> 重設條件</button>
+        </div>
+      </div>
+
+      <div id="kneeFilterBody" class="knee-filter-body">
+      <div class="knee-filter-grid">
+        <div>
+          <label for="kneePeriodFilter">統計期間</label>
+          <select id="kneePeriodFilter" class="form-control">
+            <option value="">全部期間</option>
+          </select>
+        </div>
+        <div>
+          <label for="kneeContractFilter">特約類別</label>
+          <select id="kneeContractFilter" class="form-control">
+            <option value="">全部類別</option>
+          </select>
+        </div>
+        <div>
+          <label for="kneeCountyFilter">縣市</label>
+          <select id="kneeCountyFilter" class="form-control">
+            <option value="">全部縣市</option>
+          </select>
+        </div>
+        <div>
+          <label for="kneeMinCases">院所排名最低案件數</label>
+          <select id="kneeMinCases" class="form-control">
+            <option value="0">不限</option>
+            <option value="10">至少 10 件</option>
+            <option value="20" selected>至少 20 件</option>
+            <option value="50">至少 50 件</option>
+            <option value="100">至少 100 件</option>
+          </select>
+        </div>
+        <div class="knee-span-2">
+          <label for="kneeHospitalKeyword">搜尋院所名稱或代碼</label>
+          <input id="kneeHospitalKeyword" type="search" class="form-control" placeholder="輸入院所名稱或醫事機構代碼">
+        </div>
+        <div>
+          <label for="kneeRankingDirection">院所排名方向</label>
+          <select id="kneeRankingDirection" class="form-control">
+            <option value="low" selected>感染率較低</option>
+            <option value="high">感染率較高</option>
+          </select>
+        </div>
+        <div>
+          <label for="kneeChartDensity">圖表高度</label>
+          <select id="kneeChartDensity" class="form-control">
+            <option value="compact">精簡</option>
+            <option value="normal" selected>標準</option>
+            <option value="tall">加高</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="kneeFilterSummary" class="knee-filter-summary"></div>
+      </div>
+    </section>
+
+    <section class="knee-kpi-grid">
+      <article class="knee-kpi knee-kpi-tiffany">
+        <span>置換案件數</span>
+        <strong id="kneeKpiCases">—</strong>
+        <small>目前篩選範圍</small>
+      </article>
+      <article class="knee-kpi knee-kpi-orange">
+        <span>加權傷口感染率</span>
+        <strong id="kneeKpiInfectionRate">—</strong>
+        <small>感染案件數 ÷ 置換案件數</small>
+      </article>
+      <article class="knee-kpi">
+        <span>院所數</span>
+        <strong id="kneeKpiInstitutions">—</strong>
+        <small>不重複醫事機構</small>
+      </article>
+      <article class="knee-kpi">
+        <span>病患加權平均年齡</span>
+        <strong id="kneeKpiAverageAge">—</strong>
+        <small>以病人數加權</small>
+      </article>
+      <article class="knee-kpi">
+        <span>重大傷病比例</span>
+        <strong id="kneeKpiCatastrophicRate">—</strong>
+        <small>重大傷病人數 ÷ 病人數</small>
+      </article>
+      <article class="knee-kpi">
+        <span>每位醫師平均案件</span>
+        <strong id="kneeKpiCasesPerSurgeon">—</strong>
+        <small>案件數 ÷ 醫師數合計</small>
+      </article>
+    </section>
+
+    <section class="knee-chart-grid">
+      {% set charts = [
+        ("trend", "歷年感染率與手術量趨勢", "加權感染率與置換案件數的期間變化"),
+        ("contract", "特約類別比較", "比較醫學中心、區域醫院、地區醫院與診所"),
+        ("county", "縣市感染率比較", "依縣市彙整的加權感染率"),
+        ("ranking", "院所感染率排名", "可切換感染率較低或較高，並設定最低案件數"),
+        ("volume", "手術量與感染率", "觀察案件量與感染率之間的分布"),
+        ("age", "平均年齡與感染率", "觀察院所病患平均年齡與感染率"),
+        ("catastrophic", "重大傷病比例與感染率", "觀察病患組成與感染率分布"),
+        ("distribution", "感染率分布", "院所感染率區間的數量分布")
+      ] %}
+
+      {% for key, title, description in charts %}
+        <article class="knee-card knee-chart-card" data-chart-key="{{ key }}">
+          <header>
+            <div>
+              <h4>{{ title }}</h4>
+              <p>{{ description }}</p>
+            </div>
+            <div class="knee-chart-tools">
+              {% if key == "distribution" %}
+              <select id="kneeDistributionMode" class="d-none" aria-hidden="true">
+                <option value="all">完整分布</option>
+                <option value="nonzero">放大非零資料</option>
+                <option value="low">細看 0～1%</option>
+                <option value="custom">自訂範圍</option>
+              </select>
+              {% endif %}
+              <button type="button" class="knee-chart-height" title="切換圖表高度"><i class="fa fa-arrows-v"></i></button>
+              <button type="button" class="knee-chart-fullscreen" title="放大或還原"><i class="fa fa-expand"></i></button>
+              <button type="button" class="knee-chart-download" title="下載 PNG"><i class="fa fa-download"></i></button>
+            </div>
+          </header>
+          {% if key in ["volume", "age", "catastrophic"] %}
+          {% if key == "volume" %}
+            {% set scatter_x_label = "置換案件數" %}
+          {% elif key == "age" %}
+            {% set scatter_x_label = "平均年齡" %}
+          {% else %}
+            {% set scatter_x_label = "重大傷病比例" %}
+          {% endif %}
+          <div
+            class="knee-scatter-zoom-toolbar"
+            data-scatter-chart="{{ key }}"
+            aria-label="{{ title }}局部放大控制"
+          >
+            <div class="knee-scatter-zoom-presets">
+              <span class="knee-scatter-zoom-label">
+                <i class="fa fa-search-plus"></i>
+                散布圖局部放大
+              </span>
+              <button
+                type="button"
+                class="knee-scatter-zoom-mode is-active"
+                data-scatter-chart="{{ key }}"
+                data-scatter-mode="all"
+              >完整範圍</button>
+              <button
+                type="button"
+                class="knee-scatter-zoom-mode"
+                data-scatter-chart="{{ key }}"
+                data-scatter-mode="focus"
+              >聚焦主要資料</button>
+              <button
+                type="button"
+                class="knee-scatter-zoom-mode"
+                data-scatter-chart="{{ key }}"
+                data-scatter-mode="low"
+              >感染率 0～1%</button>
+            </div>
+
+            <details class="knee-scatter-custom">
+              <summary>自訂 X／Y 顯示範圍</summary>
+              <div class="knee-scatter-custom-grid">
+                <label>
+                  {{ scatter_x_label }}最小值
+                  <input
+                    type="number"
+                    step="any"
+                    data-scatter-field="xMin"
+                    placeholder="自動"
+                  >
+                </label>
+                <label>
+                  {{ scatter_x_label }}最大值
+                  <input
+                    type="number"
+                    step="any"
+                    data-scatter-field="xMax"
+                    placeholder="自動"
+                  >
+                </label>
+                <label>
+                  感染率最小值（%）
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    data-scatter-field="yMin"
+                    placeholder="自動"
+                  >
+                </label>
+                <label>
+                  感染率最大值（%）
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    data-scatter-field="yMax"
+                    placeholder="自動"
+                  >
+                </label>
+                <button
+                  type="button"
+                  class="knee-scatter-custom-apply"
+                  data-scatter-apply="{{ key }}"
+                >套用自訂範圍</button>
+              </div>
+            </details>
+
+            <small data-scatter-status="{{ key }}">
+              目前顯示完整範圍。也可在圖表上快速按兩下回復完整範圍。
+            </small>
+          </div>
+          {% endif %}
+
+          {% if key == "distribution" %}
+          <div class="knee-distribution-toolbar" aria-label="感染率分布局部放大控制">
+            <div class="knee-distribution-presets">
+              <span class="knee-distribution-label"><i class="fa fa-search-plus"></i> 局部放大</span>
+              <button type="button" class="knee-distribution-mode is-active" data-distribution-mode="all">完整</button>
+              <button type="button" class="knee-distribution-mode" data-distribution-mode="nonzero">排除 0%</button>
+              <button type="button" class="knee-distribution-mode" data-distribution-mode="low">細看 0～1%</button>
+            </div>
+            <div class="knee-distribution-custom">
+              <label for="kneeDistributionMin">自訂感染率範圍</label>
+              <input id="kneeDistributionMin" type="number" min="0" step="0.01" value="0" aria-label="感染率最小值">
+              <span>～</span>
+              <input id="kneeDistributionMax" type="number" min="0.01" step="0.01" value="1" aria-label="感染率最大值">
+              <span>%</span>
+              <button id="kneeDistributionApply" type="button">套用</button>
+            </div>
+            <small id="kneeDistributionStatus">目前顯示完整感染率分布。</small>
+          </div>
+          {% endif %}
+          <div class="knee-chart-shell"><canvas id="kneeChart{{ key | capitalize }}"></canvas></div>
+        </article>
+      {% endfor %}
+    </section>
+
+    <section class="knee-card knee-compare-card">
+      <div class="knee-section-heading">
+        <div>
+          <span class="knee-eyebrow">Hospital comparison</span>
+          <h3>指定院所歷年比較</h3>
+        </div>
+      </div>
+      <div class="knee-compare-controls">
+        <label for="kneeHospitalCompareSearch">搜尋院所名稱或代碼</label>
+        <div class="knee-hospital-search-row">
+          <input id="kneeHospitalCompareSearch" class="form-control" type="search" placeholder="例如：臺大、長庚、1507300011" autocomplete="off">
+          <button id="kneeHospitalCompareClear" type="button" class="btn btn-outline-secondary">清除搜尋</button>
+        </div>
+        <div id="kneeHospitalCompareStatus" class="knee-hospital-compare-status">最多選擇 6 家院所</div>
+        <div
+          id="kneeHospitalCompare"
+          class="knee-hospital-choice-list"
+          role="group"
+          aria-label="指定院所歷年比較">
+        </div>
+        <small>直接勾選即可同時比較，最多 6 家；已選院所會固定顯示在清單最上方，不需要按住 Ctrl。</small>
+      </div>
+      <div class="knee-chart-card knee-compare-chart">
+        <div class="knee-chart-shell knee-chart-tall"><canvas id="kneeHospitalTrendChart"></canvas></div>
+      </div>
+    </section>
+
+    <section class="knee-card knee-table-card">
+      <div class="knee-section-heading">
+        <div>
+          <span class="knee-eyebrow">Data table</span>
+          <h3>明細資料</h3>
+        </div>
+        <div id="kneeTableCount" class="knee-table-count"></div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table knee-table">
+          <thead>
+            <tr>
+              <th>期間</th>
+              <th>院所</th>
+              <th>類別</th>
+              <th>縣市</th>
+              <th>案件數</th>
+              <th>感染數</th>
+              <th>感染率</th>
+              <th>平均年齡</th>
+              <th>重大傷病比率</th>
+              {% if knee_data.dataset.is_editable %}<th>操作</th>{% endif %}
+            </tr>
+          </thead>
+          <tbody id="kneeTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="knee-pagination">
+        <button type="button" id="kneeTablePrev" class="btn btn-outline-secondary btn-sm">上一頁</button>
+        <span id="kneeTablePage">第 1 頁</span>
+        <button type="button" id="kneeTableNext" class="btn btn-outline-secondary btn-sm">下一頁</button>
+      </div>
+    </section>
+
+    {% if knee_data.dataset.is_editable %}
+      <form
+        id="kneeDeleteRecordForm"
+        method="post"
+        action="{{ url_for('portfolio_bp.knee_quality_record_delete') }}"
+        onsubmit="return submitPageForm(this);"
+        hidden>
+        <input id="kneeDeleteRecordId" type="hidden" name="record_id" value="">
+      </form>
+    {% endif %}
+  {% else %}
+    <section class="knee-card knee-empty-state">
+      <i class="fa fa-exclamation-triangle"></i>
+      <p>目前沒有可分析的資料，請確認官方 CSV 或私人資料集是否正確。</p>
+    </section>
+  {% endif %}
+
+  <section class="knee-card knee-method-card">
+    <h3>分析方法與限制</h3>
+    <div class="knee-method-grid">
+      <div>
+        <h5>加權感染率</h5>
+        <p>使用篩選範圍內的感染案件數合計 ÷ 置換案件數合計，不直接平均各院所百分比。</p>
+      </div>
+      <div>
+        <h5>低案件量提醒</h5>
+        <p>案件量很少時，單一感染事件會造成感染率大幅波動，因此院所排名可設定最低案件數。</p>
+      </div>
+      <div>
+        <h5>期間不可直接相加</h5>
+        <p>上半年度與全年度可能涵蓋重疊期間；跨期趨勢適合比較，不應將不同期間直接加總成唯一人數。</p>
+      </div>
+      <div>
+        <h5>資料隱私</h5>
+        <p>本工具只適合院所層級彙總資料。請勿匯入姓名、身分證、病歷號等可識別個人的病患資料。</p>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,33 @@
+/* === 註冊欄位即時驗證提示 === */
+.field-message {
+    display: block;
+    min-height: 1.25rem;
+    margin-top: 0.4rem;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.62);
+    transition: color 160ms ease;
+}
+
+.field-message.is-error {
+    color: #ff9d82;
+}
+
+.field-message.is-success {
+    color: #57e1c9;
+}
+
+.field-message.is-checking {
+    color: #8acdf5;
+}
+
+.register-action-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.56;
+}
+
+#account:focus,
+#password:focus {
+    border-color: #24cabb;
+    box-shadow: 0 0 0 3px rgba(36, 202, 187, 0.14);
+}

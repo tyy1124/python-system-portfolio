@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入成功</title>
+
+    <meta http-equiv="refresh" content="5;url=/home">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/signin.css') }}">
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <div class="signin-card">
+
+            <div class="card-top">
+                <p class="small-title">LOGIN SUCCESS</p>
+                <h1>登入成功</h1>
+                <p class="sub-text">歡迎回來，5 秒後將進入主頁</p>
+            </div>
+
+            <div class="user-info-box">
+                <p>帳號：{{ account }}</p>
+                <p>姓名：{{ user_name }}</p>
+                <p>Email：{{ email }}</p>
+            </div>
+
+            <p id="statusMessage" class="status-message success" style="text-align: center; margin-top: 16px;">
+                5 秒後自動進入主頁
+            </p>
+
+            <div class="bottom-text">
+                <p>如果沒有自動跳轉，<a href="/home">手動點選進入主頁</a></p>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

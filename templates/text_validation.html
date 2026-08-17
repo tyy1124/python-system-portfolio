@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">文字驗證</h4>
+        <p class="card-description">
+          請輸入資料，系統會判斷是否為 UID、Mobile 或 E-mail。
+        </p>
+
+        <form method="post" action="{{ url_for('schoolassignment.text_validation') }}" onsubmit="return submitPageForm(this);">
+          <div class="form-group">
+            <label>請輸入資料：</label>
+            <input type="text" name="data" class="form-control" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">開始驗證</button>
+        </form>
+
+        <hr>
+
+        {% if result is not none %}
+          <p>輸入資料：{{ data }}</p>
+          <p>判斷結果：{{ result }}</p>
+        {% else %}
+          <p class="text-muted">尚未進行文字驗證。</p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>

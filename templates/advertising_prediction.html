@@ -1,0 +1,122 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">廣告點擊預測</h4>
+        <p class="card-description">
+          使用 advertising 資料集，透過 Logistic Regression 分類模型，
+          根據使用者的網站停留時間、年齡、收入、網路使用時間與性別，預測是否可能點擊廣告。
+        </p>
+
+        {% if error_message is not none %}
+          <p class="text-danger">{{ error_message }}</p>
+        {% endif %}
+
+        <form method="post" action="{{ url_for('schoolassignment.advertising_prediction') }}" onsubmit="return submitPageForm(this);">
+
+          <div class="form-group">
+            <label>每日網站停留時間 Daily Time Spent on Site，單位：分鐘</label>
+            <input
+              type="number"
+              step="0.01"
+              name="daily_time_spent"
+              class="form-control"
+              placeholder="例如：65.5"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>年齡 Age，單位：歲</label>
+            <input
+              type="number"
+              name="age"
+              class="form-control"
+              placeholder="例如：35"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>地區收入 Area Income，單位：美元</label>
+            <input
+              type="number"
+              step="0.01"
+              name="area_income"
+              class="form-control"
+              placeholder="例如：60000"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>每日網路使用時間 Daily Internet Usage，單位：分鐘</label>
+            <input
+              type="number"
+              step="0.01"
+              name="daily_internet_usage"
+              class="form-control"
+              placeholder="例如：180"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>性別</label>
+            <select name="male" class="form-control" required>
+              <option value="1">男性</option>
+              <option value="0">女性</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">預測是否點擊廣告</button>
+        </form>
+
+        <hr>
+
+        {% if click_probability_text is not none %}
+          <h5>預測結果</h5>
+
+          <p>每日網站停留時間：{{ daily_time_spent }} 分鐘</p>
+          <p>年齡：{{ age }} 歲</p>
+          <p>地區收入：{{ "{:,.2f}".format(area_income) }} 美元</p>
+          <p>每日網路使用時間：{{ daily_internet_usage }} 分鐘</p>
+
+          {% if male == "1" %}
+            <p>性別：男性</p>
+          {% elif male == "0" %}
+            <p>性別：女性</p>
+          {% endif %}
+
+          <h4 class="text-success mt-3">
+            推估點擊廣告機率：{{ click_probability_text }}%
+          </h4>
+
+          <p class="mt-2">{{ prediction_result }}</p>
+
+          <hr>
+
+          <h5>模型資訊</h5>
+          <p>模型：StandardScaler + Logistic Regression</p>
+          <p>使用特徵：網站停留時間、年齡、地區收入、每日網路使用時間、性別</p>
+          <p>測試資料準確率 Accuracy：{{ model_accuracy }}</p>
+          <p class="text-muted">
+          </p>
+
+        {% else %}
+          <p class="text-muted">尚未進行廣告點擊預測。</p>
+
+          {% if model_accuracy is not none %}
+            <hr>
+            <h5>模型資訊</h5>
+            <p>模型：StandardScaler + Logistic Regression</p>
+            <p>使用特徵：網站停留時間、年齡、地區收入、每日網路使用時間、性別</p>
+            <p>測試資料準確率 Accuracy：{{ model_accuracy }}</p>
+          {% endif %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>

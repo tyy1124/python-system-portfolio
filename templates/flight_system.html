@@ -1,0 +1,283 @@
+<style>
+  .flight-system-source { display: flex; gap: 13px; align-items: flex-start; margin: 0 0 20px; padding: 15px 17px; border: 1px solid var(--tyy-border); border-radius: 13px; background: var(--tyy-surface-alt); color: var(--tyy-text-secondary); line-height: 1.65; }
+  .flight-system-source i { flex: 0 0 auto; margin-top: 4px; color: var(--tyy-tiffany-strong); font-size: 1.05rem; }
+  .flight-system-source strong { color: var(--tyy-heading); }
+  .flight-system-source a { color: var(--tyy-tiffany-strong); font-weight: 750; }
+  .flight-system-source small { display: block; margin-top: 4px; color: var(--tyy-text-muted); }
+  .flight-results-table { min-width: 980px; }
+  .flight-results-table th { white-space: nowrap; }
+  .flight-results-table td { vertical-align: middle; }
+  .flight-update-panel { margin: 0 0 18px; padding: 14px 16px; border: 1px dashed var(--tyy-border-strong); border-radius: 12px; background: var(--tyy-surface-soft); }
+  .flight-update-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .flight-update-button { display: inline-flex; align-items: center; gap: 8px; min-width: 170px; justify-content: center; }
+  .flight-update-note { margin: 0; color: var(--tyy-text-muted); font-size: 13px; line-height: 1.55; }
+  .flight-update-note strong { color: var(--tyy-heading); }
+  .flight-update-status { display: none; margin-top: 10px; font-size: 13px; }
+</style>
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">桃園機場航班查詢系統</h4>
+        <p class="card-description">
+          查詢桃園機場出入境航班、延誤狀態與貨機資訊
+        </p>
+
+        <div class="flight-system-source">
+          <i class="fa fa-database"></i>
+          <div>
+            <strong>資料來源：交通部 TDX 運輸資料流通服務平臺</strong><br>
+            本網站約每小時將航空即時航班資料同步至本地資料庫，供桃園機場出入境、延誤與客貨機查詢使用。
+            <small>來源欄位可能因供應單位尚未提供而留空，資料同步也可能有時間差；航班資訊僅供作品展示與查詢參考，最終請以桃園國際機場及航空公司公告為準。</small>
+            <a href="https://tdx.transportdata.tw/" target="_blank" rel="noopener noreferrer">TDX 官方平臺 <i class="fa fa-external-link"></i></a>
+            ·
+            <a href="https://motc-ptx.gitbook.io/tdx-zi-liao-shi-yong-kui-hua-bao-dian/data_notice/public_transportation_data/air" target="_blank" rel="noopener noreferrer">航空資料使用注意事項 <i class="fa fa-external-link"></i></a>
+          </div>
+        </div>
+
+        <div class="flight-update-panel">
+          <div class="flight-update-row">
+            <form method="post" action="{{ url_for('portfolio_bp.flight_system_update') }}"
+                  onsubmit="return updateFlightData(this);" class="mb-0">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-outline-info flight-update-button"
+                      {% if not tdx_update_available %}title="Demo 公開版未配置 TDX API 帳密"{% endif %}>
+                <i class="fa fa-refresh"></i> 手動更新航班資料
+              </button>
+            </form>
+            <p class="flight-update-note">
+              <strong>資料更新機制：</strong>此功能會向交通部 TDX API 重新抓取桃園機場即時航班，清洗後同步寫入資料庫。
+              {% if not tdx_update_available %}
+                <br><span class="text-warning">Demo 公開版基於帳密安全未附 TDX API Client ID / Secret，因此按鈕僅展示完整更新流程；正式環境配置 API 憑證後即可執行。</span>
+              {% endif %}
+            </p>
+          </div>
+          <div id="flightUpdateStatus" class="flight-update-status"></div>
+        </div>
+
+        <form method="get" action="{{ url_for('portfolio_bp.flight_system') }}"
+              onsubmit="loadPage(this.action + '?' + new URLSearchParams(new FormData(this)).toString()); return false;">
+          <div class="row">
+
+            <div class="col-md-2">
+              <label>日期</label>
+              <input type="date" name="date_filter" class="form-control" value="{{ date_filter or '' }}">
+            </div>
+
+            <div class="col-md-3">
+              <label>航班號 / 航空公司代碼</label>
+              <input type="text" name="keyword" class="form-control" value="{{ keyword or '' }}" placeholder="例如 CI、BR、JX、12">
+            </div>
+
+            <div class="col-md-2">
+              <label>方向</label>
+              <select name="direction_filter" class="form-control">
+                <option value="">全部</option>
+                <option value="departure" {% if direction_filter == 'departure' %}selected{% endif %}>出境</option>
+                <option value="arrival" {% if direction_filter == 'arrival' %}selected{% endif %}>入境</option>
+              </select>
+            </div>
+
+            <div class="col-md-2">
+              <label>狀態</label>
+              <select name="status_filter" class="form-control">
+                <option value="">全部</option>
+                <option value="延誤" {% if status_filter == '延誤' %}selected{% endif %}>延誤</option>
+                <option value="準點" {% if status_filter == '準點' %}selected{% endif %}>準點</option>
+                <option value="提早" {% if status_filter == '提早' %}selected{% endif %}>提早</option>
+                <option value="取消" {% if status_filter == '取消' %}selected{% endif %}>取消</option>
+                <option value="尚未起飛" {% if status_filter == '尚未起飛' %}selected{% endif %}>尚未起飛</option>
+                <option value="尚未抵達" {% if status_filter == '尚未抵達' %}selected{% endif %}>尚未抵達</option>
+              </select>
+            </div>
+
+            <div class="col-md-1">
+              <label>類型</label>
+              <select name="cargo_filter" class="form-control">
+                <option value="">全部</option>
+                <option value="passenger" {% if cargo_filter == 'passenger' %}selected{% endif %}>客機</option>
+                <option value="cargo" {% if cargo_filter == 'cargo' %}selected{% endif %}>貨機</option>
+              </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+              <button type="submit" class="btn btn-primary w-100">查詢</button>
+            </div>
+
+          </div>
+        </form>
+
+        <hr>
+
+        <p>
+          查詢結果：本頁 {{ result_list|length }} 筆，
+          共 {{ pagination.total }} 筆資料
+        </p>
+
+        <div class="table-responsive">
+          <table class="table table-striped table-hover flight-results-table">
+            <thead>
+              <tr>
+                <th>日期</th>
+                <th>航空公司</th>
+                <th>航班號</th>
+                <th>方向</th>
+                <th>航線</th>
+                <th>狀態</th>
+                <th>延誤分鐘</th>
+                <th>預估時間</th>
+                <th>實際時間</th>
+                <th>貨機</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for flight in result_list %}
+              <tr>
+                <td>{{ flight.flight_date }}</td>
+                <td>{{ flight.airline_code }}</td>
+                <td>{{ flight.flight_number }}</td>
+                <td>
+                  {% if flight.direction == 'departure' %}
+                    出境
+                  {% else %}
+                    入境
+                  {% endif %}
+                </td>
+                <td>{{ flight.departure_airport }} → {{ flight.arrival_airport }}</td>
+                <td>{{ flight.status }}</td>
+                <td>
+                  {% if flight.delay_minutes is not none %}
+                    {{ flight.delay_minutes }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td>{{ flight.estimated_time or '-' }}</td>
+                <td>{{ flight.actual_time or '-' }}</td>
+                <td>
+                  {% if flight.is_cargo %}
+                    是
+                  {% else %}
+                    否
+                  {% endif %}
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="10" class="text-center text-muted">查無資料</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="d-flex mt-4 flex-wrap align-items-center">
+          <p class="text-muted mb-sm-0">
+            第 {{ pagination.page }} 頁 / 共 {{ pagination.pages }} 頁
+          </p>
+
+          <nav class="ms-auto">
+            <ul class="pagination separated pagination-info mb-sm-0">
+
+              <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+                <a class="page-link"
+                   href="{{ url_for('portfolio_bp.flight_system',
+                     page=pagination.prev_num,
+                     keyword=keyword,
+                     date_filter=date_filter,
+                     direction_filter=direction_filter,
+                     status_filter=status_filter,
+                     cargo_filter=cargo_filter
+                   ) }}"
+                   onclick="loadPage(this.href); return false;">
+                  上一頁
+                </a>
+              </li>
+
+              {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if page_num %}
+                  <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+                    <a class="page-link"
+                       href="{{ url_for('portfolio_bp.flight_system',
+                         page=page_num,
+                         keyword=keyword,
+                         date_filter=date_filter,
+                         direction_filter=direction_filter,
+                         status_filter=status_filter,
+                         cargo_filter=cargo_filter
+                       ) }}"
+                       onclick="loadPage(this.href); return false;">
+                      {{ page_num }}
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+
+              <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+                <a class="page-link"
+                   href="{{ url_for('portfolio_bp.flight_system',
+                     page=pagination.next_num,
+                     keyword=keyword,
+                     date_filter=date_filter,
+                     direction_filter=direction_filter,
+                     status_filter=status_filter,
+                     cargo_filter=cargo_filter
+                   ) }}"
+                   onclick="loadPage(this.href); return false;">
+                  下一頁
+                </a>
+              </li>
+
+            </ul>
+          </nav>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  async function updateFlightData(form) {
+    const button = form.querySelector('button[type="submit"]');
+    const statusBox = document.getElementById('flightUpdateStatus');
+    const originalHtml = button.innerHTML;
+
+    button.disabled = true;
+    button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 更新中...';
+    statusBox.style.display = 'block';
+    statusBox.className = 'flight-update-status text-info';
+    statusBox.textContent = '正在連線 TDX 並更新資料...';
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      });
+      const result = await response.json();
+
+      statusBox.className = 'flight-update-status ' + (result.ok ? 'text-success' : 'text-warning');
+      statusBox.textContent = result.message || '更新流程已完成。';
+
+      if (result.ok) {
+        setTimeout(() => {
+          loadPage('{{ url_for("portfolio_bp.flight_system") }}');
+        }, 900);
+      }
+    } catch (error) {
+      statusBox.className = 'flight-update-status text-danger';
+      statusBox.textContent = '更新請求失敗，請稍後再試。';
+    } finally {
+      button.disabled = false;
+      button.innerHTML = originalHtml;
+    }
+
+    return false;
+  }
+</script>

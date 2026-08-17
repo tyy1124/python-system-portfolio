@@ -1,0 +1,43 @@
+<div class="site-update-page">
+  {% if error_message %}
+  <div class="alert alert-warning">{{ error_message }}</div>
+  <button type="button" class="site-update-home-button" onclick="loadPage('{{ url_for('update_history') }}');">
+    <i class="fa fa-arrow-left"></i> 返回更新紀錄
+  </button>
+  {% elif update %}
+  <section class="site-update-detail-hero">
+    <div>
+      <span class="site-update-eyebrow">UPDATE NOTES</span>
+      <div class="site-update-detail-date"><i class="fa fa-calendar"></i>{{ update.date }}</div>
+      <h2>{{ update.title }}</h2>
+    </div>
+    <div class="site-update-detail-actions">
+      <button type="button" class="site-update-home-button" onclick="loadPage('{{ url_for('update_history') }}');">
+        <i class="fa fa-list"></i> 全部更新
+      </button>
+      <button type="button" class="site-update-home-button" onclick="loadPage('{{ url_for('home_dashboard') }}');">
+        <i class="fa fa-home"></i> 回到主頁
+      </button>
+    </div>
+  </section>
+
+  <section class="site-update-summary-card">
+    <h3>更新摘要</h3>
+    <ul class="site-update-summary-list">
+      {% for item in update.summary %}<li>{{ item }}</li>{% endfor %}
+    </ul>
+  </section>
+
+  <section class="site-update-section-grid">
+    {% for section in update.sections %}
+    <article class="site-update-section-card">
+      <div class="site-update-section-number">{{ "%02d" | format(loop.index) }}</div>
+      <h3>{{ section.title }}</h3>
+      <ul>
+        {% for item in section["items"] %}<li>{{ item }}</li>{% endfor %}
+      </ul>
+    </article>
+    {% endfor %}
+  </section>
+  {% endif %}
+</div>

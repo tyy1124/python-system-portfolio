@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入頁</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/signin.css') }}">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="signin-card">
+
+            <div class="card-top">
+                <p class="small-title">WELCOME BACK</p>
+                <h1>Sign In</h1>
+                <p class="sub-text">登入你的帳號，開始你的旅程</p>
+            </div>
+
+
+            {% if demo_enabled %}
+            <div class="demo-login-box" style="
+                margin: 18px 0;
+                padding: 14px 16px;
+                border: 1px solid rgba(255,255,255,0.18);
+                border-radius: 12px;
+                background: rgba(255,255,255,0.06);
+                line-height: 1.7;
+            ">
+                <strong>作品展示 Demo 帳號</strong><br>
+                帳號：<code>{{ demo_username }}</code><br>
+                密碼：<code>{{ demo_password }}</code>
+            </div>
+            {% endif %}
+
+            <form id="signinForm" action="{{ url_for('login') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="input-group">
+                    <label for="account">帳號</label>
+                    <input 
+                        type="text" 
+                        id="account" 
+                        name="account" 
+                        placeholder="請輸入帳號">
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">密碼</label>
+                    <div class="password-box">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="請輸入密碼">
+                        <button type="button" id="togglePassword">顯示</button>
+                    </div>
+                </div>
+                {% if error %}
+                    <p id="statusMessage" class="status-message">{{ error }}</p>
+                {% else %}
+                    <p id="statusMessage" class="status-message"></p>
+                {% endif %}
+
+                <button type="submit" class="signin-btn">登入</button>
+            </form>
+
+            <div class="bottom-text">
+                <p>還沒有帳號？ <a href="{{ url_for('register') }}">註冊帳號</a></p>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/signin.js') }}"></script>
+</body>
+</html>

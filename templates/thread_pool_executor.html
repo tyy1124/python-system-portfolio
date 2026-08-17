@@ -1,0 +1,98 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">ThreadPoolExecutor 多工池練習</h4>
+        <p class="card-description">
+          使用 ThreadPoolExecutor 同時執行多個隨機數任務，並計算總和與執行時間。
+        </p>
+
+        <form method="post" action="{{ url_for('schoolassignment.thread_pool_executor') }}" onsubmit="return submitPageForm(this);">
+          <div class="form-group">
+            <label>任務數量，限制 1～100：</label>
+            <input
+              type="number"
+              name="task_count"
+              class="form-control"
+              min="1"
+              max="100"
+              value="50"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>Thread 數量，限制 1～50：</label>
+            <input
+              type="number"
+              name="max_workers"
+              class="form-control"
+              min="1"
+              max="50"
+              value="10"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>數字範圍，限制 1000～100000：</label>
+            <input
+              type="number"
+              name="max_num"
+              class="form-control"
+              min="1000"
+              max="100000"
+              value="100000"
+              required
+            >
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">開始執行</button>
+        </form>
+
+        <hr>
+
+        {% if error_message is not none %}
+          <p class="text-danger">{{ error_message }}</p>
+
+        {% elif total_list is not none %}
+          <h5>執行結果</h5>
+
+          <p>任務數量：{{ task_count }}</p>
+          <p>Thread 數量：{{ max_workers }}</p>
+          <p>數字範圍：0 ~ {{ max_num - 1 }}</p>
+          <p>結果總和：{{ total_sum }}</p>
+          <p>執行時間：{{ execution_time }} 秒</p>
+
+          <hr>
+
+          <h5>產生的隨機數列表</h5>
+
+          <div style="max-height: 300px; overflow-y: auto;">
+            <table class="table table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th>序號</th>
+                  <th>隨機數</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for number in total_list %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td>{{ number }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        {% else %}
+          <p class="text-muted">尚未執行多工池任務。</p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>

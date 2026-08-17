@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">大隊接力</h4>
+        <p class="card-description">
+          請輸入隊伍數量與每隊棒數，系統會即時顯示接力比賽進度。
+        </p>
+
+        <!-- === 比賽設定區 === -->
+        <div class="form-group">
+          <label>隊伍數量，限制 1～4 隊：</label>
+          <input
+            type="number"
+            id="relay-team-count"
+            class="form-control"
+            min="1"
+            max="4"
+            value="4"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>每隊棒數，限制 1～8 棒：</label>
+          <input
+            type="number"
+            id="relay-runner-count"
+            class="form-control"
+            min="1"
+            max="8"
+            value="8"
+            required
+          >
+        </div>
+
+        <!-- === 這裡不要用 submit，避免重新 GET /relay_race === -->
+        <button type="button" class="btn btn-primary mt-3" onclick="startRelayRace();">
+          開始接力比賽
+        </button>
+
+        <hr>
+
+        <!-- === 比賽狀態 === -->
+        <p id="relay-status" class="text-muted">尚未開始比賽。</p>
+
+        <!-- === 賽道顯示區 === -->
+        <div id="relay-track-area"></div>
+
+        <hr>
+
+        <!-- === 名次顯示區 === -->
+        <h5>隊伍名次</h5>
+        <ol id="relay-ranking"></ol>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.relay-team-card { margin-bottom: 24px; padding: 14px; border: 1px solid var(--tyy-border); border-radius: 12px; background: var(--tyy-surface); box-shadow: var(--tyy-shadow); }
+  .relay-info { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--tyy-text-secondary); font-size: 14px; }
+  .relay-track { position: relative; width: 100%; height: 38px; overflow: hidden; border-radius: 20px; background: var(--tyy-surface-soft); }
+  .relay-progress { width: 0%; height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--tyy-tiffany), var(--tyy-orange)); transition: width 0.25s linear; }
+  .relay-runner-icon { position: absolute; top: 2px; left: 0%; display: flex; width: 34px; height: 34px; align-items: center; justify-content: center; border: 2px solid var(--tyy-tiffany-strong); border-radius: 50%; background: #ffffff; color: #182126; transform: translateX(-50%); transition: left 0.25s linear; font-size: 18px; }
+  .relay-runner-number { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; border-radius: 50%; background: var(--tyy-danger); color: #ffffff; font-size: 12px; line-height: 18px; text-align: center; font-weight: 800; }
+  .relay-finished { background: var(--tyy-success); }
+  .relay-runner-times { margin-top: 8px; color: var(--tyy-text-secondary); font-size: 13px; }
+  .relay-runner-times span { display: inline-block; margin-right: 12px; margin-bottom: 4px; }
+</style>

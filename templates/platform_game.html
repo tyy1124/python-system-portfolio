@@ -1,0 +1,348 @@
+<div
+  id="platformGameRoot"
+  class="tyy-game-root"
+  data-home-url="{{ url_for('home_dashboard') }}"
+  data-scene-village-url="{{ url_for('static', filename='images/platform_game/village_haven_v3.webp') }}"
+  data-scene-grassland-url="{{ url_for('static', filename='images/platform_game/chapter1_grassland_v3.webp') }}"
+  data-scene-grassland-boss-url="{{ url_for('static', filename='images/platform_game/chapter1_boss_moon_sanctuary_v3.webp') }}"
+  data-scene-swamp-url="{{ url_for('static', filename='images/platform_game/chapter2_swamp_v3.webp') }}"
+  data-scene-swamp-boss-url="{{ url_for('static', filename='images/platform_game/chapter2_boss_drowned_temple_v3.webp') }}"
+  tabindex="0"
+>
+  <div class="tyy-game-shell">
+    <header class="tyy-game-topbar">
+      <div>
+        <p class="tyy-game-kicker">TYY ORIGINAL GAME PROJECT</p>
+        <h2>2D小遊戲</h2>
+      </div>
+      <div class="tyy-game-top-actions">
+        <button type="button" id="gameFullscreenButton" class="tyy-game-icon-button" title="全螢幕">
+          <i class="fa fa-expand"></i>
+          <span data-game-i18n="fullscreen">全螢幕</span>
+        </button>
+        <button type="button" id="gameSettingsButton" class="tyy-game-icon-button" title="設定">
+          <i class="fa fa-cog"></i>
+          <span data-game-i18n="settings">設定</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="tyy-game-stage-wrap">
+      <canvas id="gameCanvas" width="1280" height="720" aria-label="2D小遊戲畫面"></canvas>
+
+      <div id="gameHud" class="tyy-game-hud is-hidden" aria-live="polite">
+        <section class="tyy-hud-player-card">
+          <div class="tyy-hud-character-badge">
+            <canvas id="hudCharacterCanvas" width="72" height="72"></canvas>
+          </div>
+          <div class="tyy-hud-player-main">
+            <div class="tyy-hud-row">
+              <strong id="hudCharacterName">角色</strong>
+              <span>Lv.<b id="hudLevel">1</b></span>
+            </div>
+            <div class="tyy-hud-bar tyy-hud-hp-bar">
+              <span id="hudHpFill"></span>
+              <em id="hudHpText">100 / 100</em>
+            </div>
+            <div class="tyy-hud-bar tyy-hud-xp-bar">
+              <span id="hudXpFill"></span>
+              <em id="hudXpText">0 / 20 XP</em>
+            </div>
+          </div>
+        </section>
+
+        <section class="tyy-hud-stage-card">
+          <div class="tyy-hud-stage-title" id="hudStageName">村莊</div>
+          <div class="tyy-hud-stage-sub">
+            <span><i class="fa fa-clock-o"></i> <b id="hudTimer">00:00</b></span>
+            <span><i class="fa fa-crosshairs"></i> <b id="hudKills">0</b></span>
+            <span><i class="fa fa-money"></i> <b id="hudGold">0</b></span>
+          </div>
+          <div id="hudObjective" class="tyy-hud-objective">前往傳送門</div>
+        </section>
+
+        <section id="hudModifiers" class="tyy-hud-modifiers"></section>
+
+        <section id="abilityBar" class="tyy-ability-bar"></section>
+
+        <section id="gamePrompt" class="tyy-game-prompt is-hidden"></section>
+      </div>
+
+      <div id="gameCrosshair" class="tyy-game-crosshair" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><i></i>
+      </div>
+
+      <div id="gameToastStack" class="tyy-game-toast-stack" aria-live="polite"></div>
+
+      <div id="itemAcquiredBanner" class="tyy-item-acquired-banner is-hidden" aria-live="assertive">
+        <canvas id="itemAcquiredCanvas" width="104" height="104"></canvas>
+        <div>
+          <small id="itemAcquiredSource">ITEM ACQUIRED</small>
+          <strong id="itemAcquiredName">獲得道具</strong>
+          <span id="itemAcquiredEffect"></span>
+          <b id="itemAcquiredCount">×1</b>
+        </div>
+      </div>
+
+      <section id="gameInventoryOverlay" class="tyy-game-inventory-overlay is-hidden" aria-hidden="true">
+        <header>
+          <div>
+            <small>LIVE LOADOUT</small>
+            <h3 data-game-i18n="inventoryTitle">目前道具</h3>
+          </div>
+          <span><kbd>TAB</kbd><i data-game-i18n="holdToView">按住查看・放開關閉</i></span>
+        </header>
+        <div id="inventoryItemGrid" class="tyy-inventory-item-grid"></div>
+        <footer id="inventoryStatSummary" class="tyy-inventory-stat-summary"></footer>
+      </section>
+
+      <section id="gameMainMenu" class="tyy-game-screen tyy-game-main-menu">
+        <div class="tyy-main-menu-art">
+          <div class="tyy-main-menu-moon"></div>
+          <div class="tyy-main-menu-hills hill-a"></div>
+          <div class="tyy-main-menu-hills hill-b"></div>
+          <div class="tyy-main-menu-grass"></div>
+          <div class="tyy-main-menu-party" id="mainMenuParty"></div>
+        </div>
+        <div class="tyy-main-menu-panel">
+          <p class="tyy-screen-eyebrow" data-game-i18n="menuKicker">橫向卷軸 × 輕度肉鴿 × 生存戰鬥</p>
+          <h3>2D小遊戲</h3>
+          <p class="tyy-main-menu-description" data-game-i18n="menuDescription">
+            選擇動物冒險者，從村莊出發，穿越草原與沼澤。擊倒怪物、收集金幣、開啟寶箱，逐步打造每一場不同的能力組合。
+          </p>
+          <div class="tyy-main-menu-buttons">
+            <button type="button" id="gameStartButton" class="tyy-game-primary-button" data-game-i18n="startAdventure">開始新冒險</button>
+            <button type="button" id="gameHowToButton" class="tyy-game-secondary-button" data-game-i18n="howToPlay">操作與規則</button>
+          </div>
+          <div class="tyy-control-summary">
+            <span><kbd>WASD</kbd> <i data-game-i18n="move">移動</i></span>
+            <span><kbd>Space</kbd> <i data-game-i18n="jump">跳躍</i></span>
+            <span><kbd data-game-i18n="leftMouse">左鍵</kbd> <i data-game-i18n="basicAttack">普通攻擊</i></span>
+            <span><kbd data-game-i18n="rightMouse">右鍵</kbd> <i data-game-i18n="secondarySkill">基礎技能</i></span>
+            <span><kbd>Q E R</kbd> <i data-game-i18n="skills">技能</i></span>
+            <span><kbd>F</kbd> <i data-game-i18n="interactLabel">互動</i></span>
+            <span><kbd>ESC</kbd> <i data-game-i18n="menuLabel">選單</i></span>
+            <span><kbd>TAB</kbd> <i data-game-i18n="inventoryLabel">道具總覽</i></span>
+          </div>
+        </div>
+      </section>
+
+      <section id="characterSelectScreen" class="tyy-game-screen is-hidden">
+        <div class="tyy-screen-panel tyy-character-select-panel">
+          <div class="tyy-screen-heading">
+            <div>
+              <p class="tyy-screen-eyebrow">ADVENTURER SELECT</p>
+              <h3 data-game-i18n="selectCharacter">選擇冒險角色</h3>
+              <p data-game-i18n="selectCharacterDescription">每個角色都有獨立職業、成長、普通攻擊、天賦與四個技能。</p>
+            </div>
+            <button type="button" class="tyy-game-close-button" data-game-back="main" data-game-i18n="back">返回</button>
+          </div>
+
+          <div class="tyy-character-select-layout">
+            <div id="characterList" class="tyy-character-list"></div>
+            <article class="tyy-character-detail">
+              <div class="tyy-character-detail-top">
+                <canvas id="characterPreviewCanvas" width="360" height="250"></canvas>
+                <div>
+                  <span id="characterRoleBadge" class="tyy-role-badge">職業</span>
+                  <h4 id="characterDetailName">角色名稱</h4>
+                  <p id="characterDetailRole">職業定位</p>
+                  <p id="characterDetailDescription"></p>
+                </div>
+              </div>
+
+              <div class="tyy-character-detail-grid">
+                <section>
+                  <h5 data-game-i18n="baseStats">基礎能力</h5>
+                  <div id="characterStats" class="tyy-stat-list"></div>
+                </section>
+                <section>
+                  <h5 data-game-i18n="talent">角色天賦</h5>
+                  <div id="characterTalent" class="tyy-talent-card"></div>
+                </section>
+              </div>
+
+              <section class="tyy-character-skill-section">
+                <h5 data-game-i18n="attacksAndSkills">攻擊與技能</h5>
+                <div id="characterSkills" class="tyy-skill-list"></div>
+              </section>
+
+              <button type="button" id="confirmCharacterButton" class="tyy-game-primary-button tyy-wide-button" data-game-i18n="confirmCharacter">
+                使用此角色進入村莊
+              </button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="routeSelectScreen" class="tyy-game-screen is-hidden">
+        <div class="tyy-screen-panel tyy-route-panel">
+          <div class="tyy-screen-heading">
+            <div>
+              <p class="tyy-screen-eyebrow">CHOOSE YOUR PATH</p>
+              <h3 id="routeScreenTitle">選擇下一個關卡</h3>
+              <p id="routeScreenSubtitle">不同節點會改變敵人、獎勵與關卡特性。</p>
+            </div>
+          </div>
+          <div id="routeNodeList" class="tyy-route-node-list"></div>
+          <div class="tyy-route-legend">
+            <span><i class="node-dot normal"></i><i data-game-i18n="normalStage">普通關卡</i></span>
+            <span><i class="node-dot elite"></i><i data-game-i18n="eliteStage">菁英關卡</i></span>
+            <span><i class="node-dot shop"></i><i data-game-i18n="shopStage">商店關卡</i></span>
+            <span><i class="node-dot boss"></i><i data-game-i18n="bossStage">BOSS 關卡</i></span>
+          </div>
+        </div>
+      </section>
+
+      <section id="levelUpScreen" class="tyy-game-screen is-hidden">
+        <div class="tyy-screen-panel tyy-choice-panel">
+          <div class="tyy-level-up-heading">
+            <span>LEVEL UP</span>
+            <h3 data-game-i18n="chooseUpgrade">選擇一項強化</h3>
+            <p id="levelUpGrowthText" data-game-i18n="levelGrowth">角色基礎能力已獲得成長。</p>
+          </div>
+          <div id="levelUpChoiceList" class="tyy-choice-card-list"></div>
+        </div>
+      </section>
+
+      <section id="shopScreen" class="tyy-game-screen is-hidden">
+        <div class="tyy-screen-panel tyy-shop-panel">
+          <div class="tyy-screen-heading">
+            <div>
+              <p class="tyy-screen-eyebrow">TRAVELING SHOP</p>
+              <h3 data-game-i18n="shopTitle">旅商補給站</h3>
+              <p data-game-i18n="shopDescription">商店價格會隨章節與關卡提高，同一件道具可以重複強化。</p>
+            </div>
+            <div class="tyy-shop-gold"><i class="fa fa-money"></i> <b id="shopGoldText">0</b></div>
+          </div>
+          <div id="shopOfferList" class="tyy-choice-card-list"></div>
+          <div class="tyy-shop-actions">
+            <button type="button" id="shopHealButton" class="tyy-game-secondary-button">恢復 35% 生命</button>
+            <button type="button" id="leaveShopButton" class="tyy-game-primary-button" data-game-i18n="leaveShop">離開商店</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="pauseScreen" class="tyy-game-screen is-hidden">
+        <div class="tyy-screen-panel tyy-pause-panel">
+          <p class="tyy-screen-eyebrow">PAUSED</p>
+          <h3 data-game-i18n="pausedTitle">遊戲暫停</h3>
+          <div class="tyy-pause-buttons">
+            <button type="button" id="resumeGameButton" class="tyy-game-primary-button" data-game-i18n="resume">繼續遊戲</button>
+            <button type="button" id="pauseSettingsButton" class="tyy-game-secondary-button" data-game-i18n="settingsAndKeys">設定與熱鍵</button>
+            <button type="button" id="returnMainMenuButton" class="tyy-game-secondary-button" data-game-i18n="returnMain">回到遊戲主選單</button>
+            <button type="button" id="exitGameButton" class="tyy-game-danger-button" data-game-i18n="exitGame">離開遊戲</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="settingsScreen" class="tyy-game-screen is-hidden">
+        <div class="tyy-screen-panel tyy-settings-panel">
+          <div class="tyy-screen-heading">
+            <div>
+              <p class="tyy-screen-eyebrow">SETTINGS</p>
+              <h3 data-game-i18n="gameSettings">遊戲設定</h3>
+            </div>
+            <button type="button" id="closeSettingsButton" class="tyy-game-close-button" data-game-i18n="done">完成</button>
+          </div>
+
+          <div class="tyy-settings-grid">
+            <section class="tyy-settings-section">
+              <h4 data-game-i18n="generalSettings">一般設定</h4>
+              <label class="tyy-setting-row">
+                <span data-game-i18n="language">語言</span>
+                <select id="gameLanguageSelect">
+                  <option value="zh-TW">繁體中文</option>
+                  <option value="en">English</option>
+                </select>
+              </label>
+              <label class="tyy-setting-row">
+                <span data-game-i18n="musicVolume">音樂音量</span>
+                <input id="musicVolumeInput" type="range" min="0" max="100" step="1">
+                <b id="musicVolumeText">35%</b>
+              </label>
+              <label class="tyy-setting-row">
+                <span data-game-i18n="sfxVolume">音效音量</span>
+                <input id="sfxVolumeInput" type="range" min="0" max="100" step="1">
+                <b id="sfxVolumeText">70%</b>
+              </label>
+              <label class="tyy-setting-row">
+                <span data-game-i18n="screenShake">畫面震動</span>
+                <input id="screenShakeInput" type="checkbox" checked>
+              </label>
+              <label class="tyy-setting-row">
+                <span data-game-i18n="displayMode">畫面模式</span>
+                <select id="gameDisplayModeSelect">
+                  <option value="adaptive">自適應視窗</option>
+                  <option value="ratio">固定 16:9</option>
+                  <option value="height">優先填滿高度</option>
+                </select>
+              </label>
+            </section>
+
+            <section class="tyy-settings-section">
+              <div class="tyy-settings-section-heading">
+                <h4 data-game-i18n="customKeys">自訂熱鍵</h4>
+                <button type="button" id="resetKeybindButton" data-game-i18n="resetDefault">恢復預設</button>
+              </div>
+              <p class="tyy-keybind-help" data-game-i18n="keybindHelp">點選按鍵後，再按下新的鍵。滑鼠左鍵與右鍵固定為普通攻擊與基礎技能。</p>
+              <div id="keybindList" class="tyy-keybind-list"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="howToScreen" class="tyy-game-screen is-hidden">
+        <div class="tyy-screen-panel tyy-howto-panel">
+          <div class="tyy-screen-heading">
+            <div>
+              <p class="tyy-screen-eyebrow">HOW TO PLAY</p>
+              <h3 data-game-i18n="rulesTitle">操作與遊戲規則</h3>
+            </div>
+            <button type="button" class="tyy-game-close-button" data-game-back="main">返回</button>
+          </div>
+          <div class="tyy-howto-grid">
+            <article>
+              <i class="fa fa-keyboard-o"></i>
+              <h4 data-game-i18n="combatControls">戰鬥操作</h4>
+              <p data-game-i18n="combatControlsText">使用 WASD 移動、Space 二段跳、滑鼠瞄準。左鍵普通攻擊，右鍵、Q、E、R 施放技能；按住 TAB 查看目前道具且不會暫停。</p>
+            </article>
+            <article>
+              <i class="fa fa-line-chart"></i>
+              <h4 data-game-i18n="progression">成長方式</h4>
+              <p data-game-i18n="progressionText">擊倒敵人取得經驗與金幣。升級時從三項道具中選擇一項，並自動獲得角色成長能力。</p>
+            </article>
+            <article>
+              <i class="fa fa-gift"></i>
+              <h4 data-game-i18n="chestsAndShop">寶箱與商店</h4>
+              <p data-game-i18n="chestsAndShopText">靠近寶箱按 F，以金幣開啟隨機道具。商店可以購買道具與恢復生命。</p>
+            </article>
+            <article>
+              <i class="fa fa-hourglass-half"></i>
+              <h4 data-game-i18n="timePressure">時間壓力</h4>
+              <p data-game-i18n="timePressureText">關卡超過 5 分鐘後，經驗與金幣收益降低 80%；8 分鐘後，每 15 秒強化怪物與刷新數量。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="resultScreen" class="tyy-game-screen is-hidden">
+        <div class="tyy-screen-panel tyy-result-panel">
+          <p id="resultEyebrow" class="tyy-screen-eyebrow">RUN ENDED</p>
+          <h3 id="resultTitle">冒險結束</h3>
+          <p id="resultDescription"></p>
+          <div id="resultStats" class="tyy-result-stats"></div>
+          <div class="tyy-result-buttons">
+            <button type="button" id="retryRunButton" class="tyy-game-primary-button" data-game-i18n="chooseAgain">重新選擇角色</button>
+            <button type="button" id="resultMainMenuButton" class="tyy-game-secondary-button" data-game-i18n="returnMainShort">回到主選單</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="tyy-game-footer">
+      <span data-game-i18n="footerText">本遊戲使用 JavaScript Canvas 製作，所有角色、地圖與介面均為原創測試版本。</span>
+      <span id="gameVersionText">v2.1</span>
+    </footer>
+  </div>
+</div>

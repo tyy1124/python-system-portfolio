@@ -1,0 +1,40 @@
+# === Secrets / local environment ===
+linkset.env
+.env
+*.env
+!.env.example
+上課用應用程式密碼.txt
+
+# === Local databases / generated API data ===
+instance/
+
+# === Large training data ===
+data/mnist_train.csv
+data/mnist_train(1).csv
+
+# === Python ===
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# === IDE / OS ===
+.spyproject/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# === Build / temporary ===
+dist/
+build/
+*.rar
+本次更動檔案/
+
+# === Local logs ===
+*.log
+
+# Local/private DB files
+instance/*.db
+flight_data.db

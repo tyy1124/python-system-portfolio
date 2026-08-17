@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <h4 class="card-title">BMI 計算</h4>
+        <p class="card-description">請輸入身高與體重，系統會計算 BMI 結果。</p>
+
+        <!-- 輸入表單 -->
+        <form method="post" action="{{ url_for('schoolassignment.bmi') }}" onsubmit="return submitPageForm(this);">
+          <div class="form-group">
+            <label>身高 cm</label>
+            <input type="number" step="0.1" min="50" max="250" name="user_height" class="form-control" placeholder="例如：170（可輸入 50～250）" value="{{ user_height if user_height is not none else '' }}" required>
+          </div>
+
+          <div class="form-group">
+            <label>體重 kg</label>
+            <input type="number" step="0.1" min="2" max="500" name="user_weight" class="form-control" placeholder="例如：65（可輸入 2～500）" value="{{ user_weight if user_weight is not none else '' }}" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">計算 BMI</button>
+        </form>
+
+        {% if validation_error %}
+        <div class="alert alert-danger mt-3" role="alert">{{ validation_error }}</div>
+        {% endif %}
+
+        <hr>
+
+        <!-- 結果顯示區 -->
+        {% if BMI_result is not none %}
+        <div>
+          <p>你的身高：{{ user_height }} cm</p>
+          <p>你的體重：{{ user_weight }} kg</p>
+          <p>你的 BMI 結果為：{{ BMI_result }}</p>
+        </div>
+        {% else %}
+        <p class="text-muted">尚未計算 BMI。</p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>

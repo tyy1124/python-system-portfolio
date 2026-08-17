@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/signin.css') }}">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="signin-card">
+            <div class="card-top">
+                <p class="small-title">WELCOME BACK</p>
+                <h1>Sign In</h1>
+                <p class="sub-text">登入你的帳號，開始你的旅程</p>
+            </div>
+
+            <form id="signinForm" method="POST" action="{{ url_for('login') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="input-group">
+                    <label for="account">帳號 / Email</label>
+                    <input type="text" id="account" name="account" placeholder="請輸入帳號或 Email">
+                </div>
+
+                <div class="input-group">
+                    <label for="password">密碼</label>
+                    <div class="password-box">
+                        <input type="password" id="password" name="password" placeholder="請輸入密碼">
+                        <button type="button" id="togglePassword">顯示</button>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember">
+                        <span>記住我</span>
+                    </label>
+                    <a href="#" class="forgot-link">忘記密碼？</a>
+                </div>
+
+                <p id="statusMessage" class="status-message"></p>
+
+                <button type="submit" class="signin-btn">登入</button>
+            </form>
+
+            <div class="bottom-text">
+                <p>還沒有帳號？ <a href="#">Create one</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/signin.js') }}"></script>
+</body>
+</html>

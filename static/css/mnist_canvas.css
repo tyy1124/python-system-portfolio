@@ -1,0 +1,249 @@
+/* === MNIST 手寫辨識介面：使用全站主題變數 === */
+.mnist-section-label {
+  margin-bottom: 0.35rem;
+  color: var(--tyy-tiffany-strong);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.mnist-model-badge {
+  display: inline-flex;
+  padding: 0.55rem 0.9rem;
+  align-items: center;
+  border: 1px solid color-mix(in srgb, var(--tyy-tiffany) 30%, transparent);
+  border-radius: 999px;
+  background: var(--tyy-tiffany-soft);
+  color: var(--tyy-tiffany-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.mnist-metric-card {
+  display: flex;
+  min-width: 130px;
+  padding: 0.75rem 1rem;
+  flex-direction: column;
+  border: 1px solid var(--tyy-border);
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--tyy-tiffany-soft), var(--tyy-orange-soft));
+}
+
+.mnist-metric-card span {
+  color: var(--tyy-text-muted);
+  font-size: 0.76rem;
+}
+
+.mnist-metric-card strong {
+  margin-top: 0.15rem;
+  color: var(--tyy-heading);
+  font-size: 1.1rem;
+}
+
+.mnist-random-test-box,
+.mnist-canvas-panel,
+.mnist-result-panel {
+  border: 1px solid var(--tyy-border);
+  border-radius: 18px;
+  background: var(--tyy-surface-alt);
+}
+
+.mnist-random-test-box {
+  padding: 1.25rem;
+}
+
+.mnist-handwriting-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--tyy-border);
+  background: var(--tyy-surface);
+  box-shadow: var(--tyy-shadow-hover);
+}
+
+.mnist-handwriting-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--tyy-tiffany), var(--tyy-orange));
+}
+
+.mnist-canvas-panel,
+.mnist-result-panel {
+  height: 100%;
+  padding: 1.25rem;
+}
+
+.mnist-canvas-header {
+  display: flex;
+  margin-bottom: 0.85rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  color: var(--tyy-heading);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.mnist-drawing-status {
+  color: var(--tyy-tiffany-strong);
+  font-size: 0.78rem;
+}
+
+.mnist-canvas-wrap {
+  display: flex;
+  padding: 14px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background: linear-gradient(145deg, var(--tyy-tiffany-soft), var(--tyy-orange-soft));
+}
+
+.mnist-drawing-canvas {
+  width: 280px;
+  max-width: 100%;
+  height: auto;
+  border: 2px solid color-mix(in srgb, var(--tyy-tiffany) 38%, transparent);
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.mnist-canvas-help {
+  color: var(--tyy-text-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.mnist-result-panel {
+  display: flex;
+  min-height: 430px;
+  align-items: center;
+  justify-content: center;
+}
+
+.mnist-result-placeholder {
+  color: var(--tyy-text-muted);
+  text-align: center;
+}
+
+.mnist-result-placeholder i {
+  margin-bottom: 1rem;
+  color: var(--tyy-tiffany-strong);
+  font-size: 3rem;
+}
+
+.mnist-result-placeholder h5 {
+  color: var(--tyy-heading);
+}
+
+.mnist-result-content {
+  width: 100%;
+}
+
+.mnist-preview-canvas {
+  max-width: 100%;
+  border: 8px solid var(--tyy-surface);
+  border-radius: 16px;
+  background: #000000;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+  image-rendering: pixelated;
+}
+
+.mnist-prediction-caption {
+  color: var(--tyy-text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.mnist-predicted-number {
+  margin: 0.35rem 0;
+  background: linear-gradient(135deg, var(--tyy-tiffany), var(--tyy-orange));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 5rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.mnist-confidence-text {
+  color: var(--tyy-heading);
+  font-weight: 700;
+}
+
+.mnist-digit-buttons {
+  display: grid;
+  gap: 0.55rem;
+  grid-template-columns: repeat(5, minmax(42px, 1fr));
+}
+
+.mnist-digit-button {
+  padding: 0.6rem 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--tyy-tiffany) 38%, transparent);
+  border-radius: 10px;
+  background: var(--tyy-input-bg);
+  color: var(--tyy-heading);
+  font-size: 1.05rem;
+  font-weight: 800;
+  transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.mnist-digit-button:hover:not(:disabled) {
+  border-color: var(--tyy-tiffany);
+  background: var(--tyy-tiffany-soft);
+  transform: translateY(-2px);
+}
+
+.mnist-pixel-grid {
+  display: grid;
+  width: 210px;
+  height: 210px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 7px solid var(--tyy-surface);
+  border-radius: 12px;
+  background: #000000;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+  grid-template-columns: repeat(28, 7px);
+}
+
+.mnist-pixel-grid span {
+  width: 7px;
+  height: 7px;
+}
+
+.mnist-random-result p {
+  margin-bottom: 0.65rem;
+}
+
+@media (max-width: 575.98px) {
+  .mnist-canvas-panel,
+  .mnist-result-panel {
+    padding: 1rem;
+  }
+
+  .mnist-result-panel {
+    min-height: 360px;
+  }
+
+  .mnist-predicted-number {
+    font-size: 4rem;
+  }
+
+  .mnist-pixel-grid {
+    width: 182px;
+    height: 182px;
+    grid-template-columns: repeat(28, 6px);
+  }
+
+  .mnist-pixel-grid span {
+    width: 6px;
+    height: 6px;
+  }
+}

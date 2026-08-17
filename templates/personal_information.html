@@ -1,0 +1,183 @@
+<style>
+.profile-page { width: 100%; }
+  .profile-page-header { margin-bottom: 22px; }
+  .profile-page-header h3 { margin-bottom: 7px; font-weight: 800; color: var(--tyy-heading); }
+  .profile-page-header p { margin-bottom: 0; color: var(--tyy-text-secondary); }
+  .profile-card { height: 100%; border: 1px solid var(--tyy-border); border-radius: 14px; background: var(--tyy-surface); box-shadow: var(--tyy-shadow); }
+  .profile-summary-card { overflow: hidden; }
+  .profile-summary-cover { height: 110px; background: linear-gradient(135deg, var(--tyy-lilac-strong), var(--tyy-rose-strong)); }
+  .profile-summary-body { padding: 0 24px 26px; text-align: center; }
+  .profile-avatar-wrapper { position: relative; width: 132px; height: 132px; margin: -66px auto 16px; }
+  .profile-avatar { width: 132px; height: 132px; border: 5px solid var(--tyy-surface); border-radius: 50%; background: var(--tyy-surface); object-fit: cover; box-shadow: 0 5px 15px rgba(31,39,51,0.18); }
+  .profile-avatar-badge { position: absolute; right: 4px; bottom: 9px; width: 24px; height: 24px; border: 4px solid var(--tyy-surface); border-radius: 50%; background: var(--tyy-success); }
+  .profile-name { margin-bottom: 4px; font-size: 22px; font-weight: 800; color: var(--tyy-heading); }
+  .profile-account { margin-bottom: 20px; color: var(--tyy-text-muted); }
+  .profile-completion-label { display: flex; justify-content: space-between; margin-bottom: 7px; font-size: 13px; color: var(--tyy-text-secondary); }
+  .profile-completion-track { height: 8px; overflow: hidden; border-radius: 99px; background: var(--tyy-surface-soft); }
+  .profile-completion-bar { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--tyy-lilac), var(--tyy-pink)); }
+  .profile-small-note { margin-top: 14px; color: var(--tyy-text-muted); font-size: 13px; line-height: 1.6; }
+  .profile-form-card .card-body { padding: 28px; }
+  .profile-section-title { margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--tyy-border); font-size: 17px; font-weight: 800; color: var(--tyy-heading); }
+  .profile-label { margin-bottom: 7px; font-weight: 700; color: var(--tyy-text-secondary); }
+  .profile-readonly { background: var(--tyy-input-readonly) !important; color: var(--tyy-text-muted); }
+  .profile-file-box { padding: 16px; border: 1px dashed var(--tyy-border-strong); border-radius: 10px; background: var(--tyy-surface-alt); }
+  .profile-message { margin-bottom: 20px; border-radius: 9px; }
+  .profile-save-row { display: flex; justify-content: flex-end; gap: 10px; padding-top: 6px; }
+  .profile-save-button { min-width: 145px; }
+  .profile-character-count { float: right; color: var(--tyy-text-muted); font-size: 12px; }
+  @media (max-width: 991.98px) { .profile-summary-card { margin-bottom: 22px; } }
+</style>
+
+<div id="profileUpdateData" data-avatar-url="{{ avatar_url }}" data-user-name="{{ user_name }}" hidden></div>
+
+<div class="profile-page">
+  <div class="profile-page-header">
+    <h3>個人資料</h3>
+    <p>管理你的基本資訊、聯絡方式與個人頭像。</p>
+  </div>
+
+  {% if success_message %}
+  <div class="alert alert-success profile-message">{{ success_message }}</div>
+  {% endif %}
+
+  {% if error_message %}
+  <div class="alert alert-danger profile-message">{{ error_message }}</div>
+  {% endif %}
+
+  <div class="row">
+    <div class="col-xl-4 col-lg-5">
+      <div class="card profile-card profile-summary-card">
+        <div class="profile-summary-cover"></div>
+
+        <div class="profile-summary-body">
+          <div class="profile-avatar-wrapper">
+            <img id="profileAvatarPreview" class="profile-avatar" src="{{ avatar_url }}" data-current-url="{{ avatar_url }}" data-default-url="{{ default_avatar_url }}" alt="個人頭像">
+            <span class="profile-avatar-badge"></span>
+          </div>
+
+          <div class="profile-name">{{ user_name }}</div>
+          <div class="profile-account">@{{ account }}</div>
+
+          <div class="profile-completion-label">
+            <span>資料完成度</span>
+            <strong>{{ profile_completion }}%</strong>
+          </div>
+
+          <div class="profile-completion-track">
+            <div class="profile-completion-bar" style="width: {{ profile_completion }}%;"></div>
+          </div>
+
+          <p class="profile-small-note">未上傳圖片時會繼續使用預設的小八貓。圖片僅支援 JPG、PNG、WEBP，大小不可超過 2 MB。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-8 col-lg-7">
+      <div class="card profile-card profile-form-card">
+        <div class="card-body">
+          <form method="POST" action="{{ url_for('personal_information') }}" enctype="multipart/form-data" onsubmit="submitProfileForm(this); return false;">
+            <div class="profile-section-title">帳號資料</div>
+
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label class="profile-label" for="profileAccount">帳號</label>
+                <input class="form-control profile-readonly" id="profileAccount" type="text" value="{{ account }}" readonly>
+              </div>
+
+              <div class="col-md-6 form-group">
+                <label class="profile-label" for="profileEmail">Email</label>
+                <input class="form-control profile-readonly" id="profileEmail" type="email" value="{{ email }}" readonly>
+              </div>
+
+              <div class="col-md-6 form-group">
+                <label class="profile-label" for="profileUserName">姓名</label>
+                <input class="form-control" id="profileUserName" name="user_name" type="text" value="{{ user_name }}" maxlength="100" required>
+              </div>
+
+              <div class="col-md-6 form-group">
+                <label class="profile-label" for="profilePhone">手機</label>
+                <input class="form-control" id="profilePhone" name="phone" type="tel" value="{{ profile.phone or '' }}" maxlength="30" placeholder="例如：0912-345-678">
+              </div>
+            </div>
+
+            <div class="profile-section-title mt-3">基本資料</div>
+
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label class="profile-label" for="profileBirthday">生日</label>
+                <input class="form-control" id="profileBirthday" name="birthday" type="date" value="{{ profile.birthday.isoformat() if profile.birthday else '' }}">
+              </div>
+
+              <div class="col-md-6 form-group">
+                <label class="profile-label" for="profileGender">性別</label>
+                <select class="form-control" id="profileGender" name="gender">
+                  <option value="" {% if not profile.gender %}selected{% endif %}>請選擇</option>
+                  <option value="male" {% if profile.gender == 'male' %}selected{% endif %}>男性</option>
+                  <option value="female" {% if profile.gender == 'female' %}selected{% endif %}>女性</option>
+                  <option value="other" {% if profile.gender == 'other' %}selected{% endif %}>其他</option>
+                  <option value="private" {% if profile.gender == 'private' %}selected{% endif %}>不公開</option>
+                </select>
+              </div>
+
+              <div class="col-md-6 form-group">
+                <label class="profile-label" for="profileCity">所在城市</label>
+                <input class="form-control" id="profileCity" name="city" type="text" value="{{ profile.city or '' }}" maxlength="100" placeholder="例如：新北市">
+              </div>
+
+              <div class="col-md-6 form-group">
+                <label class="profile-label" for="profileOccupation">職業</label>
+                <input class="form-control" id="profileOccupation" name="occupation" type="text" value="{{ profile.occupation or '' }}" maxlength="100" placeholder="例如：軟體工程師">
+              </div>
+
+              <div class="col-md-12 form-group">
+                <label class="profile-label" for="profileAddress">地址</label>
+                <input class="form-control" id="profileAddress" name="address" type="text" value="{{ profile.address or '' }}" maxlength="255" placeholder="選填">
+              </div>
+
+              <div class="col-md-12 form-group">
+                <label class="profile-label" for="profileWebsite">個人網站</label>
+                <input class="form-control" id="profileWebsite" name="website" type="text" value="{{ profile.website or '' }}" maxlength="255" placeholder="https://example.com">
+              </div>
+            </div>
+
+            <div class="profile-section-title mt-3">個人頭像</div>
+
+            <div class="profile-file-box mb-4">
+              <label class="profile-label" for="profileAvatar">選擇新圖片</label>
+              <input class="form-control-file" id="profileAvatar" name="avatar" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" onchange="previewProfileAvatar(this)">
+
+              {% if cloudinary_status.enabled %}
+              <p class="text-success mt-2 mb-2"><i class="fa fa-check-circle"></i> {{ cloudinary_status.message }}</p>
+              {% else %}
+              <div class="alert alert-warning mt-3 mb-2 py-2">
+                <strong><i class="fa fa-exclamation-triangle"></i> {{ cloudinary_status.message }}</strong>
+                {% if cloudinary_status.missing_items %}
+                <div class="mt-1 small">缺少：{{ cloudinary_status.missing_items | join('、') }}</div>
+                {% endif %}
+                <div class="mt-1 small">Heroku 必須在 Settings → Config Vars 設定憑證，且 requirements.txt 必須包含 cloudinary。</div>
+              </div>
+              {% endif %}
+
+              <div class="form-check mt-3">
+                <input class="form-check-input" id="resetAvatar" name="reset_avatar" type="checkbox" value="1" onchange="toggleDefaultAvatarPreview(this)">
+                <label class="form-check-label" for="resetAvatar">恢復預設小八貓</label>
+              </div>
+            </div>
+
+            <div class="profile-section-title">自我介紹</div>
+
+            <div class="form-group">
+              <label class="profile-label" for="profileBiography">關於我 <span class="profile-character-count">最多 500 字</span></label>
+              <textarea class="form-control" id="profileBiography" name="biography" rows="5" maxlength="500" placeholder="簡單介紹自己、興趣或專長">{{ profile.biography or '' }}</textarea>
+            </div>
+
+            <div class="profile-save-row">
+              <button class="btn btn-light" type="reset" onclick="resetProfileAvatarPreview()">取消修改</button>
+              <button class="btn btn-primary profile-save-button" type="submit">儲存變更</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
